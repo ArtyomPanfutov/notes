@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: com.luckwheat
+testFramework: junit
+sourceLanguage: java
+buildTool: maven
+features: [annotation-api, app-name, assertj, data, data-jpa, h2, http-client, jackson-databind, java, java-application, jdbc-hikari, jooq, junit, liquibase, lombok, maven, mockito, netty-server, openapi, readme, shade, slf4j-simple, swagger-ui, testcontainers, yaml]
