@@ -20,7 +20,7 @@
     <micronaut.version>3.5.2</micronaut.version>
     <micronaut.data.version>3.4.2</micronaut.data.version>
     <micronaut.runtime>netty</micronaut.runtime>
-    <exec.mainClass>com.luckwheat.Application</exec.mainClass>
+    <exec.mainClass>com.luckwheat.notes.Application</exec.mainClass>
   </properties>
 
   <repositories>

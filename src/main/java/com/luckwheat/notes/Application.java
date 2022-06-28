@@ -1,4 +1,4 @@
-package com.luckwheat;
+package com.luckwheat.notes;
 
 import io.micronaut.runtime.Micronaut;
 import io.swagger.v3.oas.annotations.*;

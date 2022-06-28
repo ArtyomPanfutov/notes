@@ -18,6 +18,7 @@ datasources:
     schema-generate: CREATE_DROP
     dialect: H2
 jpa.default.properties.hibernate.hbm2ddl.auto: update
+jpa.default.entity-scan.pakage: com.luckwheat.notes.entity
 netty:
   default:
     allocator:
