@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.luckwheat</groupId>
   <artifactId>notes-storage-service</artifactId>
-  <version>0.1</version>
+  <version>0.1-SNAPSHOT</version>
   <packaging>${packaging}</packaging>
 
   <parent>
@@ -193,6 +193,27 @@
             <arg>-Amicronaut.processing.group=com.luckwheat</arg>
             <arg>-Amicronaut.processing.module=notes-storage-service</arg>
           </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>1.4.13</version>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>build</goal>
+              <goal>push</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <repository>luckwheat.com/notes-storage-service</repository>
+          <tag>${project.version}</tag>
+          <buildArgs>
+            <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>
+          </buildArgs>
         </configuration>
       </plugin>
     </plugins>
