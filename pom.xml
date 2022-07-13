@@ -136,6 +136,17 @@
       <artifactId>testcontainers</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>1.17.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.2.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -214,6 +225,14 @@
           <buildArgs>
             <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>
           </buildArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
         </configuration>
       </plugin>
       <plugin>

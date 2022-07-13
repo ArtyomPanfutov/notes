@@ -1,0 +1,11 @@
+datasources:
+  default:
+    url: jdbc:tc:postgresql:12:///postgres?currentSchema=app
+    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    username: postgres
+    password: postgres
+  dialect: POSTGRES
+liquibase:
+  datasource:
+    default:
+      change-log: 'classpath:db/liquibase-changelog.xml'
