@@ -1,6 +1,7 @@
 package com.luckwheat.notes.entity;
 
 import io.micronaut.core.annotation.Introspected;
+import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Table(name = "project")
 @Introspected
+@Getter
 public class Project {
 
     @Id

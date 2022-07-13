@@ -17,8 +17,18 @@ datasources:
     password: ''
     schema-generate: CREATE_DROP
     dialect: H2
-jpa.default.properties.hibernate.hbm2ddl.auto: update
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+          show_sql: true
 jpa.default.entity-scan.pakage: com.luckwheat.notes.entity
+liquibase:
+  datasource:
+    default:
+      change-log: 'classpath:db/liquibase-changelog.xml'
 netty:
   default:
     allocator:
