@@ -26,8 +26,10 @@ jpa:
           show_sql: true
 jpa.default.entity-scan.pakage: com.luckwheat.notes.entity
 liquibase:
-  datasource:
+  enabled: true
+  datasources:
     default:
+      enabled: true
       change-log: 'classpath:db/liquibase-changelog.xml'
 netty:
   default:
