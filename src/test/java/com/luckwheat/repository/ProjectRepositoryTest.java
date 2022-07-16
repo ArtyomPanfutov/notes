@@ -17,11 +17,11 @@ class ProjectRepositoryTest {
 
     @Test
     void testSaveProject() {
-        final var secretProject = new Project(null, "Super secret project");
+        final var newProject = new Project(null, "Super secret project");
 
-        final var saved = projectRepository.save(secretProject);
+        final var saved = projectRepository.save(newProject);
 
-        assertEquals(secretProject.getName(), saved.getName());
+        assertEquals(newProject.getName(), saved.getName());
     }
 
 }
