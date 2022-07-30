@@ -17,7 +17,8 @@ class ProjectRepositoryTest {
 
     @Test
     void testSaveProject() {
-        final var newProject = new Project(null, "Super secret project");
+        final var newProject = new Project();
+        newProject.setName("Super project");
 
         final var saved = projectRepository.save(newProject);
 

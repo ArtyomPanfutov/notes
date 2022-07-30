@@ -38,6 +38,7 @@ public class Note {
     @Column(name = "updated_ts")
     private LocalDateTime updatedTimestamp;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
     private Project project;
 }
