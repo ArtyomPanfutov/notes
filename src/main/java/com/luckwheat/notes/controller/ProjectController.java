@@ -8,8 +8,10 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller("/api/project")
+@Slf4j
 public class ProjectController {
 
     @Inject
@@ -17,6 +19,14 @@ public class ProjectController {
 
     @Post(consumes = MediaType.APPLICATION_JSON)
     public HttpResponse<Void> create(@Body ProjectDto projectDto) {
-        throw new UnsupportedOperationException("not implemented");
+        final var result = projectService.create(projectDto);
+
+        if (result.success()) {
+            return HttpResponse.ok();
+        }
+
+        log.error("Error creating a project: {}", result.error());
+        // TODO: Error handling
+        return HttpResponse.badRequest();
     }
 }
