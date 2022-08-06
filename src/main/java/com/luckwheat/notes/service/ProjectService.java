@@ -1,5 +1,6 @@
 package com.luckwheat.notes.service;
 
+import com.google.common.collect.ImmutableList;
 import com.luckwheat.notes.dto.CreateResult;
 import com.luckwheat.notes.dto.Error;
 import com.luckwheat.notes.dto.ProjectDto;
@@ -10,6 +11,7 @@ import jakarta.inject.Singleton;
 import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Singleton
 public class ProjectService {
@@ -34,6 +36,18 @@ public class ProjectService {
         final var saved = projectRepository.save(convertToEntity(projectDto));
 
         return CreateResult.success(convertToDto(saved));
+    }
+
+    @Transactional
+    public List<ProjectDto> findAll() {
+        final var projects  = projectRepository.findAll();
+        final var result = ImmutableList.<ProjectDto>builder();
+
+        for (Project project : projects) {
+            result.add(convertToDto(project));
+        }
+
+        return result.build();
     }
 
     private ProjectDto convertToDto(Project project) {

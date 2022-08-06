@@ -6,9 +6,12 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 @Controller("/api/project")
 @Slf4j
@@ -28,5 +31,10 @@ public class ProjectController {
         log.error("Error creating a project: {}", result.error());
         // TODO: Error handling
         return HttpResponse.badRequest();
+    }
+
+    @Get
+    public HttpResponse<List<ProjectDto>> findAll() {
+        return HttpResponse.ok(projectService.findAll());
     }
 }

@@ -48,4 +48,11 @@ class ProjectServiceTest {
         assertNotNull(result.error());
         assertEquals(0, projectRepository.count());
     }
+
+    @Test
+    void testFindAll() {
+        projectService.create(new ProjectDto(null, "some project"));
+        final var result = projectService.findAll();
+        assertFalse(result.isEmpty());
+    }
 }
