@@ -9,7 +9,7 @@ _Note: Docker environment is required to run tests_
 Prepare dockerfile and dependencies <br>
 `mvn clean mn:dockerfile -Dpackaging=docker` <br>
 Build the artifacts <br>
-`mvn install` <br>
+`mvn install -dpackaging=jar` <br>
 
 ## Push Docker Image 
 `mvn dockerfile:push`
