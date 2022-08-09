@@ -32,5 +32,7 @@ class NoteServiceTest {
 
         assertTrue(result.success());
         assertNotNull(result.body().id());
+        assertNotNull(result.body().createdTimestamp());
+        assertNotNull(result.body().updatedTimestamp());
     }
 }

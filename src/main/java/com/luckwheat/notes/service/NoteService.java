@@ -12,6 +12,8 @@ import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Singleton
@@ -33,7 +35,11 @@ public class NoteService {
         // TODO: Validation
         log.warn("Validation is not implemented yet!");
 
-        final var note = noteRepository.save(convertToEntity(noteDto));
+        final var entity = convertToEntity(noteDto);
+        final var now = LocalDateTime.now(ZoneId.systemDefault());
+        entity.setCreatedTimestamp(now);
+        entity.setUpdatedTimestamp(now);
+        final var note = noteRepository.save(entity);
 
         return CreateResult.success(convertToDto(note));
     }
