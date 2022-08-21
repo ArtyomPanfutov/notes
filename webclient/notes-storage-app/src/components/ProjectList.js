@@ -1,14 +1,19 @@
 import React from 'react';
 import _ from 'lodash';
 import Project from './Project';
+import axios from 'axios';
 
 
 const ProjectList = () => {
   const [data, setData] = React.useState(null);
 
   const handleRemoveProject = (id) => {
-   // TODO: DELETE PROJECT
-    setData(data.filter((item) => item.id !== id));
+     axios.delete("/api/projects/" + id)
+       .then(() => {
+         fetch("/api/projects")
+           .then((res) => res.json())
+           .then((data) => setData(data));
+       })
   };
 
    React.useEffect(() => {

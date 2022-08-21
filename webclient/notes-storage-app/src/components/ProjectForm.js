@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 const ProjectForm = (props) => {
   const [project, setProject] = useState({
@@ -34,7 +35,6 @@ const ProjectForm = (props) => {
     const { name, value } = event.target;
     switch (name) {
       default:
-        // Change to back-end call
         setProject((prevState) => ({
           ...prevState,
           [name]: value

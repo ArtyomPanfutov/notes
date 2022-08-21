@@ -6,7 +6,7 @@ const AddProject = () => {
   const handleOnSubmit = (project) => {
      const name = project.projectName;
      axios.post("/api/projects", {
-           name
+       name
      })
   };
 

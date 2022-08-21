@@ -1,7 +1,7 @@
 package com.luckwheat.notes.service;
 
 import com.google.common.collect.ImmutableList;
-import com.luckwheat.notes.dto.CreateResult;
+import com.luckwheat.notes.dto.Result;
 import com.luckwheat.notes.dto.Error;
 import com.luckwheat.notes.dto.NoteDto;
 import com.luckwheat.notes.entity.Note;
@@ -27,9 +27,9 @@ public class NoteService {
     ProjectRepository projectRepository;
 
     @Transactional
-    public CreateResult<NoteDto> create(NoteDto noteDto) {
+    public Result<NoteDto> create(NoteDto noteDto) {
         if (noteDto == null) {
-            return CreateResult.error(new Error("Can't create a null note"));
+            return Result.error(new Error("Can't create a null note"));
         }
 
         // TODO: Validation
@@ -41,7 +41,7 @@ public class NoteService {
         entity.setUpdatedTimestamp(now);
         final var note = noteRepository.save(entity);
 
-        return CreateResult.success(convertToDto(note));
+        return Result.success(convertToDto(note));
     }
 
     @Transactional

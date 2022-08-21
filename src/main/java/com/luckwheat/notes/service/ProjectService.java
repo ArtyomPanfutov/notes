@@ -1,9 +1,9 @@
 package com.luckwheat.notes.service;
 
 import com.google.common.collect.ImmutableList;
-import com.luckwheat.notes.dto.CreateResult;
 import com.luckwheat.notes.dto.Error;
 import com.luckwheat.notes.dto.ProjectDto;
+import com.luckwheat.notes.dto.Result;
 import com.luckwheat.notes.entity.Project;
 import com.luckwheat.notes.repository.ProjectRepository;
 import jakarta.inject.Inject;
@@ -20,22 +20,22 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     @Transactional
-    public CreateResult<ProjectDto> create(ProjectDto projectDto) {
+    public Result<ProjectDto> create(ProjectDto projectDto) {
         if (projectDto == null) {
-            return CreateResult.error(new Error("Can't create the project that is null"));
+            return Result.error(new Error("Can't create the project that is null"));
         }
 
         if (StringUtils.isEmpty(projectDto.name())) {
-            return CreateResult.error(new Error("The name of the project can't be empty"));
+            return Result.error(new Error("The name of the project can't be empty"));
         }
 
         if (projectDto.id() != null) {
-            return CreateResult.error(new Error("The id must be null before creation. It will be assigned automatically."));
+            return Result.error(new Error("The id must be null before creation. It will be assigned automatically."));
         }
 
         final var saved = projectRepository.save(convertToEntity(projectDto));
 
-        return CreateResult.success(convertToDto(saved));
+        return Result.success(convertToDto(saved));
     }
 
     @Transactional
@@ -48,6 +48,19 @@ public class ProjectService {
         }
 
         return result.build();
+    }
+
+    @Transactional
+    public Result<Void> delete(Long id) {
+        final var found = projectRepository.findById(id);
+
+        if (found.isEmpty()) {
+            return Result.error(new Error("Project doesn't exists"));
+        }
+
+        projectRepository.deleteById(id);
+
+        return Result.successVoid();
     }
 
     private ProjectDto convertToDto(Project project) {
