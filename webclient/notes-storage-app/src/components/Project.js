@@ -9,7 +9,7 @@ const Project = ({
   return (
     <Card style={{ width: '18rem' }} className="project">
       <Card.Body>
-        <Card.Title className="book-title">{name}</Card.Title>
+        <Card.Title className="project-title">{name}</Card.Title>
         <Button variant="primary">Edit</Button>{' '}
         <Button variant="danger" onClick={() => handleRemoveProject(id)}>
           Delete
