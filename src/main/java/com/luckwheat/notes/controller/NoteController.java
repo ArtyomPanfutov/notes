@@ -21,9 +21,20 @@ public class NoteController {
     public HttpResponse<Void> create(@Body NoteDto noteDto) {
         final var result = noteService.create(noteDto);
 
-        if (!result.success()) {
+        if (!result.isSuccess()) {
             // TODO: Implement error handling
             log.error("Can't create a note {}", result.error());
+            return HttpResponse.badRequest();
+        }
+
+        return HttpResponse.ok();
+    }
+
+    @Put
+    public HttpResponse<Void> update(@Body NoteDto noteDto) {
+        final var result = noteService.update(noteDto);
+
+        if (result.isError()) {
             return HttpResponse.badRequest();
         }
 
@@ -35,10 +46,21 @@ public class NoteController {
         return HttpResponse.ok(noteService.findAll());
     }
 
+    @Get("/{id}")
+    public HttpResponse<NoteDto> findById(@QueryValue Long id) {
+        final var result = noteService.findById(id);
+
+        if (result.isEmpty()) {
+            return HttpResponse.notFound();
+        }
+
+        return HttpResponse.ok(result.get());
+    }
+
     @Delete("/{id}")
     public HttpResponse<String> delete(@QueryValue Long id) {
         final var result = noteService.delete(id);
-        if (result.fail()) {
+        if (result.isError()) {
             return HttpResponse.badRequest(result.error().message());
         }
 

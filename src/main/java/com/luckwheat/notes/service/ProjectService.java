@@ -12,6 +12,7 @@ import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public class ProjectService {
@@ -39,6 +40,17 @@ public class ProjectService {
     }
 
     @Transactional
+    public Result<ProjectDto> update(ProjectDto projectDto) {
+        if (projectDto == null || projectDto.id() == null) {
+            return Result.error(new Error("Can't update the project that is null"));
+        }
+
+        final var updated = projectRepository.save(convertToEntity(projectDto));
+
+        return Result.success(convertToDto(updated));
+    }
+
+    @Transactional
     public List<ProjectDto> findAll() {
         final var projects  = projectRepository.findAll();
         final var result = ImmutableList.<ProjectDto>builder();
@@ -48,6 +60,12 @@ public class ProjectService {
         }
 
         return result.build();
+    }
+
+    @Transactional
+    public Optional<ProjectDto> findById(Long id) {
+        return projectRepository.findById(id)
+                .map(this::convertToDto);
     }
 
     @Transactional

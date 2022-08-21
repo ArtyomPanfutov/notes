@@ -21,7 +21,7 @@ public class ProjectController {
     public HttpResponse<Void> create(@Body ProjectDto projectDto) {
         final var result = projectService.create(projectDto);
 
-        if (result.success()) {
+        if (result.isSuccess()) {
             return HttpResponse.ok();
         }
 
@@ -30,16 +30,38 @@ public class ProjectController {
         return HttpResponse.badRequest();
     }
 
+    @Put
+    public HttpResponse<Void> update(@Body ProjectDto projectDto) {
+        final var result = projectService.update(projectDto);
+
+        if (result.isError()) {
+            return HttpResponse.badRequest();
+        }
+
+        return HttpResponse.ok();
+    }
+
     @Get
     public HttpResponse<List<ProjectDto>> findAll() {
         return HttpResponse.ok(projectService.findAll());
+    }
+
+    @Get("/{id}")
+    public HttpResponse<ProjectDto> findById(@QueryValue Long id) {
+        final var project = projectService.findById(id);
+
+        if (project.isEmpty()) {
+            return HttpResponse.notFound();
+        }
+
+        return HttpResponse.ok(project.get());
     }
 
     @Delete("/{id}")
     public HttpResponse<String> delete(@QueryValue Long id) {
         final var result = projectService.delete(id);
 
-        if (result.fail()) {
+        if (result.isError()) {
             return HttpResponse.badRequest(result.error().message());
         }
 

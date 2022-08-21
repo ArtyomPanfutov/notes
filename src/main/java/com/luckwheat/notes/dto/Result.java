@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
  * @param <T> Created or updated object (nullable)
  */
 public record Result<T> (
-    boolean success,
+    boolean isSuccess,
     @Nullable T body,
     Error error) {
 
@@ -23,7 +23,7 @@ public record Result<T> (
         return new Result<>(false, null, error);
     }
 
-    public boolean fail() {
-        return !success;
+    public boolean isError() {
+        return !isSuccess;
     }
 }

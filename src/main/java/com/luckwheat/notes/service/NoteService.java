@@ -1,9 +1,9 @@
 package com.luckwheat.notes.service;
 
 import com.google.common.collect.ImmutableList;
-import com.luckwheat.notes.dto.Result;
 import com.luckwheat.notes.dto.Error;
 import com.luckwheat.notes.dto.NoteDto;
+import com.luckwheat.notes.dto.Result;
 import com.luckwheat.notes.entity.Note;
 import com.luckwheat.notes.repository.NoteRepository;
 import com.luckwheat.notes.repository.ProjectRepository;
@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 @Slf4j
@@ -45,6 +46,23 @@ public class NoteService {
     }
 
     @Transactional
+    public Result<NoteDto> update(NoteDto noteDto) {
+        if (noteDto == null || noteDto.id() == null) {
+            return Result.error(new Error("Can't update null note"));
+        }
+
+        // TODO: Validation
+        log.warn("Validation is not implemented yet!");
+
+        final var entity = convertToEntity(noteDto);
+        final var now = LocalDateTime.now(ZoneId.systemDefault());
+
+        final var note = noteRepository.save(entity);
+
+        return Result.success(convertToDto(note));
+    }
+
+    @Transactional
     public List<NoteDto> findAll() {
         final var notes = noteRepository.findAll();
         final var result = ImmutableList.<NoteDto>builder();
@@ -54,6 +72,13 @@ public class NoteService {
         }
 
         return result.build();
+    }
+
+    @Transactional
+    public Optional<NoteDto> findById(Long id) {
+        return noteRepository.findById(id)
+                .map(this::convertToDto);
+
     }
 
     @Transactional

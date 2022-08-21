@@ -26,11 +26,11 @@ class NoteServiceTest {
     void testCreateNote() {
         final var project = projectService.create(ProjectDto.newProject("Unknown"));
 
-        assertTrue(project.success());
+        assertTrue(project.isSuccess());
 
         final var result = noteService.create(NoteDto.newNote("test", "some content", project.body().id()));
 
-        assertTrue(result.success());
+        assertTrue(result.isSuccess());
         assertNotNull(result.body().id());
         assertNotNull(result.body().createdTimestamp());
         assertNotNull(result.body().updatedTimestamp());

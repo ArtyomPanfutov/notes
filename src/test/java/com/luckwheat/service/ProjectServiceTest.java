@@ -26,7 +26,7 @@ class ProjectServiceTest {
 
         final var result = projectService.create(newProject);
 
-        assertTrue(result.success());
+        assertTrue(result.isSuccess());
         assertNotNull(result.body().id());
         assertEquals(newProject.name(), result.body().name());
     }
@@ -35,7 +35,7 @@ class ProjectServiceTest {
     void testCreateWithNullName() {
         final var result = projectService.create(new ProjectDto(null, null));
 
-        assertFalse(result.success());
+        assertFalse(result.isSuccess());
         assertNotNull(result.error());
         assertEquals(0, projectRepository.count());
     }
@@ -44,7 +44,7 @@ class ProjectServiceTest {
     void testCreateWithNullInput() {
         final var result = projectService.create(null);
 
-        assertFalse(result.success());
+        assertFalse(result.isSuccess());
         assertNotNull(result.error());
         assertEquals(0, projectRepository.count());
     }
