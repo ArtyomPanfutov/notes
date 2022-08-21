@@ -13,6 +13,12 @@ const Header = () => {
         <NavLink to="/create-project" className="link" activeClassName="active">
            Create project
         </NavLink>
+        <NavLink to="/notes" className="link" activeClassName="active" exact>
+           Notes
+        </NavLink>
+        <NavLink to="/create-note" className="link" activeClassName="active">
+           Create note
+        </NavLink>
       </div>
     </header>
   );

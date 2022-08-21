@@ -1,40 +1,40 @@
 import React from 'react';
 import _ from 'lodash';
-import Project from './Project';
+import Note from './Note';
 import axios from 'axios';
 
 
-const ProjectList = () => {
+const NoteList = () => {
   const [data, setData] = React.useState(null);
 
-  const handleRemoveProject = (id) => {
-     axios.delete("/api/projects/" + id)
+  const handleRemoveNote = (id) => {
+     axios.delete("/api/notes/" + id)
        .then(() => {
-         fetch("/api/projects")
+         fetch("/api/notes/")
            .then((res) => res.json())
            .then((data) => setData(data));
        })
   };
 
   React.useEffect(() => {
-    fetch("/api/projects")
+    fetch("/api/notes/")
       .then((res) => res.json())
       .then((data) => setData(data));
   }, []);
 
   return (
     <React.Fragment>
-      <div className="project-list">
+      <div className="notes-list">
         {!_.isEmpty(data) ? (
           data.map((item) => (
-            <Project key={item.id} {...item}  handleRemoveProject={handleRemoveProject} />
+            <Note key={item.id} {...item}  handleRemoveNote={handleRemoveNote} />
           ))
         ) : (
-          <p className="message">No projects available.</p>
+          <p className="message">No notes available.</p>
         )}
       </div>
     </React.Fragment>  );
 
 };
 
-export default ProjectList;
+export default NoteList;
