@@ -4,10 +4,7 @@ import com.luckwheat.notes.dto.NoteDto;
 import com.luckwheat.notes.service.NoteService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,5 +33,15 @@ public class NoteController {
     @Get
     public HttpResponse<List<NoteDto>> findAll() {
         return HttpResponse.ok(noteService.findAll());
+    }
+
+    @Delete("/{id}")
+    public HttpResponse<String> delete(@QueryValue Long id) {
+        final var result = noteService.delete(id);
+        if (result.fail()) {
+            return HttpResponse.badRequest(result.error().message());
+        }
+
+        return HttpResponse.ok();
     }
 }

@@ -56,6 +56,17 @@ public class NoteService {
         return result.build();
     }
 
+    @Transactional
+    public Result<Void> delete(Long id) {
+        final var note = noteRepository.findById(id);
+        if (note.isEmpty()) {
+            return Result.error(new Error("Note doesn't exist"));
+        }
+        noteRepository.deleteById(id);
+
+        return Result.successVoid();
+    }
+
     private NoteDto convertToDto(Note note) {
         return new NoteDto(
                 note.getId(),
