@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const ProjectForm = (props) => {
   const [project, setProject] = useState({
-    projectName: props.project? props.project.projectName: ''
+    projectName: props.project ? props.project.name : ''
   });
 
   const [errorMsg, setErrorMsg] = useState('');
@@ -22,7 +22,7 @@ const ProjectForm = (props) => {
 
     if (allFieldsFilled) {
       const project = {
-        projectName,
+        projectName
       };
       props.handleOnSubmit(project);
     } else {
