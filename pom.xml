@@ -209,6 +209,8 @@
             <arg>-Amicronaut.processing.group=com.luckwheat</arg>
             <arg>-Amicronaut.processing.module=notes-storage-service</arg>
           </compilerArgs>
+            <source>16</source>
+            <target>16</target>
         </configuration>
       </plugin>
       <plugin>
