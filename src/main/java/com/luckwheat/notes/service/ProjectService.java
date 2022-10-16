@@ -41,13 +41,20 @@ public class ProjectService {
 
     @Transactional
     public Result<ProjectDto> update(ProjectDto projectDto) {
-        if (projectDto == null || projectDto.id() == null) {
+        if (projectDto == null) {
             return Result.error(new Error("Can't update the project that is null"));
         }
 
-        final var updated = projectRepository.save(convertToEntity(projectDto));
+        final var project = projectRepository.findById(projectDto.id());
+        if (project.isPresent()) {
+            final var forUpdate = project.get();
 
-        return Result.success(convertToDto(updated));
+            forUpdate.setName(projectDto.name());
+
+            return Result.success(convertToDto(projectRepository.save(forUpdate)));
+        }
+
+        return Result.error(new Error("The project is not found"));
     }
 
     @Transactional
