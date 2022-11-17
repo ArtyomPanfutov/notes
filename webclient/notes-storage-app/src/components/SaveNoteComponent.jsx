@@ -27,7 +27,9 @@ class SaveNoteComponent extends Component {
                     projectId: note.projectId
                 });
             });
-        }        
+        } else {
+            this.setState({projectId: 0});
+        }       
     }
 
     saveNote = (p) => {
@@ -40,7 +42,7 @@ class SaveNoteComponent extends Component {
         };
 
         if (this.state.id) {
-            NoteService.updateNote(note).then( res => {
+            NoteService.updateNote(note).then(res => {
                 this.props.history.push('/notes');
             });
         } else {
@@ -96,15 +98,16 @@ class SaveNoteComponent extends Component {
                                             <input placeholder="Content" name="content" className="form-control" 
                                                 value={this.state.content} onChange={this.chnageContentHandler}/>
                                         </div>
+                                        <div className = "form-group">
                                             <label> Project: </label>
-                                            <ProjectDropdownComponent />
+                                            {this.state.projectId && (<ProjectDropdownComponent onChange={this.chnageProjectIdHandler} defaultId={this.state.projectId} />)}
+                                        </div>
                                         <button className="btn btn-success" onClick={this.saveNote}>Save</button>
                                         <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
-
                    </div>
             </div>
         )

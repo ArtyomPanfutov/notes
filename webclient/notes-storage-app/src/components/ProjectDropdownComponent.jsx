@@ -7,23 +7,24 @@ class ProjectDropdownComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      options: []
+      options: [],
+      defaultId: props.defaultId
     }
   }
 
   componentDidMount() {
     ProjectService.getProjects().then((res) => {
-        const arr = [];
+        const dropdownList = [];
 
         res.data.forEach(function(item) { 
-          arr.push({
+          dropdownList.push({
             key: item.id,
             text: item.name,
-            value: item.name
+            value: item.id
           });
         });
 
-        this.setState({ options: arr });
+        this.setState({ options: dropdownList });
     });
   }
 
@@ -35,6 +36,7 @@ class ProjectDropdownComponent extends Component {
           fluid
           selection
           options={this.state.options}
+          defaultValue={this.state.defaultId}
         />
       </div>
     ) 
