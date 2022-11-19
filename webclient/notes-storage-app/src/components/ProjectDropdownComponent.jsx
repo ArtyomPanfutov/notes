@@ -32,7 +32,7 @@ class ProjectDropdownComponent extends Component {
   render() {
     return (
       <div>
-        <Dropdown
+        <Dropdown 
           placeholder='Select Project'
           fluid
           selection

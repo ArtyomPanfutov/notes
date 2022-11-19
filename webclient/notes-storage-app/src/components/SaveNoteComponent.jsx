@@ -84,20 +84,22 @@ class SaveNoteComponent extends Component {
                 <br></br>
                    <div className = "container">
                         <div className = "row">
-                            <div className = "card col-md-6 offset-md-3 offset-md-3">
+                            <div className = "card col-md-12">
                                 {
                                     this.resolveTitle()
                                 }
                                 <div className = "card-body">
                                     <form>
-                                        <div className = "form-group">
-                                            <label> Name: </label>
-                                            <input placeholder="Name" name="name" className="form-control" 
-                                                value={this.state.name} onChange={this.chnageNameHandler}/>
-                                        </div>
-                                        <div className = "form-group">
-                                            <label> Project: </label>
-                                            {this.state.projectId && (<ProjectDropdownComponent onChange={this.chnageProjectIdHandler} defaultId={this.state.projectId} />)}
+                                        <div class="form-row">
+                                            <div class="col-md-4 mb-3">
+                                                <label> Name: </label>
+                                                <input placeholder="Name" name="name" className="form-control" 
+                                                    value={this.state.name} onChange={this.chnageNameHandler}/>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label> Project: </label>
+                                                {this.state.projectId && (<ProjectDropdownComponent onChange={this.chnageProjectIdHandler} defaultId={this.state.projectId} />)}
+                                            </div>
                                         </div>
                                         <div className = "form-group">
                                             <label> Content: </label>
