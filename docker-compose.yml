@@ -18,3 +18,8 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PWD}
       POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata-notes-storage:/var/lib/postgresql/data
+volumes:
+  pgdata-notes-storage:
+    external: true
