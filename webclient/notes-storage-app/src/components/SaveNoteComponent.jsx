@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import NoteService from '../services/NoteService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 class SaveNoteComponent extends Component {
     constructor(props) {
@@ -94,13 +96,26 @@ class SaveNoteComponent extends Component {
                                                 value={this.state.name} onChange={this.chnageNameHandler}/>
                                         </div>
                                         <div className = "form-group">
-                                            <label> Content: </label>
-                                            <input placeholder="Content" name="content" className="form-control" 
-                                                value={this.state.content} onChange={this.chnageContentHandler}/>
-                                        </div>
-                                        <div className = "form-group">
                                             <label> Project: </label>
                                             {this.state.projectId && (<ProjectDropdownComponent onChange={this.chnageProjectIdHandler} defaultId={this.state.projectId} />)}
+                                        </div>
+                                        <div className = "form-group">
+                                            <label> Content: </label>
+                                            <CKEditor
+                                                editor={ ClassicEditor }
+                                                data={ this.state.content }
+                                                onReady={ editor => {
+                                                    // You can store the "editor" and use when it is needed.
+                                                } }
+                                                onChange={ ( event, editor ) => {
+                                                    const data = editor.getData();
+                                                    this.state.content = data;
+                                                } }
+                                                onBlur={ ( event, editor ) => {
+                                                } }
+                                                onFocus={ ( event, editor ) => {
+                                                } }
+                                            />
                                         </div>
                                         <button className="btn btn-success" onClick={this.saveNote}>Save</button>
                                         <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
