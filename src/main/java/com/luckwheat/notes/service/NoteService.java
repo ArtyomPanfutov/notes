@@ -7,6 +7,7 @@ import com.luckwheat.notes.dto.Result;
 import com.luckwheat.notes.entity.Note;
 import com.luckwheat.notes.repository.NoteRepository;
 import com.luckwheat.notes.repository.ProjectRepository;
+import com.luckwheat.notes.service.exception.NoteServiceException;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -54,12 +55,23 @@ public class NoteService {
         // TODO: Validation
         log.warn("Validation is not implemented yet!");
 
-        final var entity = convertToEntity(noteDto);
-        final var now = LocalDateTime.now(ZoneId.systemDefault());
+        final var entity = noteRepository.findById(noteDto.id());
+        if (entity.isPresent()) {
+            final var note = entity.get();
+            note.setName(noteDto.name());
 
-        final var note = noteRepository.save(entity);
+            var project = projectRepository.findById(noteDto.projectId())
+                    .orElseThrow(() -> new NoteServiceException("Project not found"));
 
-        return Result.success(convertToDto(note));
+            note.setProject(project);
+            note.setContent(noteDto.content());
+            note.setUpdatedTimestamp(LocalDateTime.now(ZoneId.systemDefault()));
+
+            final var updated = noteRepository.save(note);
+            return Result.success(convertToDto(updated));
+        } else {
+            return Result.error(new Error("Note is not found"));
+        }
     }
 
     @Transactional
