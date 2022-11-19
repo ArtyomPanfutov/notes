@@ -28,7 +28,7 @@ class SaveNoteComponent extends Component {
                 });
             });
         } else {
-            this.setState({projectId: 0});
+            this.setState({projectId: -1});
         }       
     }
 
@@ -60,8 +60,8 @@ class SaveNoteComponent extends Component {
         this.setState({content: event.target.value});
     }
 
-    changeProjectIdHandler = (event) => {
-        this.setState({projectId: event.target.value});
+    changeProjectIdHandler = (e, data) => {
+        this.setState({projectId: data.value});
     }
 
     cancel() {

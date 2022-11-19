@@ -12,6 +12,7 @@ class NotesService {
 
     updateNote(note) {
         return axios.put("/api/notes", {
+            "id": note.id,
             "name": note.name,
             "content": note.content,
             "projectId": note.projectId

@@ -8,7 +8,8 @@ class ProjectDropdownComponent extends Component {
     super(props)
     this.state = {
       options: [],
-      defaultId: props.defaultId
+      defaultId: props.defaultId,
+      onChange: props.onChange
     }
   }
 
@@ -37,6 +38,7 @@ class ProjectDropdownComponent extends Component {
           selection
           options={this.state.options}
           defaultValue={this.state.defaultId}
+          onChange={this.state.onChange}
         />
       </div>
     ) 
