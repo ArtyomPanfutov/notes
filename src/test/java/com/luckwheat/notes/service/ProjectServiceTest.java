@@ -1,4 +1,4 @@
-package com.luckwheat.service;
+package com.luckwheat.notes.service;
 
 import com.luckwheat.notes.dto.ProjectDto;
 import com.luckwheat.notes.repository.ProjectRepository;
@@ -22,10 +22,13 @@ class ProjectServiceTest {
 
     @Test
     void testCreateProject() {
+        // GIVEN
         final var newProject = new ProjectDto(null, "name");
 
+        // WHEN
         final var result = projectService.create(newProject);
 
+        // THEN
         assertTrue(result.isSuccess());
         assertNotNull(result.body().id());
         assertEquals(newProject.name(), result.body().name());
@@ -33,8 +36,10 @@ class ProjectServiceTest {
 
     @Test
     void testCreateWithNullName() {
+        // WHEN
         final var result = projectService.create(new ProjectDto(null, null));
 
+        // THEN
         assertFalse(result.isSuccess());
         assertNotNull(result.error());
         assertEquals(0, projectRepository.count());
@@ -42,8 +47,10 @@ class ProjectServiceTest {
 
     @Test
     void testCreateWithNullInput() {
+        // WHEN
         final var result = projectService.create(null);
 
+        // THEN
         assertFalse(result.isSuccess());
         assertNotNull(result.error());
         assertEquals(0, projectRepository.count());
@@ -51,8 +58,13 @@ class ProjectServiceTest {
 
     @Test
     void testFindAll() {
+        // GIVEN
         projectService.create(new ProjectDto(null, "some project"));
+
+        // WHEN
         final var result = projectService.findAll();
+
+        // THEN
         assertFalse(result.isEmpty());
     }
 }

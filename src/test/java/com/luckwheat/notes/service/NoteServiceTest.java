@@ -1,4 +1,4 @@
-package com.luckwheat.service;
+package com.luckwheat.notes.service;
 
 import com.luckwheat.notes.dto.NoteDto;
 import com.luckwheat.notes.dto.ProjectDto;
@@ -24,12 +24,15 @@ class NoteServiceTest {
 
     @Test
     void testCreateNote() {
+        // GIVEN
         final var project = projectService.create(ProjectDto.newProject("Unknown"));
 
         assertTrue(project.isSuccess());
 
+        // WHEN
         final var result = noteService.create(NoteDto.newNote("test", "some content", project.body().id()));
 
+        // THEN
         assertTrue(result.isSuccess());
         assertNotNull(result.body().id());
         assertNotNull(result.body().createdTimestamp());

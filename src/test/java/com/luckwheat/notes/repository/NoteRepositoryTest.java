@@ -1,4 +1,4 @@
-package com.luckwheat.repository;
+package com.luckwheat.notes.repository;
 
 import com.luckwheat.notes.entity.Note;
 import com.luckwheat.notes.entity.Project;
