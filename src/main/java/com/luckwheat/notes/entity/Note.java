@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.lucene.analysis.charfilter.HTMLStripCharFilterFactory;
+import org.apache.lucene.analysis.standard.StandardFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +16,16 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "note")
+@Indexed(index = "idx_note")
+@AnalyzerDefs({
+        @AnalyzerDef(name = "el",
+                charFilters = {@CharFilterDef(factory = HTMLStripCharFilterFactory.class)},
+                tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+                filters = {
+                        @TokenFilterDef(factory = StandardFilterFactory.class)
+                }
+        )
+})
 @Introspected
 @Getter
 @Setter
@@ -30,6 +44,7 @@ public class Note {
 
     @NotEmpty(message = "Name cannot be empty")
     @Column(name = "content")
+    @Field(name = "contentTransformed", normalizer = @Normalizer(definition = ""))
     private String content;
 
     @Column(name = "created_ts")

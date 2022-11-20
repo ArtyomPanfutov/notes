@@ -14,8 +14,12 @@ import java.util.List;
 @Slf4j
 public class ProjectController {
 
+    private final ProjectService projectService;
+
     @Inject
-    ProjectService projectService;
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+    }
 
     @Post(consumes = MediaType.APPLICATION_JSON)
     public HttpResponse<Void> create(@Body ProjectDto projectDto) {

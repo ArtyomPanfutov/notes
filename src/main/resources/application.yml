@@ -21,6 +21,11 @@ jpa:
   default:
     properties:
       hibernate:
+        search:
+          default:
+            indexmanager: elasticsearch
+            elasticsearch:
+              host: ${ELASTICSEARCH_URL}
         hbm2ddl:
           auto: none
           show_sql: true

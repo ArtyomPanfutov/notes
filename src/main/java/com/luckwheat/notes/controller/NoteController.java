@@ -14,8 +14,12 @@ import java.util.List;
 @Slf4j
 public class NoteController {
 
+    private final NoteService noteService;
+
     @Inject
-    NoteService noteService;
+    public NoteController(NoteService noteService) {
+        this.noteService = noteService;
+    }
 
     @Post(consumes = MediaType.APPLICATION_JSON)
     public HttpResponse<Void> create(@Body NoteDto noteDto) {
