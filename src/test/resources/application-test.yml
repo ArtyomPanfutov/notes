@@ -5,12 +5,10 @@ datasources:
     username: postgres
     password: postgres
   dialect: POSTGRES
-jpa:
-  default:
-    properties:
-      hibernate:
-        search:
-          default:
-            indexmanager: elasticsearch
-            elasticsearch:
-              host: https://elasticsearch:9200
+hibernate:
+  search:
+    default:
+      indexmanager: elasticsearch
+      elasticsearch:
+        host: http://elasticsearch:9200
+        required_index_status: yellow

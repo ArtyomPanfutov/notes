@@ -1,6 +1,7 @@
 package com.luckwheat;
 
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
 /**
  * Generic utils methods for test containers.
@@ -13,6 +14,14 @@ public final class TestcontainersUtils {
                 .withDatabaseName("postgres")
                 .withUsername("postgres")
                 .withPassword("postgres");
+
+        return container;
+    }
+
+    public static ElasticsearchContainer createElastic() {
+        final var container = new ElasticsearchContainer("elasticsearch:5.6");
+        container.addExposedPort(9200);
+        container.addEnv("cluster.name", "elasticsearch");
 
         return container;
     }
