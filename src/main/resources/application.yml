@@ -20,16 +20,17 @@ datasources:
 jpa:
   default:
     properties:
-      hibernate:
-        search:
-          default:
-            indexmanager: elasticsearch
-            elasticsearch:
-              host: ${ELASTICSEARCH_URL}
         hbm2ddl:
           auto: none
           show_sql: true
 jpa.default.entity-scan.pakage: com.luckwheat.notes.entity
+hibernate:
+  search:
+    default:
+      indexmanager: elasticsearch
+      elasticsearch:
+        host: ${ELASTICSEARCH_URL}
+        required_index_status: yellow
 liquibase:
   enabled: true
   datasources:

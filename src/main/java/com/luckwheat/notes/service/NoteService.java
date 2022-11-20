@@ -11,7 +11,9 @@ import com.luckwheat.notes.service.exception.NoteServiceException;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.search.jpa.Search;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,11 +24,18 @@ import java.util.Optional;
 @Slf4j
 public class NoteService {
 
-    @Inject
-    NoteRepository noteRepository;
+    private final NoteRepository noteRepository;
+
+    private final ProjectRepository projectRepository;
+
+    private final EntityManager entityManager;
 
     @Inject
-    ProjectRepository projectRepository;
+    public NoteService(NoteRepository noteRepository, ProjectRepository projectRepository, EntityManager entityManager) {
+        this.noteRepository = noteRepository;
+        this.projectRepository = projectRepository;
+        this.entityManager = entityManager;
+    }
 
     @Transactional
     public Result<NoteDto> create(NoteDto noteDto) {
@@ -102,6 +111,34 @@ public class NoteService {
         noteRepository.deleteById(id);
 
         return Result.successVoid();
+    }
+
+    @Transactional
+    public Result<List<NoteDto>> search(String content) {
+        var fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+
+        var queryBuilder = fullTextEntityManager
+                .getSearchFactory()
+                .buildQueryBuilder()
+                .forEntity(Note.class)
+                .get();
+
+        var contentQuery = queryBuilder.keyword().fuzzy()
+                .withEditDistanceUpTo(2)
+                .onField("contentTransformed")
+                .matching(content)
+                .createQuery();
+
+        var finalQuery = queryBuilder.bool()
+                .should(contentQuery)
+                .createQuery();
+
+        var fullTextQuery = fullTextEntityManager
+                .createFullTextQuery(finalQuery, Note.class);
+        fullTextQuery.setSort(queryBuilder.sort().byScore().createSort());
+
+        List<Note> resultList = fullTextQuery.getResultList();
+        return Result.success(resultList.stream().map(this::convertToDto).toList());
     }
 
     private NoteDto convertToDto(Note note) {

@@ -44,7 +44,7 @@ public class Note {
 
     @NotEmpty(message = "Name cannot be empty")
     @Column(name = "content")
-    @Field(name = "contentTransformed", normalizer = @Normalizer(definition = ""))
+    @Field(name = "contentTransformed")
     private String content;
 
     @Column(name = "created_ts")

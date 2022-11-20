@@ -8,6 +8,7 @@ import io.micronaut.http.annotation.*;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller("/api/notes")
@@ -48,6 +49,16 @@ public class NoteController {
     @Get
     public HttpResponse<List<NoteDto>> findAll() {
         return HttpResponse.ok(noteService.findAll());
+    }
+
+    @Get("/search/{content}")
+    public HttpResponse<List<NoteDto>> search(@QueryValue String content) {
+        var result = noteService.search(content);
+
+        if (result.isSuccess()) {
+            return HttpResponse.ok(result.body());
+        }
+        return HttpResponse.ok(Collections.emptyList());
     }
 
     @Get("/{id}")
