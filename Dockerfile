@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM openjdk:18-alpine
 WORKDIR target/home/app
 COPY target/classes /home/app/classes
 COPY target/dependency/* /home/app/libs/
