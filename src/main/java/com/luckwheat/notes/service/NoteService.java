@@ -125,16 +125,14 @@ public class NoteService {
 
         var contentQuery = queryBuilder.keyword().fuzzy()
                 .withEditDistanceUpTo(2)
-                .onField("contentTransformed")
+                .onField(Note.CONTENT_TRANSFORMED)
                 .matching(content)
                 .createQuery();
 
-        var finalQuery = queryBuilder.bool()
-                .should(contentQuery)
-                .createQuery();
+        var fullTextQuery = fullTextEntityManager.createFullTextQuery(
+                queryBuilder.bool().should(contentQuery).createQuery(),
+                Note.class);
 
-        var fullTextQuery = fullTextEntityManager
-                .createFullTextQuery(finalQuery, Note.class);
         fullTextQuery.setSort(queryBuilder.sort().byScore().createSort());
 
         List<Note> resultList = fullTextQuery.getResultList();

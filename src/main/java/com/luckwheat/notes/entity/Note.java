@@ -33,6 +33,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Note {
 
+    public static final String CONTENT_TRANSFORMED = "contentTransformed";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "note_seq")
     @SequenceGenerator(name="note_seq", sequenceName = "note_seq", allocationSize = 1)
@@ -44,7 +46,7 @@ public class Note {
 
     @NotEmpty(message = "Name cannot be empty")
     @Column(name = "content")
-    @Field(name = "contentTransformed")
+    @Field(name = CONTENT_TRANSFORMED)
     private String content;
 
     @Column(name = "created_ts")
