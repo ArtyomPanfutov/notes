@@ -1,5 +1,6 @@
 package com.luckwheat.notes.controller;
 
+import com.luckwheat.notes.dto.NoteContentSearchDto;
 import com.luckwheat.notes.dto.NoteDto;
 import com.luckwheat.notes.service.NoteService;
 import io.micronaut.http.HttpResponse;
@@ -51,9 +52,9 @@ public class NoteController {
         return HttpResponse.ok(noteService.findAll());
     }
 
-    @Get("/search/{content}")
-    public HttpResponse<List<NoteDto>> search(@QueryValue String content) {
-        var result = noteService.search(content);
+    @Post("/search")
+    public HttpResponse<List<NoteDto>> search(@Body NoteContentSearchDto contentSearchDto) {
+        var result = noteService.search(contentSearchDto.content());
 
         if (result.isSuccess()) {
             return HttpResponse.ok(result.body());

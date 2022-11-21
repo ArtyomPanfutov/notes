@@ -8,7 +8,6 @@ import com.luckwheat.notes.entity.Project;
 import com.luckwheat.notes.repository.ProjectRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -26,7 +25,7 @@ public class ProjectService {
             return Result.error(new Error("Can't create the project that is null"));
         }
 
-        if (StringUtils.isEmpty(projectDto.name())) {
+        if (projectDto.name() == null || projectDto.name().isBlank()) {
             return Result.error(new Error("The name of the project can't be empty"));
         }
 
