@@ -14,7 +14,7 @@ class NoteListComponent extends Component {
     }
 
     deleteNote(id) {
-        NoteService.deleteNoteById(id).then( res => {
+        NoteService.deleteNoteById(id).then(res => {
             this.setState({notes: this.state.notes.filter(note => note.id !== id)});
         });
     }
@@ -33,11 +33,25 @@ class NoteListComponent extends Component {
         this.props.history.push('/create-note');
     }
 
+    findNotesByContent(content) {
+        const trimmed = content.trim();
+        if (trimmed) {
+            NoteService.findByContent(trimmed).then(res => {
+                this.setState({notes: res.data});
+            })
+        } else {
+            NoteService.getNotes().then((res) => {
+                this.setState({ notes: res.data});
+            });
+        }
+    }
+
     render() {
         return (
             <div>
                  <div className = "row">
                     <button className="btn btn-primary" onClick={this.addNote}> Add Note</button>
+                    <input placeholder="Search notes" className="search-input" onChange={event => this.findNotesByContent(event.target.value)} />
                  </div>
                  <br></br>
                  <div className = "row">

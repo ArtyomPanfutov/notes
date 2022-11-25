@@ -30,6 +30,12 @@ class NotesService {
     deleteNotetById(id) {
         return axios.delete(`/api/notes/${id}`)
     }
+
+    findByContent(content) {
+        return axios.post("/api/notes/search", {
+            "content": content
+          });
+    }
 }
 
 export default new NotesService();
