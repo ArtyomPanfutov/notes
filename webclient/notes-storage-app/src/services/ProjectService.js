@@ -20,12 +20,21 @@ class ProjectService {
     }
 
     getProjectById(id) {
-        return axios.get(`/api/projects/${id}`)
+        return axios.get(`/api/projects/${id}`);
+    }
+    
+    getProjectByName(name) {
+        return axios.get(`/api/projects/name/${name}`);
+    }
+
+    getDefaultProject() {
+        return axios.get('/api/projects/name/Personal');
     }
 
     deleteProjectById(id) {
-        return axios.delete(`/api/projects/${id}`)
+        return axios.delete(`/api/projects/${id}`);
     }
+
 }
 
 export default new ProjectService();

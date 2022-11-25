@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NoteService from '../services/NoteService';
+import ProjectService from '../services/ProjectService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -21,7 +22,7 @@ class SaveNoteComponent extends Component {
 
     componentDidMount() {
         if (this.state.id) {
-            NoteService.getNoteById(this.state.id).then((res) =>{
+            NoteService.getNoteById(this.state.id).then((res) => {
                 let note = res.data;
                 this.setState({
                     name: note.name,
@@ -30,7 +31,9 @@ class SaveNoteComponent extends Component {
                 });
             });
         } else {
-            this.setState({projectId: -1});
+            ProjectService.getDefaultProject().then((res) => {
+                this.setState({projectId: res.data.id});
+            })
         }       
     }
 

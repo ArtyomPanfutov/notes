@@ -61,6 +61,17 @@ public class ProjectController {
         return HttpResponse.ok(project.get());
     }
 
+    @Get("/name/{name}")
+    public HttpResponse<ProjectDto> findByName(@QueryValue String name) {
+        final var project = projectService.findByName(name);
+
+        if (project.isEmpty()) {
+            return HttpResponse.notFound();
+        }
+
+        return HttpResponse.ok(project.get());
+    }
+
     @Delete("/{id}")
     public HttpResponse<String> delete(@QueryValue Long id) {
         final var result = projectService.delete(id);

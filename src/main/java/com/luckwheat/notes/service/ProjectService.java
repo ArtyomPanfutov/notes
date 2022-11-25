@@ -75,6 +75,12 @@ public class ProjectService {
     }
 
     @Transactional
+    public Optional<ProjectDto> findByName(String name) {
+        return projectRepository.findByName(name)
+                .map(this::convertToDto);
+    }
+
+    @Transactional
     public Result<Void> delete(Long id) {
         final var found = projectRepository.findById(id);
 

@@ -42,7 +42,6 @@ class ProjectServiceTest {
         // THEN
         assertFalse(result.isSuccess());
         assertNotNull(result.error());
-        assertEquals(0, projectRepository.count());
     }
 
     @Test
@@ -53,7 +52,6 @@ class ProjectServiceTest {
         // THEN
         assertFalse(result.isSuccess());
         assertNotNull(result.error());
-        assertEquals(0, projectRepository.count());
     }
 
     @Test
