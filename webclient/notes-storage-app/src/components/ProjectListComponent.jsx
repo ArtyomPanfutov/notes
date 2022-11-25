@@ -37,7 +37,7 @@ class ProjectListComponent extends Component {
         return (
             <div>
                  <div className = "row">
-                    <button className="btn btn-primary" onClick={this.addProject}> Add Project</button>
+                    <button className="btn btn-primary" onClick={this.addProject}> New Project</button>
                  </div>
                  <br></br>
                  <div className = "row">

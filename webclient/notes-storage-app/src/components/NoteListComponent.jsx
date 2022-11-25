@@ -50,7 +50,7 @@ class NoteListComponent extends Component {
         return (
             <div>
                  <div className = "row">
-                    <button className="btn btn-primary" onClick={this.addNote}> Add Note</button>
+                    <button className="btn btn-primary" onClick={this.addNote}> New Note</button>
                     <input placeholder="Search notes" className="search-input" onChange={event => this.findNotesByContent(event.target.value)} />
                  </div>
                  <br></br>
