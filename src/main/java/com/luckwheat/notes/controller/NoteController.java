@@ -1,7 +1,9 @@
 package com.luckwheat.notes.controller;
 
+import com.luckwheat.notes.dto.GeneratedNoteNameDto;
 import com.luckwheat.notes.dto.NoteContentSearchDto;
 import com.luckwheat.notes.dto.NoteDto;
+import com.luckwheat.notes.service.NoteNameGenerator;
 import com.luckwheat.notes.service.NoteService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -18,9 +20,12 @@ public class NoteController {
 
     private final NoteService noteService;
 
+    private final NoteNameGenerator noteNameGenerator;
+
     @Inject
-    public NoteController(NoteService noteService) {
+    public NoteController(NoteService noteService, NoteNameGenerator noteNameGenerator) {
         this.noteService = noteService;
+        this.noteNameGenerator = noteNameGenerator;
     }
 
     @Post(consumes = MediaType.APPLICATION_JSON)
@@ -71,6 +76,12 @@ public class NoteController {
         }
 
         return HttpResponse.ok(result.get());
+    }
+
+    @Get("/name/new/generate")
+    public HttpResponse<GeneratedNoteNameDto> generateNoteName() {
+        return HttpResponse.ok(
+                new GeneratedNoteNameDto(noteNameGenerator.generateNoteName()));
     }
 
     @Delete("/{id}")

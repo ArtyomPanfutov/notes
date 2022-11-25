@@ -31,6 +31,10 @@ class SaveNoteComponent extends Component {
                 });
             });
         } else {
+            NoteService.generateName().then((res) => {
+                this.setState({name: res.data.name});
+            });
+
             ProjectService.getDefaultProject().then((res) => {
                 this.setState({projectId: res.data.id});
             })

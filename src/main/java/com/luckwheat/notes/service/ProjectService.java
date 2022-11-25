@@ -16,6 +16,8 @@ import java.util.Optional;
 @Singleton
 public class ProjectService {
 
+    public static final String DEFAULT_PROJECT_NAME = "Personal";
+
     @Inject
     private ProjectRepository projectRepository;
 
@@ -91,6 +93,13 @@ public class ProjectService {
         projectRepository.deleteById(id);
 
         return Result.successVoid();
+    }
+
+    @Transactional
+    public ProjectDto getDefaultProject() {
+        return projectRepository.findByName(DEFAULT_PROJECT_NAME)
+                .map(this::convertToDto)
+                .orElseThrow();
     }
 
     private ProjectDto convertToDto(Project project) {

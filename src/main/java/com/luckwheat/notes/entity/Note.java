@@ -44,7 +44,7 @@ public class Note {
     @Column(name = "name")
     private String name;
 
-    @NotEmpty(message = "Name cannot be empty")
+    @NotEmpty(message = "Content cannot be empty")
     @Column(name = "content")
     @Field(name = CONTENT_TRANSFORMED)
     private String content;

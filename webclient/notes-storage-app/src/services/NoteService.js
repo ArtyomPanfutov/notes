@@ -36,6 +36,10 @@ class NotesService {
             "content": content
           });
     }
+
+    generateName() {
+        return axios.get("/api/notes/name/new/generate");
+    }
 }
 
 export default new NotesService();

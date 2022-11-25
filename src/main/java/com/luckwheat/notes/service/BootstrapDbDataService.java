@@ -8,11 +8,11 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.luckwheat.notes.service.ProjectService.DEFAULT_PROJECT_NAME;
+
 @Singleton
 @Slf4j
 public class BootstrapDbDataService {
-
-    private static final String DEFAULT_PROJECT_NAME = "Personal";
 
     private final ProjectRepository projectRepository;
 
