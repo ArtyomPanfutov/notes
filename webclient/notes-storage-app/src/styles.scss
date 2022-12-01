@@ -72,6 +72,10 @@ header {
   margin-left: 10px;
 }
 
+.ck-editor__editable_inline {
+  min-height: 400px;
+}
+
 @media screen and (max-width: 400px) {
   h1 {
     font-size: 30px;
