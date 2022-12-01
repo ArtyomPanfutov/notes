@@ -38,6 +38,6 @@ public class NoteNameGenerator {
             }
         }
 
-        throw new NoteNameGenerationException("Could not find a free name");
+        throw new NoteNameGenerationException("Could not find a free full name for base name - " + baseName);
     }
 }
