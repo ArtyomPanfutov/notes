@@ -33,7 +33,7 @@ public class NoteNameGenerator {
         for (int i = 1; i < Integer.MAX_VALUE; i++) {
             String candidate = MessageFormat.format("{0} ({1})", baseName, i);
 
-            if (noteRepository.existsByName(candidate)) {
+            if (!noteRepository.existsByName(candidate)) {
                 return candidate;
             }
         }

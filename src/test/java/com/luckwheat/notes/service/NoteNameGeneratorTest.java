@@ -1,7 +1,6 @@
 package com.luckwheat.notes.service;
 
 import com.luckwheat.notes.dto.NoteDto;
-import com.luckwheat.notes.dto.ProjectDto;
 import com.luckwheat.notes.repository.NoteRepository;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
@@ -11,14 +10,14 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
 @Testcontainers
@@ -38,13 +37,12 @@ class NoteNameGeneratorTest {
     private ProjectService projectService;
 
     @Test
-    void testGenerateNamesInParallel() {
+    void testGenerateName() {
         // GIVEN
         long projectId = projectService.getDefaultProject().id();
 
         // WHEN
-        List<String> names = IntStream.rangeClosed(0, 50)
-                .parallel()
+        List<String> names = IntStream.rangeClosed(0, 5)
                 .mapToObj(generateAndSave(projectId))
                 .toList();
 
