@@ -6,12 +6,17 @@ import SaveProjectComponent from './components/SaveProjectComponent';
 import NoteListComponent from './components/NoteListComponent';
 import SaveNoteComponent from './components/SaveNoteComponent';
 import { useAuth0 } from '@auth0/auth0-react';
+import Loader from './components/Loader';
 
 const App = () => {
   const { isLoading } = useAuth0();
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="page-layout">
+        <Loader />;
+      </div>
+    );
   }
 
   return (
