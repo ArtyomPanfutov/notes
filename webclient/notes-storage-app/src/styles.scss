@@ -68,12 +68,21 @@ header {
 .search-input {
   width: 300px;
   border: 1px solid #8f8f8f;
-  padding: 10px;
   margin-left: 10px;
 }
 
 .ck-editor__editable_inline {
   min-height: 400px;
+}
+
+.auth-div {
+  float: right;
+}
+
+.header-text-div {
+  margin-left: 50px;
+  margin-right: 50px;
+  text-align: center;
 }
 
 @media screen and (max-width: 400px) {

@@ -1,19 +1,25 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import AuthenticationButton from './AuthenticationButton'
 
 const Header = () => {
   return (
     <header>
-      <h1>Note App</h1>
-      <hr />
-      <div className="links">
-        <NavLink to="/projects" className="link" activeClassName="active" exact>
-            Projects
-        </NavLink>
-        <NavLink to="/notes" className="link" activeClassName="active" exact>
-           Notes
-        </NavLink>
-      </div>
+        <div className="auth-div">
+          <AuthenticationButton />
+        </div>
+        <div className="header-text-div">
+          <h1>Note App</h1>
+        </div>
+        <hr/>
+        <div className="links">
+          <NavLink to="/projects" className="link" activeClassName="active" exact>
+              Projects
+          </NavLink>
+          <NavLink to="/notes" className="link" activeClassName="active" exact>
+            Notes
+          </NavLink>
+        </div>
     </header>
   );
 };

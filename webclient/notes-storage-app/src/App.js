@@ -5,11 +5,17 @@ import ProjectListComponent from './components/ProjectListComponent';
 import SaveProjectComponent from './components/SaveProjectComponent';
 import NoteListComponent from './components/NoteListComponent';
 import SaveNoteComponent from './components/SaveNoteComponent';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const App = () => {
+  const { isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <BrowserRouter>
-      <div>
         <Header />
         <div className="main-content">
           <Switch>
@@ -21,7 +27,6 @@ const App = () => {
             <Route component={SaveNoteComponent} path="/edit-note/:id" />
           </Switch>
         </div>
-      </div>
     </BrowserRouter>
   );
 };
