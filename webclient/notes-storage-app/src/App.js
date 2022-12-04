@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header';
 import ProjectListComponent from './components/ProjectListComponent';
 import SaveProjectComponent from './components/SaveProjectComponent';
@@ -25,12 +26,12 @@ const App = () => {
         <Header />
         <div className="main-content">
           <Switch>
-            <Route component={ProjectListComponent} path="/projects" exact={true} />
-            <Route component={SaveProjectComponent} path="/create-project" />
-            <Route component={SaveProjectComponent} path="/edit-project/:id" />
-            <Route component={NoteListComponent} path="/notes" exact={true} />
-            <Route component={SaveNoteComponent} path="/create-note" />
-            <Route component={SaveNoteComponent} path="/edit-note/:id" />
+            <ProtectedRoute component={ProjectListComponent} path="/projects" exact={true} />
+            <ProtectedRoute component={SaveProjectComponent} path="/create-project" />
+            <ProtectedRoute component={SaveProjectComponent} path="/edit-project/:id" />
+            <ProtectedRoute component={NoteListComponent} path="/notes" exact={true} />
+            <ProtectedRoute component={SaveNoteComponent} path="/create-note" />
+            <ProtectedRoute component={SaveNoteComponent} path="/edit-note/:id" />
             <Route component={Callback} path="/callback" />
           </Switch>
         </div>
