@@ -85,6 +85,27 @@ header {
   text-align: center;
 }
 
+.loader {
+  border: 8px solid #f3f3f3; 
+  border-top: 8px solid #6c6e6e; 
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+  position: absolute; 
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @media screen and (max-width: 400px) {
   h1 {
     font-size: 30px;

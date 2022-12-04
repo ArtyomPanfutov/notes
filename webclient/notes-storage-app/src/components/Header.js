@@ -1,8 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthenticationButton from './AuthenticationButton'
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Header = () => {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <header>
         <div className="auth-div">
@@ -13,12 +16,16 @@ const Header = () => {
         </div>
         <hr/>
         <div className="links">
-          <NavLink to="/projects" className="link" activeClassName="active" exact>
-              Projects
-          </NavLink>
-          <NavLink to="/notes" className="link" activeClassName="active" exact>
-            Notes
-          </NavLink>
+          {isAuthenticated && (
+          <>
+            <NavLink to="/projects" className="link" activeClassName="active" exact>
+                Projects
+            </NavLink>
+            <NavLink to="/notes" className="link" activeClassName="active" exact>
+              Notes
+            </NavLink>
+          </>
+          )}
         </div>
     </header>
   );

@@ -7,6 +7,7 @@ import NoteListComponent from './components/NoteListComponent';
 import SaveNoteComponent from './components/SaveNoteComponent';
 import { useAuth0 } from '@auth0/auth0-react';
 import Loader from './components/Loader';
+import Callback from './components/Callback';
 
 const App = () => {
   const { isLoading } = useAuth0();
@@ -30,6 +31,7 @@ const App = () => {
             <Route component={NoteListComponent} path="/notes" exact={true} />
             <Route component={SaveNoteComponent} path="/create-note" />
             <Route component={SaveNoteComponent} path="/edit-note/:id" />
+            <Route component={Callback} path="/callback" />
           </Switch>
         </div>
     </BrowserRouter>
