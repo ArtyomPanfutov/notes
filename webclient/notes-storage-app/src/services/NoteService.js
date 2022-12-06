@@ -1,9 +1,9 @@
-import axios from 'axios';
+import Axios from './Axios';
 
 class NotesService {
    
     createNote(note) {
-        return axios.post("/api/notes", {
+        return Axios.instance.post("/api/notes", {
             "name": note.name,
             "content": note.content,
             "projectId": note.projectId
@@ -11,7 +11,7 @@ class NotesService {
     }
 
     updateNote(note) {
-        return axios.put("/api/notes", {
+        return Axios.instance.put("/api/notes", {
             "id": note.id,
             "name": note.name,
             "content": note.content,
@@ -20,25 +20,25 @@ class NotesService {
     }
 
     getNotes() {
-        return axios.get("/api/notes");
+        return Axios.instance.get("/api/notes");
     }
 
     getNoteById(id) {
-        return axios.get(`/api/notes/${id}`)
+        return Axios.instance.get(`/api/notes/${id}`)
     }
 
     deleteNotetById(id) {
-        return axios.delete(`/api/notes/${id}`)
+        return Axios.instance.delete(`/api/notes/${id}`)
     }
 
     findByContent(content) {
-        return axios.post("/api/notes/search", {
+        return Axios.instance.post("/api/notes/search", {
             "content": content
           });
     }
 
     generateName() {
-        return axios.get("/api/notes/name/new/generate");
+        return Axios.instance.get("/api/notes/name/new/generate");
     }
 }
 
