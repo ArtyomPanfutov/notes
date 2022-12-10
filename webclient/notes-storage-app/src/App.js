@@ -6,12 +6,20 @@ import ProjectListComponent from './components/ProjectListComponent';
 import SaveProjectComponent from './components/SaveProjectComponent';
 import NoteListComponent from './components/NoteListComponent';
 import SaveNoteComponent from './components/SaveNoteComponent';
-import { useAuth0 } from '@auth0/auth0-react';
 import Loader from './components/Loader';
 import Callback from './components/Callback';
+import { useAuth0 } from '@auth0/auth0-react';
+import { addAccessTokenInterceptor } from './services/HttpClient';
+import { useEffect } from 'react';
 
 const App = () => {
+
   const { isLoading } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    addAccessTokenInterceptor(getAccessTokenSilently);
+  }, [getAccessTokenSilently]);
 
   if (isLoading) {
     return (

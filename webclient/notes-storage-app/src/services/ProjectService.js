@@ -1,38 +1,38 @@
-import Axios from './Axios';
+import httpClient from './HttpClient';
 
 class ProjectService {
    
     createProject(project) {
-        return Axios.instance.post("/api/projects", {
+        return httpClient.post("/api/projects", {
             "name": project.name
           });
     }
 
     updateProject(project) {
-        return Axios.instance.put(`/api/projects/`, {
+        return httpClient.put(`/api/projects/`, {
            "id": project.id,
            "name": project.name 
         });
     }
 
     getProjects() {
-        return Axios.instance.get("/api/projects");
+        return httpClient.get("/api/projects");
     }
 
     getProjectById(id) {
-        return Axios.instance.get(`/api/projects/${id}`);
+        return httpClient.get(`/api/projects/${id}`);
     }
     
     getProjectByName(name) {
-        return Axios.instance.get(`/api/projects/name/${name}`);
+        return httpClient.get(`/api/projects/name/${name}`);
     }
 
     getDefaultProject() {
-        return Axios.instance.get('/api/projects/name/Personal');
+        return httpClient.get('/api/projects/name/Personal');
     }
 
     deleteProjectById(id) {
-        return Axios.instance.delete(`/api/projects/${id}`);
+        return httpClient.delete(`/api/projects/${id}`);
     }
 
 }

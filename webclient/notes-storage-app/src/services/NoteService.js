@@ -1,9 +1,9 @@
-import Axios from './Axios';
+import httpClient from './HttpClient';
 
 class NotesService {
    
     createNote(note) {
-        return Axios.instance.post("/api/notes", {
+        return httpClient.post("/api/notes", {
             "name": note.name,
             "content": note.content,
             "projectId": note.projectId
@@ -11,7 +11,7 @@ class NotesService {
     }
 
     updateNote(note) {
-        return Axios.instance.put("/api/notes", {
+        return httpClient.put("/api/notes", {
             "id": note.id,
             "name": note.name,
             "content": note.content,
@@ -20,25 +20,25 @@ class NotesService {
     }
 
     getNotes() {
-        return Axios.instance.get("/api/notes");
+        return httpClient.get("/api/notes");
     }
 
     getNoteById(id) {
-        return Axios.instance.get(`/api/notes/${id}`)
+        return httpClient.get(`/api/notes/${id}`)
     }
 
     deleteNotetById(id) {
-        return Axios.instance.delete(`/api/notes/${id}`)
+        return httpClient.delete(`/api/notes/${id}`)
     }
 
     findByContent(content) {
-        return Axios.instance.post("/api/notes/search", {
+        return httpClient.post("/api/notes/search", {
             "content": content
           });
     }
 
     generateName() {
-        return Axios.instance.get("/api/notes/name/new/generate");
+        return httpClient.get("/api/notes/name/new/generate");
     }
 }
 

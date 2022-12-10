@@ -8,11 +8,13 @@ import './styles.scss';
 import Auth0ProviderWithHistory from './auth/Auth0ProviderWithHistory';
 
 ReactDOM.render(
-  <Router>
-    <Auth0ProviderWithHistory>
-      <App />    
-    </Auth0ProviderWithHistory>
-  </Router>,
+  <React.StrictMode>
+    <Router>
+      <Auth0ProviderWithHistory>
+        <App />
+      </Auth0ProviderWithHistory>
+    </Router>
+  </React.StrictMode>,
   document.getElementById('root')
   );
   
