@@ -63,11 +63,11 @@
     </dependency>
     <dependency>
       <groupId>io.micronaut.security</groupId>
-      <artifactId>micronaut-security</artifactId>
+      <artifactId>micronaut-security-oauth2</artifactId>
     </dependency>
     <dependency>
       <groupId>io.micronaut.security</groupId>
-      <artifactId>micronaut-security-oauth2</artifactId>
+      <artifactId>micronaut-security-annotations</artifactId>
     </dependency>
     <dependency>
       <groupId>io.micronaut.security</groupId>
@@ -232,10 +232,6 @@
               <groupId>io.micronaut.openapi</groupId>
               <artifactId>micronaut-openapi</artifactId>
               <version>${micronaut.openapi.version}</version>
-            </path>
-            <path>
-              <groupId>io.micronaut.security</groupId>
-              <artifactId>micronaut-security</artifactId>
             </path>
           </annotationProcessorPaths>
           <compilerArgs>

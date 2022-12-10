@@ -7,6 +7,7 @@ services:
     image: luckwheat.com/notes-storage-service:0.1-SNAPSHOT
     ports:
       - "8080:8080"
+      - "5005:5005"
     environment:
       DB_URL: jdbc:postgresql://db:5432/${DB_NAME}
       DB_DIALECT: org.hibernate.dialect.PostgreSQLDialect
@@ -14,6 +15,9 @@ services:
       DB_PASSWORD: ${DB_PWD}
       DB_DRIVER: org.postgresql.Driver
       ELASTICSEARCH_URL: http://elasticsearch:9200
+      OAUTH_JWKS_URI: ${OAUTH_JWKS_URI}
+      OAUTH_ISSUER_URL: ${OAUTH_ISSUER_URL}
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
   db:
     image: postgres:14
     environment:

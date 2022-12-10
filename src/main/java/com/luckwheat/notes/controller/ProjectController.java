@@ -5,12 +5,16 @@ import com.luckwheat.notes.service.ProjectService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
+
 @Controller("/api/projects")
+@Secured(IS_AUTHENTICATED)
 @Slf4j
 public class ProjectController {
 
