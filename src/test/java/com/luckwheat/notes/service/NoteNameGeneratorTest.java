@@ -1,7 +1,10 @@
 package com.luckwheat.notes.service;
 
 import com.luckwheat.notes.dto.NoteDto;
+import com.luckwheat.notes.dto.auth0.UserInfo;
+import com.luckwheat.notes.entity.User;
 import com.luckwheat.notes.repository.NoteRepository;
+import com.luckwheat.notes.repository.UserRepository;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -36,14 +39,18 @@ class NoteNameGeneratorTest {
     @Inject
     private ProjectService projectService;
 
+    @Inject
+    private UserRepository userRepository;
+
     @Test
     void testGenerateName() {
         // GIVEN
-        long projectId = projectService.getDefaultProject().id();
+        var user = createUser();
+        long projectId = projectService.getDefaultProject(user).id();
 
         // WHEN
         List<String> names = IntStream.rangeClosed(0, 5)
-                .mapToObj(generateAndSave(projectId))
+                .mapToObj(generateAndSave(projectId, user))
                 .toList();
 
         // THEN
@@ -58,13 +65,20 @@ class NoteNameGeneratorTest {
     }
 
     @NotNull
-    private IntFunction<String> generateAndSave(long projectId) {
+    private IntFunction<String> generateAndSave(long projectId, UserInfo userInfo) {
         return (num -> {
-            var name = noteNameGenerator.generateNoteName();
+            var name = noteNameGenerator.generateNoteName(userInfo);
             // Save a note to reserve the generated name
-            noteService.create(NoteDto.newNote(name, "content", projectId));
+            noteService.create(NoteDto.newNote(name, "content", projectId), userInfo);
             return name;
         });
+    }
+
+    private UserInfo createUser() {
+        var user = new User();
+        user.setSub("auth0sub");
+        userRepository.save(user);
+        return new UserInfo(user.getSub(), "email");
     }
 
 }

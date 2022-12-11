@@ -1,3 +1,14 @@
+micronaut:
+  security:
+    token:
+      jwt:
+        enabled: true
+        claims-validators:
+          issuer: localhost
+        signatures:
+          jwks:
+            auth0:
+              url: localhost
 datasources:
   default:
     url: jdbc:tc:postgresql:12:///postgres
@@ -12,3 +23,7 @@ hibernate:
       elasticsearch:
         host: http://elasticsearch:9200
         required_index_status: yellow
+jpa:
+  default:
+    properties:
+      show_sql: true

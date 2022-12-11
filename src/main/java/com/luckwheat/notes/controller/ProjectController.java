@@ -2,6 +2,7 @@ package com.luckwheat.notes.controller;
 
 import com.luckwheat.notes.dto.ProjectDto;
 import com.luckwheat.notes.service.ProjectService;
+import com.luckwheat.notes.service.UserService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -20,14 +21,18 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
+    private final UserService userService;
+
     @Inject
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, UserService userService) {
         this.projectService = projectService;
+        this.userService = userService;
     }
 
     @Post(consumes = MediaType.APPLICATION_JSON)
-    public HttpResponse<Void> create(@Body ProjectDto projectDto) {
-        final var result = projectService.create(projectDto);
+    public HttpResponse<Void> create(@Body ProjectDto projectDto, @Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
+        final var result = projectService.create(projectDto, user);
 
         if (result.isSuccess()) {
             return HttpResponse.ok();
@@ -50,8 +55,9 @@ public class ProjectController {
     }
 
     @Get
-    public HttpResponse<List<ProjectDto>> findAll() {
-        return HttpResponse.ok(projectService.findAll());
+    public HttpResponse<List<ProjectDto>> findAll(@Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
+        return HttpResponse.ok(projectService.findAllByUser(user));
     }
 
     @Get("/{id}")
@@ -66,14 +72,21 @@ public class ProjectController {
     }
 
     @Get("/name/{name}")
-    public HttpResponse<ProjectDto> findByName(@QueryValue String name) {
-        final var project = projectService.findByName(name);
+    public HttpResponse<ProjectDto> findByName(@QueryValue String name, @Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
+        final var project = projectService.findByNameAndUserInfo(name, user);
 
         if (project.isEmpty()) {
             return HttpResponse.notFound();
         }
 
         return HttpResponse.ok(project.get());
+    }
+
+    @Get("/default")
+    public HttpResponse<ProjectDto> getDefaultProject(@Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
+        return HttpResponse.ok(projectService.getDefaultProject(user));
     }
 
     @Delete("/{id}")

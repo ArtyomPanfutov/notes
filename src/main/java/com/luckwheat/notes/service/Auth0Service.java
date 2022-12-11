@@ -13,14 +13,14 @@ import jakarta.inject.Singleton;
 import java.net.URI;
 
 @Singleton
-public class Auth0ApiService {
+public class Auth0Service {
 
     private static final URI USERINFO_URI = UriBuilder.of("/userinfo").build();
 
     private final HttpClient httpClient;
 
     @Inject
-    public Auth0ApiService(@Client("${micronaut.security.token.jwt.claims-validators.issuer}")
+    public Auth0Service(@Client("${micronaut.security.token.jwt.claims-validators.issuer}")
                                HttpClient httpClient) {
         this.httpClient = httpClient;
     }

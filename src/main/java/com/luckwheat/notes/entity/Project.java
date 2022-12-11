@@ -24,4 +24,8 @@ public class Project {
     @NotEmpty(message = "Name cannot be empty")
     @Column(name = "name")
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
 }

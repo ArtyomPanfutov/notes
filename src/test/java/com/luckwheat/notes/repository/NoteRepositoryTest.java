@@ -2,8 +2,7 @@ package com.luckwheat.notes.repository;
 
 import com.luckwheat.notes.entity.Note;
 import com.luckwheat.notes.entity.Project;
-import com.luckwheat.notes.repository.NoteRepository;
-import com.luckwheat.notes.repository.ProjectRepository;
+import com.luckwheat.notes.entity.User;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -23,6 +22,9 @@ class NoteRepositoryTest {
     @Inject
     ProjectRepository projectRepository;
 
+    @Inject
+    UserRepository userRepository;
+
     @Test
     void testCreateNote() {
         final var note = new Note();
@@ -31,6 +33,7 @@ class NoteRepositoryTest {
         note.setCreatedTimestamp(LocalDateTime.now());
         note.setUpdatedTimestamp(LocalDateTime.now());
         note.setProject(createProject());
+        note.setUser(createUser());
 
         final var saved = noteRepository.save(note);
 
@@ -41,5 +44,11 @@ class NoteRepositoryTest {
         final var project = new Project();
         project.setName("project");
         return projectRepository.save(project);
+    }
+
+    private User createUser() {
+        var user = new User();
+        user.setSub("sub");
+        return userRepository.save(user);
     }
 }

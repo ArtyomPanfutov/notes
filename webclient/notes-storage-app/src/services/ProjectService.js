@@ -28,7 +28,7 @@ class ProjectService {
     }
 
     getDefaultProject() {
-        return httpClient.get('/api/projects/name/Personal');
+        return httpClient.get('/api/projects/default');
     }
 
     deleteProjectById(id) {

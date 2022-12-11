@@ -5,6 +5,7 @@ import com.luckwheat.notes.dto.NoteContentSearchDto;
 import com.luckwheat.notes.dto.NoteDto;
 import com.luckwheat.notes.service.NoteNameGenerator;
 import com.luckwheat.notes.service.NoteService;
+import com.luckwheat.notes.service.UserService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -24,17 +25,21 @@ public class NoteController {
 
     private final NoteService noteService;
 
+    private final UserService userService;
+
     private final NoteNameGenerator noteNameGenerator;
 
     @Inject
-    public NoteController(NoteService noteService, NoteNameGenerator noteNameGenerator) {
+    public NoteController(NoteService noteService, UserService userService, NoteNameGenerator noteNameGenerator) {
         this.noteService = noteService;
+        this.userService = userService;
         this.noteNameGenerator = noteNameGenerator;
     }
 
     @Post(consumes = MediaType.APPLICATION_JSON)
-    public HttpResponse<Void> create(@Body NoteDto noteDto) {
-        final var result = noteService.create(noteDto);
+    public HttpResponse<Void> create(@Body NoteDto noteDto, @Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
+        final var result = noteService.create(noteDto, user);
 
         if (!result.isSuccess()) {
             // TODO: Implement error handling
@@ -57,13 +62,16 @@ public class NoteController {
     }
 
     @Get
-    public HttpResponse<List<NoteDto>> findAll() {
-        return HttpResponse.ok(noteService.findAll());
+    public HttpResponse<List<NoteDto>> findAll(@Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
+        return HttpResponse.ok(noteService.findAllByUser(user));
     }
 
     @Post("/search")
-    public HttpResponse<List<NoteDto>> search(@Body NoteContentSearchDto contentSearchDto) {
-        var result = noteService.search(contentSearchDto.content());
+    public HttpResponse<List<NoteDto>> search(@Body NoteContentSearchDto contentSearchDto,
+                                              @Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
+        var result = noteService.search(contentSearchDto.content(), user);
 
         if (result.isSuccess()) {
             return HttpResponse.ok(result.body());
@@ -83,9 +91,10 @@ public class NoteController {
     }
 
     @Get("/name/new/generate")
-    public HttpResponse<GeneratedNoteNameDto> generateNoteName() {
+    public HttpResponse<GeneratedNoteNameDto> generateNoteName(@Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
         return HttpResponse.ok(
-                new GeneratedNoteNameDto(noteNameGenerator.generateNoteName()));
+                new GeneratedNoteNameDto(noteNameGenerator.generateNoteName(user)));
     }
 
     @Delete("/{id}")

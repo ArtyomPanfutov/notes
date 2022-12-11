@@ -1,8 +1,10 @@
 package com.luckwheat.notes.service;
 
 import com.luckwheat.notes.dto.ProjectDto;
+import com.luckwheat.notes.dto.auth0.UserInfo;
+import com.luckwheat.notes.entity.User;
 import com.luckwheat.notes.repository.ProjectRepository;
-import com.luckwheat.notes.service.ProjectService;
+import com.luckwheat.notes.repository.UserRepository;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -20,13 +22,20 @@ class ProjectServiceTest {
     @Inject
     ProjectRepository projectRepository;
 
+    @Inject
+    UserService userService;
+
+    @Inject
+    UserRepository userRepository;
+
     @Test
     void testCreateProject() {
         // GIVEN
+        var user = createUser();
         final var newProject = new ProjectDto(null, "name");
 
         // WHEN
-        final var result = projectService.create(newProject);
+        final var result = projectService.create(newProject, user);
 
         // THEN
         assertTrue(result.isSuccess());
@@ -37,7 +46,8 @@ class ProjectServiceTest {
     @Test
     void testCreateWithNullName() {
         // WHEN
-        final var result = projectService.create(new ProjectDto(null, null));
+        var userInfo = createUser();
+        final var result = projectService.create(new ProjectDto(null, null), userInfo);
 
         // THEN
         assertFalse(result.isSuccess());
@@ -47,7 +57,8 @@ class ProjectServiceTest {
     @Test
     void testCreateWithNullInput() {
         // WHEN
-        final var result = projectService.create(null);
+        var user = createUser();
+        final var result = projectService.create(null, user);
 
         // THEN
         assertFalse(result.isSuccess());
@@ -57,12 +68,21 @@ class ProjectServiceTest {
     @Test
     void testFindAll() {
         // GIVEN
-        projectService.create(new ProjectDto(null, "some project"));
+        var user = createUser();
+        projectService.create(new ProjectDto(null, "some project"), user);
 
         // WHEN
-        final var result = projectService.findAll();
+        final var result = projectService.findAllByUser(user);
 
         // THEN
         assertFalse(result.isEmpty());
+    }
+
+    public UserInfo createUser() {
+        var user = new User();
+        user.setSub("auth0sub");
+        userRepository.save(user);
+
+        return new UserInfo(user.getSub(), "");
     }
 }

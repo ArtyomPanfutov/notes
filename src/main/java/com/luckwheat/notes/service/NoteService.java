@@ -4,20 +4,22 @@ import com.google.common.collect.ImmutableList;
 import com.luckwheat.notes.dto.Error;
 import com.luckwheat.notes.dto.NoteDto;
 import com.luckwheat.notes.dto.Result;
+import com.luckwheat.notes.dto.auth0.UserInfo;
 import com.luckwheat.notes.entity.Note;
+import com.luckwheat.notes.entity.User;
 import com.luckwheat.notes.repository.NoteRepository;
 import com.luckwheat.notes.repository.ProjectRepository;
 import com.luckwheat.notes.service.exception.NoteServiceException;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.Search;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,18 +33,23 @@ public class NoteService {
 
     private final EntityManager entityManager;
 
+    private final UserService userService;
+
     @Inject
-    public NoteService(NoteRepository noteRepository, ProjectRepository projectRepository, EntityManager entityManager) {
+    public NoteService(NoteRepository noteRepository, ProjectRepository projectRepository, EntityManager entityManager, UserService userService) {
         this.noteRepository = noteRepository;
         this.projectRepository = projectRepository;
         this.entityManager = entityManager;
+        this.userService = userService;
     }
 
     @Transactional
-    public Result<NoteDto> create(NoteDto noteDto) {
+    public Result<NoteDto> create(NoteDto noteDto, UserInfo userInfo) {
         if (noteDto == null) {
             return Result.error(new Error("Can't create a null note"));
         }
+
+        var user = userService.getUserByUserInfo(userInfo);
 
         // TODO: Validation
         log.warn("Validation is not implemented yet!");
@@ -51,6 +58,7 @@ public class NoteService {
         final var now = LocalDateTime.now(ZoneId.systemDefault());
         entity.setCreatedTimestamp(now);
         entity.setUpdatedTimestamp(now);
+        entity.setUser(user);
         final var note = noteRepository.save(entity);
 
         return Result.success(convertToDto(note));
@@ -85,8 +93,9 @@ public class NoteService {
     }
 
     @Transactional
-    public List<NoteDto> findAll() {
-        final var notes = noteRepository.findAll();
+    public List<NoteDto> findAllByUser(UserInfo userInfo) {
+        var user = userService.getUserByUserInfo(userInfo);
+        final var notes = noteRepository.findAllByUser(user);
         final var result = ImmutableList.<NoteDto>builder();
 
         for (Note note : notes) {
@@ -115,7 +124,8 @@ public class NoteService {
     }
 
     @Transactional
-    public Result<List<NoteDto>> search(String content) {
+    public Result<List<NoteDto>> search(String content, UserInfo userInfo) {
+        var user = userService.getUserByUserInfo(userInfo);
         var fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 
         var queryBuilder = fullTextEntityManager
@@ -124,19 +134,28 @@ public class NoteService {
                 .forEntity(Note.class)
                 .get();
 
-        var contentQuery = queryBuilder.keyword().fuzzy()
+        var contentQuery = queryBuilder.keyword()
+                .fuzzy()
                 .withEditDistanceUpTo(2)
                 .onField(Note.CONTENT_TRANSFORMED)
                 .matching(content)
                 .createQuery();
 
-        var fullTextQuery = fullTextEntityManager.createFullTextQuery(
-                queryBuilder.bool().should(contentQuery).createQuery(),
+        var userQuery = queryBuilder.keyword()
+                .onField(User.USER_ID)
+                .matching(user.getId())
+                .createQuery();
+
+        var combinedQuery = fullTextEntityManager.createFullTextQuery(
+                queryBuilder.bool()
+                        .should(contentQuery)
+                        .must(userQuery)
+                        .createQuery(),
                 Note.class);
 
-        fullTextQuery.setSort(queryBuilder.sort().byScore().createSort());
+        combinedQuery.setSort(queryBuilder.sort().byScore().createSort());
 
-        List<Note> resultList = fullTextQuery.getResultList();
+        List<Note> resultList = combinedQuery.getResultList();
         return Result.success(resultList.stream().map(this::convertToDto).toList());
     }
 

@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.luckwheat.notes.dto.Error;
 import com.luckwheat.notes.dto.ProjectDto;
 import com.luckwheat.notes.dto.Result;
+import com.luckwheat.notes.dto.auth0.UserInfo;
 import com.luckwheat.notes.entity.Project;
+import com.luckwheat.notes.entity.User;
 import com.luckwheat.notes.repository.ProjectRepository;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -21,8 +23,11 @@ public class ProjectService {
     @Inject
     private ProjectRepository projectRepository;
 
+    @Inject
+    private UserService userService;
+
     @Transactional
-    public Result<ProjectDto> create(ProjectDto projectDto) {
+    public Result<ProjectDto> create(ProjectDto projectDto, UserInfo userInfo) {
         if (projectDto == null) {
             return Result.error(new Error("Can't create the project that is null"));
         }
@@ -35,7 +40,9 @@ public class ProjectService {
             return Result.error(new Error("The id must be null before creation. It will be assigned automatically."));
         }
 
-        final var saved = projectRepository.save(convertToEntity(projectDto));
+        var user = userService.getUserByUserInfo(userInfo);
+
+        final var saved = projectRepository.save(convertToEntity(projectDto, user));
 
         return Result.success(convertToDto(saved));
     }
@@ -59,8 +66,9 @@ public class ProjectService {
     }
 
     @Transactional
-    public List<ProjectDto> findAll() {
-        final var projects  = projectRepository.findAll();
+    public List<ProjectDto> findAllByUser(UserInfo userInfo) {
+        var user = userService.getUserByUserInfo(userInfo);
+        final var projects  = projectRepository.findAllByUser(user);
         final var result = ImmutableList.<ProjectDto>builder();
 
         for (Project project : projects) {
@@ -77,8 +85,9 @@ public class ProjectService {
     }
 
     @Transactional
-    public Optional<ProjectDto> findByName(String name) {
-        return projectRepository.findByName(name)
+    public Optional<ProjectDto> findByNameAndUserInfo(String name, UserInfo userInfo) {
+        var user = userService.getUserByUserInfo(userInfo);
+        return projectRepository.findByNameAndUser(name, user)
                 .map(this::convertToDto);
     }
 
@@ -96,8 +105,18 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectDto getDefaultProject() {
-        return projectRepository.findByName(DEFAULT_PROJECT_NAME)
+    public ProjectDto getDefaultProject(UserInfo userInfo) {
+        var user = userService.getUserByUserInfo(userInfo);
+        if (projectRepository.findByNameAndUser(DEFAULT_PROJECT_NAME, user).isEmpty()) {
+
+            var project = new Project();
+            project.setName(DEFAULT_PROJECT_NAME);
+            project.setUser(user);
+
+            projectRepository.save(project);
+        }
+
+        return projectRepository.findByNameAndUser(DEFAULT_PROJECT_NAME, user)
                 .map(this::convertToDto)
                 .orElseThrow();
     }
@@ -106,11 +125,12 @@ public class ProjectService {
         return new ProjectDto(project.getId(), project.getName());
     }
 
-    private Project convertToEntity(ProjectDto projectDto) {
+    private Project convertToEntity(ProjectDto projectDto, User user) {
         final var project = new Project();
 
         project.setId(projectDto.id());
         project.setName(projectDto.name());
+        project.setUser(user);
 
         return project;
     }
