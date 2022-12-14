@@ -10,6 +10,7 @@ import com.luckwheat.notes.entity.User;
 import com.luckwheat.notes.repository.NoteRepository;
 import com.luckwheat.notes.repository.ProjectRepository;
 import com.luckwheat.notes.service.exception.NoteServiceException;
+import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -93,9 +94,9 @@ public class NoteService {
     }
 
     @Transactional
-    public List<NoteDto> findAllByUser(UserInfo userInfo) {
+    public List<NoteDto> findAllByUser(UserInfo userInfo, Pageable pageable) {
         var user = userService.getUserByUserInfo(userInfo);
-        final var notes = noteRepository.findAllByUser(user);
+        final var notes = noteRepository.findAllByUser(user, pageable);
         final var result = ImmutableList.<NoteDto>builder();
 
         for (Note note : notes) {

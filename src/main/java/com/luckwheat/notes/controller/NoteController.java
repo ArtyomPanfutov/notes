@@ -6,6 +6,7 @@ import com.luckwheat.notes.dto.NoteDto;
 import com.luckwheat.notes.service.NoteNameGenerator;
 import com.luckwheat.notes.service.NoteService;
 import com.luckwheat.notes.service.UserService;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -62,9 +63,11 @@ public class NoteController {
     }
 
     @Get
-    public HttpResponse<List<NoteDto>> findAll(@Header("Authorization") String authorization) {
+    public HttpResponse<List<NoteDto>> findAll(@Header("Authorization") String authorization,
+                                               @QueryValue int page,
+                                               @QueryValue int pageSize) {
         var user = userService.getUserByBearerToken(authorization);
-        return HttpResponse.ok(noteService.findAllByUser(user));
+        return HttpResponse.ok(noteService.findAllByUser(user, Pageable.from(page, pageSize)));
     }
 
     @Post("/search")
