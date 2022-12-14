@@ -142,13 +142,13 @@ public class NoteService {
                 .createQuery();
 
         var userQuery = queryBuilder.keyword()
-                .onField(User.USER_ID)
+                .onField("user." + User.USER_ID)
                 .matching(user.getId())
                 .createQuery();
 
         var combinedQuery = fullTextEntityManager.createFullTextQuery(
                 queryBuilder.bool()
-                        .should(contentQuery)
+                        .must(contentQuery)
                         .must(userQuery)
                         .createQuery(),
                 Note.class);
