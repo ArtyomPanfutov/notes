@@ -4,10 +4,13 @@ import com.google.common.collect.ImmutableList;
 import com.luckwheat.notes.dto.Error;
 import com.luckwheat.notes.dto.ProjectDto;
 import com.luckwheat.notes.dto.Result;
+import com.luckwheat.notes.dto.ResultPage;
 import com.luckwheat.notes.dto.auth0.UserInfo;
 import com.luckwheat.notes.entity.Project;
 import com.luckwheat.notes.entity.User;
 import com.luckwheat.notes.repository.ProjectRepository;
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -66,16 +69,16 @@ public class ProjectService {
     }
 
     @Transactional
-    public List<ProjectDto> findAllByUser(UserInfo userInfo) {
+    public ResultPage<ProjectDto> findAllByUser(UserInfo userInfo, Pageable pageable) {
         var user = userService.getUserByUserInfo(userInfo);
-        final var projects  = projectRepository.findAllByUser(user);
+        final var projects  = projectRepository.findAllByUser(user, pageable);
         final var result = ImmutableList.<ProjectDto>builder();
 
         for (Project project : projects) {
             result.add(convertToDto(project));
         }
 
-        return result.build();
+        return new ResultPage<>(result.build(), projects.getPageNumber(), projects.getTotalPages());
     }
 
     @Transactional

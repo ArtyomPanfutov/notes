@@ -1,8 +1,10 @@
 package com.luckwheat.notes.controller;
 
 import com.luckwheat.notes.dto.ProjectDto;
+import com.luckwheat.notes.dto.ResultPage;
 import com.luckwheat.notes.service.ProjectService;
 import com.luckwheat.notes.service.UserService;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -55,9 +57,11 @@ public class ProjectController {
     }
 
     @Get
-    public HttpResponse<List<ProjectDto>> findAll(@Header("Authorization") String authorization) {
+    public HttpResponse<ResultPage<ProjectDto>> findAll(@Header("Authorization") String authorization,
+                                                        @QueryValue int page,
+                                                        @QueryValue int pageSize) {
         var user = userService.getUserByBearerToken(authorization);
-        return HttpResponse.ok(projectService.findAllByUser(user));
+        return HttpResponse.ok(projectService.findAllByUser(user, Pageable.from(page, pageSize)));
     }
 
     @Get("/{id}")
