@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.luckwheat.notes.dto.Error;
 import com.luckwheat.notes.dto.NoteDto;
 import com.luckwheat.notes.dto.Result;
+import com.luckwheat.notes.dto.ResultPage;
 import com.luckwheat.notes.dto.auth0.UserInfo;
 import com.luckwheat.notes.entity.Note;
 import com.luckwheat.notes.entity.User;
@@ -14,7 +15,6 @@ import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.Search;
 
 import javax.persistence.EntityManager;
@@ -94,7 +94,7 @@ public class NoteService {
     }
 
     @Transactional
-    public List<NoteDto> findAllByUser(UserInfo userInfo, Pageable pageable) {
+    public ResultPage<NoteDto> findAllByUser(UserInfo userInfo, Pageable pageable) {
         var user = userService.getUserByUserInfo(userInfo);
         final var notes = noteRepository.findAllByUser(user, pageable);
         final var result = ImmutableList.<NoteDto>builder();
@@ -103,7 +103,7 @@ public class NoteService {
             result.add(convertToDto(note));
         }
 
-        return result.build();
+        return new ResultPage<>(result.build(), notes.getPageNumber(), notes.getTotalPages());
     }
 
     @Transactional

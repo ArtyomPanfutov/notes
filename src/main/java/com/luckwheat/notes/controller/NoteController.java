@@ -3,6 +3,7 @@ package com.luckwheat.notes.controller;
 import com.luckwheat.notes.dto.GeneratedNoteNameDto;
 import com.luckwheat.notes.dto.NoteContentSearchDto;
 import com.luckwheat.notes.dto.NoteDto;
+import com.luckwheat.notes.dto.ResultPage;
 import com.luckwheat.notes.service.NoteNameGenerator;
 import com.luckwheat.notes.service.NoteService;
 import com.luckwheat.notes.service.UserService;
@@ -63,9 +64,9 @@ public class NoteController {
     }
 
     @Get
-    public HttpResponse<List<NoteDto>> findAll(@Header("Authorization") String authorization,
-                                               @QueryValue int page,
-                                               @QueryValue int pageSize) {
+    public HttpResponse<ResultPage<NoteDto>> findAll(@Header("Authorization") String authorization,
+                                           @QueryValue int page,
+                                           @QueryValue int pageSize) {
         var user = userService.getUserByBearerToken(authorization);
         return HttpResponse.ok(noteService.findAllByUser(user, Pageable.from(page, pageSize)));
     }
