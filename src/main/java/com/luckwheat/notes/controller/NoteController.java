@@ -65,8 +65,8 @@ public class NoteController {
 
     @Get
     public HttpResponse<ResultPage<NoteDto>> findAll(@Header("Authorization") String authorization,
-                                           @QueryValue int page,
-                                           @QueryValue int pageSize) {
+                                                     @QueryValue int page,
+                                                     @QueryValue int pageSize) {
         var user = userService.getUserByBearerToken(authorization);
         return HttpResponse.ok(noteService.findAllByUser(user, Pageable.from(page, pageSize)));
     }
