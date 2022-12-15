@@ -52,9 +52,7 @@ class NoteListComponent extends Component {
                 this.setState({notes: res.data});
             })
         } else {
-            NoteService.getNotes().then((res) => {
-                this.setState({ notes: res.data});
-            });
+            this.fetchNotes();
         }
     }
 

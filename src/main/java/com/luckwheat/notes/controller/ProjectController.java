@@ -12,8 +12,6 @@ import io.micronaut.security.annotation.Secured;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
 import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 
 @Controller("/api/projects")
