@@ -12,6 +12,8 @@ import io.micronaut.security.annotation.Secured;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 
 @Controller("/api/projects")
@@ -54,12 +56,18 @@ public class ProjectController {
         return HttpResponse.ok();
     }
 
-    @Get
+    @Get("/pageable")
     public HttpResponse<ResultPage<ProjectDto>> findAll(@Header("Authorization") String authorization,
                                                         @QueryValue int page,
                                                         @QueryValue int pageSize) {
         var user = userService.getUserByBearerToken(authorization);
         return HttpResponse.ok(projectService.findAllByUser(user, Pageable.from(page, pageSize)));
+    }
+
+    @Get
+    public HttpResponse<List<ProjectDto>> findAll(@Header("Authorization") String authorization) {
+        var user = userService.getUserByBearerToken(authorization);
+        return HttpResponse.ok(projectService.findAllByUser(user));
     }
 
     @Get("/{id}")

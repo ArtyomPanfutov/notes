@@ -31,9 +31,11 @@ class NotesService {
         return httpClient.delete(`/api/notes/${id}`)
     }
 
-    findByContent(content) {
+    findByContent(content, page) {
         return httpClient.post("/api/notes/search", {
-            "content": content
+            "content": content,
+            "page": page,
+            "pageSize": 2
           });
     }
 

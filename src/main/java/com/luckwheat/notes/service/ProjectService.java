@@ -82,6 +82,19 @@ public class ProjectService {
     }
 
     @Transactional
+    public List<ProjectDto> findAllByUser(UserInfo userInfo) {
+        var user = userService.getUserByUserInfo(userInfo);
+        final var projects  = projectRepository.findAllByUser(user);
+        final var result = ImmutableList.<ProjectDto>builder();
+
+        for (Project project : projects) {
+            result.add(convertToDto(project));
+        }
+
+        return result.build();
+    }
+
+    @Transactional
     public Optional<ProjectDto> findById(Long id) {
         return projectRepository.findById(id)
                 .map(this::convertToDto);

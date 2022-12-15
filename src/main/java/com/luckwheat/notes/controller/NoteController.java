@@ -72,15 +72,16 @@ public class NoteController {
     }
 
     @Post("/search")
-    public HttpResponse<List<NoteDto>> search(@Body NoteContentSearchDto contentSearchDto,
-                                              @Header("Authorization") String authorization) {
+    public HttpResponse<ResultPage<NoteDto>> search(@Body NoteContentSearchDto contentSearchDto,
+                                                    @Header("Authorization") String authorization) {
         var user = userService.getUserByBearerToken(authorization);
-        var result = noteService.search(contentSearchDto.content(), user);
+        var result = noteService.search(
+                contentSearchDto.content(),
+                user,
+                Pageable.from(contentSearchDto.page(), contentSearchDto.pageSize()));
 
-        if (result.isSuccess()) {
-            return HttpResponse.ok(result.body());
-        }
-        return HttpResponse.ok(Collections.emptyList());
+        return HttpResponse.ok(
+                new ResultPage<>(result.getContent(), result.getPageNumber(), result.getTotalPages()));
     }
 
     @Get("/{id}")

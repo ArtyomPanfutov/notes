@@ -7,6 +7,7 @@ class NoteListComponent extends Component {
         super(props)
 
         this.state = {
+                searchContent: null,
                 notes: [],
                 currentPage: 0,
                 totalPages: 0
@@ -38,20 +39,29 @@ class NoteListComponent extends Component {
 
     handlePageClick = (event) => {
         this.state.currentPage = event.selected;
-        this.fetchNotes();
+        if (this.state.searchContent) {
+            this.findNotesByContent(this.state.searchContent, this.state.currentPage);
+        } else {
+            this.fetchNotes();
+        }
     };
 
     addNote() {
         this.props.history.push('/create-note');
     }
 
-    findNotesByContent(content) {
+    findNotesByContent(content, page) {
         const trimmed = content.trim();
         if (trimmed) {
-            NoteService.findByContent(trimmed).then(res => {
-                this.setState({notes: res.data});
+            NoteService.findByContent(trimmed, page).then(res => {
+                this.setState({
+                    notes: res.data.items ? res.data.items : [], 
+                    totalPages: res.data.pages, 
+                    searchContent: trimmed
+                });
             })
         } else {
+            this.setState({ searchContent: null });
             this.fetchNotes();
         }
     }
@@ -61,7 +71,7 @@ class NoteListComponent extends Component {
             <div>
                  <div className = "row">
                     <button className="btn btn-primary" onClick={this.addNote}> New Note</button>
-                    <input placeholder="Search notes" className="search-input" onChange={event => this.findNotesByContent(event.target.value)} />
+                    <input placeholder="Search notes" className="search-input" onChange={event => this.findNotesByContent(event.target.value, 0)} />
                     <div className="pagination">
                         <ReactPaginate
                             breakLabel="..."

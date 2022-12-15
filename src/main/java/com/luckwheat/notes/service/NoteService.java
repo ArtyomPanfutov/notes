@@ -11,6 +11,7 @@ import com.luckwheat.notes.entity.User;
 import com.luckwheat.notes.repository.NoteRepository;
 import com.luckwheat.notes.repository.ProjectRepository;
 import com.luckwheat.notes.service.exception.NoteServiceException;
+import io.micronaut.data.model.Page;
 import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -125,7 +126,7 @@ public class NoteService {
     }
 
     @Transactional
-    public Result<List<NoteDto>> search(String content, UserInfo userInfo) {
+    public Page<NoteDto> search(String content, UserInfo userInfo, Pageable pageable) {
         var user = userService.getUserByUserInfo(userInfo);
         var fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 
@@ -154,10 +155,12 @@ public class NoteService {
                         .createQuery(),
                 Note.class);
 
+        combinedQuery.setFirstResult(pageable.getNumber() * pageable.getSize());
+        combinedQuery.setMaxResults(pageable.getSize());
         combinedQuery.setSort(queryBuilder.sort().byScore().createSort());
 
         List<Note> resultList = combinedQuery.getResultList();
-        return Result.success(resultList.stream().map(this::convertToDto).toList());
+        return Page.of(resultList.stream().map(this::convertToDto).toList(), pageable, combinedQuery.getResultSize());
     }
 
     private NoteDto convertToDto(Note note) {
