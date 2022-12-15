@@ -1,12 +1,15 @@
-import React, { Component } from 'react'
-import ProjectService from '../services/ProjectService'
+import React, { Component } from 'react';
+import ProjectService from '../services/ProjectService';
+import ReactPaginate from "react-paginate";
 
 class ProjectListComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-                projects: []
+                projects: [],
+                currentPage: 0,
+                totalPages: 0
         }
         this.addProject = this.addProject.bind(this);
         this.editProject = this.editProject.bind(this);
@@ -24,8 +27,12 @@ class ProjectListComponent extends Component {
     }
 
     componentDidMount() {
-        ProjectService.getProjects().then((res) => {
-            this.setState({ projects: res.data});
+        this.fetchProjects();
+    }
+
+    fetchProjects() {
+        ProjectService.getProjects(this.state.currentPage).then((res) => {
+            this.setState({ projects: res.data.items, totalPages: res.data.pages });
         });
     }
 
@@ -33,11 +40,39 @@ class ProjectListComponent extends Component {
         this.props.history.push('/create-project');
     }
 
+    handlePageClick = (event) => {
+        this.state.currentPage = event.selected;
+        this.fetchProjects();
+    };
+
     render() {
         return (
             <div>
                  <div className = "row">
+                     <div>
                     <button className="btn btn-primary" onClick={this.addProject}> New Project</button>
+                    </div>
+                    <div className="pagination">
+                        <ReactPaginate
+                            breakLabel="..."
+                            nextLabel="Next >"
+                            onPageChange={this.handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={this.state.totalPages}
+                            previousLabel="< Previous"
+                            renderOnZeroPageCount={null}
+                            breakClassName={"page-item"}
+                            breakLinkClassName={"page-link"}
+                            containerClassName={"pagination"}
+                            pageClassName={"page-item"}
+                            pageLinkClassName={"page-link"}
+                            previousClassName={"page-item"}
+                            previousLinkClassName={"page-link"}
+                            nextClassName={"page-item"}
+                            nextLinkClassName={"page-link"}
+                            activeClassName={"active"}
+                        />
+                </div>
                  </div>
                  <br></br>
                  <div className = "row">
@@ -66,9 +101,7 @@ class ProjectListComponent extends Component {
                                 }
                             </tbody>
                         </table>
-
                  </div>
-
             </div>
         )
     }

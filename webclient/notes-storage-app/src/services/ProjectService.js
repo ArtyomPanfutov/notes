@@ -15,8 +15,8 @@ class ProjectService {
         });
     }
 
-    getProjects() {
-        return httpClient.get("/api/projects");
+    getProjects(currentPage) {
+        return httpClient.get(`/api/projects?page=${currentPage}&pageSize=5`);
     }
 
     getProjectById(id) {

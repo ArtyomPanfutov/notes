@@ -1,10 +1,12 @@
 package com.luckwheat.notes.service;
 
 import com.luckwheat.notes.dto.ProjectDto;
+import com.luckwheat.notes.dto.Result;
 import com.luckwheat.notes.dto.auth0.UserInfo;
 import com.luckwheat.notes.entity.User;
 import com.luckwheat.notes.repository.ProjectRepository;
 import com.luckwheat.notes.repository.UserRepository;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -72,10 +74,10 @@ class ProjectServiceTest {
         projectService.create(new ProjectDto(null, "some project"), user);
 
         // WHEN
-        final var result = projectService.findAllByUser(user);
+        final var result = projectService.findAllByUser(user, Pageable.from(0, 10));
 
         // THEN
-        assertFalse(result.isEmpty());
+        assertFalse(result.items().isEmpty());
     }
 
     public UserInfo createUser() {

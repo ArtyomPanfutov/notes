@@ -19,8 +19,8 @@ class NotesService {
           });
     }
 
-    getNotes() {
-        return httpClient.get("/api/notes");
+    getNotes(currentPage) {
+        return httpClient.get(`/api/notes?page=${currentPage}&pageSize=3`);
     }
 
     getNoteById(id) {
