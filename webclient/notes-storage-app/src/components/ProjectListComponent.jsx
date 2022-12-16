@@ -31,7 +31,7 @@ class ProjectListComponent extends Component {
     }
 
     fetchProjects() {
-        ProjectService.getProjects(this.state.currentPage).then((res) => {
+        ProjectService.getProjectsPage(this.state.currentPage).then((res) => {
             this.setState({ projects: res.data.items, totalPages: res.data.pages });
         });
     }

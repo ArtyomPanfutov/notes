@@ -15,7 +15,7 @@ class ProjectService {
         });
     }
 
-    getProjects(currentPage) {
+    getProjectsPage(currentPage) {
         return httpClient.get(`/api/projects/pageable/?page=${currentPage}&pageSize=5`);
     }
 
