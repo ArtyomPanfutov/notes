@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  notes-storage:
+  api-server:
     depends_on:
       - db
       - elasticsearch
@@ -18,6 +18,15 @@ services:
       OAUTH_JWKS_URI: ${OAUTH_JWKS_URI}
       OAUTH_ISSUER_URL: ${OAUTH_ISSUER_URL}
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+  front-app:
+    image: luckwheat.com/notes-app:0.1
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_AUTH0_CLIENT_ID: ${REACT_APP_AUTH0_CLIENT_ID}
+      REACT_APP_AUTH0_DOMAIN: ${REACT_APP_AUTH0_DOMAIN}
+      REACT_APP_AUTH0_CALLBACK_URL: ${REACT_APP_AUTH0_CALLBACK_URL}
+      REACT_APP_AUTH0_AUDIENCE: ${REACT_APP_AUTH0_AUDIENCE}
   db:
     image: postgres:14
     environment:
