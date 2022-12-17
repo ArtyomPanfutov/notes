@@ -1,10 +1,20 @@
 version: "3.9"
 services:
+  nginx:
+    image: luckwheat.com/notes-nginx:0.1
+    ports:
+      - "80:80"
+    environment:
+      CLIENT_APP_URL: front-app:3000
+      API_SERVER_URL: api-server:8080
+    depends_on:
+      - api-server
+      - front-app
   api-server:
+    image: luckwheat.com/notes-storage-service:0.1-SNAPSHOT
     depends_on:
       - db
       - elasticsearch
-    image: luckwheat.com/notes-storage-service:0.1-SNAPSHOT
     ports:
       - "8080:8080"
       - "5005:5005"
@@ -23,7 +33,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      REACT_APP_API_URL: http://api-server:8080
+      REACT_APP_API_URL: http://nginx
       REACT_APP_AUTH0_CLIENT_ID: ${REACT_APP_AUTH0_CLIENT_ID}
       REACT_APP_AUTH0_DOMAIN: ${REACT_APP_AUTH0_DOMAIN}
       REACT_APP_AUTH0_CALLBACK_URL: ${REACT_APP_AUTH0_CALLBACK_URL}
