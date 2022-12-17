@@ -41,7 +41,7 @@ class ProjectListComponent extends Component {
     }
 
     handlePageClick = (event) => {
-        this.state.currentPage = event.selected;
+        this.setState({ currentPage: event.selected });
         this.fetchProjects();
     };
 

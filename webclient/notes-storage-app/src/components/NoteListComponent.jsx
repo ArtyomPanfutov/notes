@@ -38,7 +38,7 @@ class NoteListComponent extends Component {
     }
 
     handlePageClick = (event) => {
-        this.state.currentPage = event.selected;
+        this.setState({ currentPage: event.selected });
         if (this.state.searchContent) {
             this.findNotesByContent(this.state.searchContent, this.state.currentPage);
         } else {

@@ -113,12 +113,10 @@ class SaveNoteComponent extends Component {
                                             <CKEditor
                                                 editor={ ClassicEditor }
                                                 data={ this.state.content }
-                                                onReady={ editor => {
-                                                    // You can store the "editor" and use when it is needed.
-                                                } }
+                                                onReady={ editor => { } }
                                                 onChange={ ( event, editor ) => {
                                                     const data = editor.getData();
-                                                    this.state.content = data;
+                                                    this.setState({ content: data});
                                                 } }
                                                 onBlur={ ( event, editor ) => {
                                                 } }
