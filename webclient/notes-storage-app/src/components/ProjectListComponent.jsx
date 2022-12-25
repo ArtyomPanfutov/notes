@@ -86,18 +86,19 @@ class ProjectListComponent extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {
-                                    this.state.projects.map(
-                                        project => 
-                                        <tr key = {project.id}>
-                                             <td> {project.id} </td>   
-                                             <td> {project.name} </td>   
-                                             <td>
-                                                 <button onClick={ () => this.editProject(project.id)} className="btn btn-info">Update </button>
-                                                 <button style={{marginLeft: "10px"}} onClick={ () => this.deleteProject(project.id)} className="btn btn-danger">Delete </button>
-                                             </td>
-                                        </tr>
-                                    )
+                                { 
+                                    this.state.projects && 
+                                        this.state.projects.map(
+                                            project => 
+                                            <tr key = {project.id}>
+                                                <td> {project.id} </td>   
+                                                <td> {project.name} </td>   
+                                                <td>
+                                                    <button onClick={ () => this.editProject(project.id)} className="btn btn-info">Update </button>
+                                                    <button style={{marginLeft: "10px"}} onClick={ () => this.deleteProject(project.id)} className="btn btn-danger">Delete </button>
+                                                </td>
+                                            </tr>
+                                        )
                                 }
                             </tbody>
                         </table>

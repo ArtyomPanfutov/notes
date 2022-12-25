@@ -107,18 +107,19 @@ class NoteListComponent extends Component {
                             </thead>
                             <tbody>
                                 {
+                                this.state.notes &&
                                     this.state.notes.map(
                                         note => 
                                         <tr key = {note.id}>
-                                             <td> {note.id} </td>   
-                                             <td> {note.name} </td>   
-                                             <td>
-                                                 <button onClick={ () => this.editNote(note.id)} className="btn btn-info">Update </button>
-                                                 <button style={{marginLeft: "10px"}} onClick={ () => this.deleteNote(note.id)} className="btn btn-danger">Delete </button>
-                                             </td>
+                                            <td> {note.id} </td>   
+                                            <td> {note.name} </td>   
+                                            <td>
+                                                <button onClick={ () => this.editNote(note.id)} className="btn btn-info">Update </button>
+                                                <button style={{marginLeft: "10px"}} onClick={ () => this.deleteNote(note.id)} className="btn btn-danger">Delete </button>
+                                            </td>
                                         </tr>
                                     )
-                                }
+                                    }
                             </tbody>
                         </table>
 
