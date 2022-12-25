@@ -2,8 +2,8 @@ FROM node:19.3.0 AS builder
 WORKDIR /app
 COPY package*.json /
 RUN npm install
-RUN npm install -g sass
 COPY . .
+ENV PUBLIC_URL=http://localhost
 RUN npm run build
 
 FROM nginx:1.23.3-alpine

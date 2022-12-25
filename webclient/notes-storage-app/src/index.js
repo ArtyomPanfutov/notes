@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { HashRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import 'semantic-ui-css/semantic.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles.css';
+import './styles.scss';
 import App from './App';
 import Auth0ProviderWithHistory from './auth/Auth0ProviderWithHistory';
 
