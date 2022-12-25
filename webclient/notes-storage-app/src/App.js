@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header';
 import ProjectListComponent from './components/ProjectListComponent';
@@ -11,6 +11,7 @@ import Callback from './components/Callback';
 import { useAuth0 } from '@auth0/auth0-react';
 import { addAccessTokenInterceptor } from './services/HttpClient';
 import { useEffect } from 'react';
+import './styles.scss';
 
 const App = () => {
 
@@ -30,20 +31,21 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
+    <>
         <Header />
         <div className="main-content">
-          <Switch>
-            <ProtectedRoute component={ProjectListComponent} path="/projects" exact={true} />
-            <ProtectedRoute component={SaveProjectComponent} path="/create-project" />
-            <ProtectedRoute component={SaveProjectComponent} path="/edit-project/:id" />
-            <ProtectedRoute component={NoteListComponent} path="/notes" exact={true} />
-            <ProtectedRoute component={SaveNoteComponent} path="/create-note" />
-            <ProtectedRoute component={SaveNoteComponent} path="/edit-note/:id" />
-            <Route component={Callback} path="/callback" />
-          </Switch>
+          <Routes>
+            <Route component={ <Navigate to="/notes" /> } exact path="/" />
+            <Route component={<ProtectedRoute component={ProjectListComponent} path = "/projects"/>}/>
+            <Route component={<ProtectedRoute component={SaveProjectComponent} path = "/create-project"/>}/>
+            <Route component={<ProtectedRoute component={SaveProjectComponent} path = "/edit-project/:id"/>}/>
+            <Route component={<ProtectedRoute component={NoteListComponent} path = "/notes"/>}/>
+            <Route component={<ProtectedRoute component={SaveNoteComponent} path = "/create-note"/>}/>
+            <Route component={<ProtectedRoute component={SaveNoteComponent} path = "/edit-note/:id"/>}/>
+            <Route component={Callback} exact path="/callback" />
+          </Routes>
         </div>
-    </BrowserRouter>
+      </>
   );
 };
 
