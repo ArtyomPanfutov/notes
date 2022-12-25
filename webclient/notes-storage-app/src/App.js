@@ -11,7 +11,6 @@ import Callback from './components/Callback';
 import { useAuth0 } from '@auth0/auth0-react';
 import { addAccessTokenInterceptor } from './services/HttpClient';
 import { useEffect } from 'react';
-import './styles.scss';
 
 const App = () => {
 

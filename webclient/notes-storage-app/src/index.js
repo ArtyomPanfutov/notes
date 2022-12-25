@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter as Router } from 'react-router-dom';
-import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles.css';
+import App from './App';
 import Auth0ProviderWithHistory from './auth/Auth0ProviderWithHistory';
-import './styles.scss';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
