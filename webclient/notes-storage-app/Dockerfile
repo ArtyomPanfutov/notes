@@ -3,7 +3,6 @@ WORKDIR /app
 COPY package*.json /
 RUN npm install
 COPY . .
-ENV PUBLIC_URL=http://localhost
 RUN npm run build
 
 FROM nginx:1.23.3-alpine
