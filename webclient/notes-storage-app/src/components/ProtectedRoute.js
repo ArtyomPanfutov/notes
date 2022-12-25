@@ -1,19 +1,14 @@
-import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { Outlet, Navigate} from "react-router-dom";
 import React from "react";
-import { Route } from "react-router-dom";
-import Loader from "./Loader";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const ProtectedRoute = ({ component, ...args }) => (
-  <Route
-    component={withAuthenticationRequired(component, {
-      onRedirecting: () => (
-        <div className="page-layout">
-          <Loader/>
-        </div>
-      ),
-    })}
-    {...args}
-  />
-);
+const PrivateRoute = () => {
+    const { isAuthenticated, loginWithRedirect } = useAuth0();
+    if (isAuthenticated) {
+        return <Outlet />;
+    } else {
+        return <Navigate to={loginWithRedirect()} />;
+    }
+};
 
-export default ProtectedRoute;
+export default PrivateRoute;
