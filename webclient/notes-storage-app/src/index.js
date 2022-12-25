@@ -4,14 +4,14 @@ import 'semantic-ui-css/semantic.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.scss';
 import App from './App';
-import Auth0ProviderWithHistory from './auth/Auth0ProviderWithHistory';
+import Auth0ProviderWrapper from './auth/Auth0ProviderWrapper';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-      <Auth0ProviderWithHistory>
+      <Auth0ProviderWrapper>
         <App />
-      </Auth0ProviderWithHistory>
+      </Auth0ProviderWrapper>
   </React.StrictMode>);
 
   
