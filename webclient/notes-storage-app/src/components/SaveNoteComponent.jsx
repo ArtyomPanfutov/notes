@@ -4,13 +4,14 @@ import ProjectService from '../services/ProjectService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import withNavigation from './hocs';
 
 class SaveNoteComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            id: this.props.match.params.id,
+            id: this.props.match ? this.props.match.params.id : null,
             name: '',
             content: '',
             projectId: null
@@ -52,11 +53,11 @@ class SaveNoteComponent extends Component {
 
         if (this.state.id) {
             NoteService.updateNote(note).then(res => {
-                this.props.history.push('/notes');
+                this.props.navigate('/notes');
             });
         } else {
             NoteService.createNote(note).then(res => {
-                this.props.history.push('/notes');
+                this.props.navigate('/notes');
             });
         }
     }
@@ -71,10 +72,6 @@ class SaveNoteComponent extends Component {
 
     changeProjectIdHandler = (e, data) => {
         this.setState({projectId: data.value});
-    }
-
-    cancel() {
-        this.props.history.push('/notes');
     }
 
     resolveTitle() {
@@ -125,7 +122,7 @@ class SaveNoteComponent extends Component {
                                             />
                                         </div>
                                         <button className="btn btn-success" onClick={this.saveNote}>Save</button>
-                                        <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
+                                        <button className="btn btn-danger" onClick={this.props.navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
                                     </form>
                                 </div>
                             </div>
@@ -136,4 +133,4 @@ class SaveNoteComponent extends Component {
     }
 }
 
-export default SaveNoteComponent
+export default withNavigation(SaveNoteComponent)

@@ -2,7 +2,7 @@ import { Outlet, Navigate} from "react-router-dom";
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const PrivateRoute = () => {
+const ProtectedRoute = () => {
     const { isAuthenticated, loginWithRedirect } = useAuth0();
     if (isAuthenticated) {
         return <Outlet />;
@@ -11,4 +11,4 @@ const PrivateRoute = () => {
     }
 };
 
-export default PrivateRoute;
+export default ProtectedRoute;

@@ -22,4 +22,4 @@ const Auth0ProviderWrapper = ({ children }) => {
   );
 };
 
-export default Auth0ProviderWrapper
+export default Auth0ProviderWrapper;

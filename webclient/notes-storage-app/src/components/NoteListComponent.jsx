@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import NoteService from '../services/NoteService'
 import ReactPaginate from "react-paginate";
+import withNavigation from './hocs';
 
 class NoteListComponent extends Component {
     constructor(props) {
@@ -12,8 +13,6 @@ class NoteListComponent extends Component {
                 currentPage: 0,
                 totalPages: 0
         }
-        this.addNote = this.addNote.bind(this);
-        this.editNote = this.editNote.bind(this);
         this.deleteNote = this.deleteNote.bind(this);
     }
 
@@ -21,10 +20,6 @@ class NoteListComponent extends Component {
         NoteService.deleteNoteById(id).then(res => {
             this.setState({notes: this.state.notes.filter(note => note.id !== id)});
         });
-    }
-
-    editNote(id) {
-        this.props.history.push(`/edit-note/${id}`);
     }
 
     componentDidMount() {
@@ -46,10 +41,6 @@ class NoteListComponent extends Component {
         }
     };
 
-    addNote() {
-        this.props.history.push('/create-note');
-    }
-
     findNotesByContent(content, page) {
         const trimmed = content.trim();
         if (trimmed) {
@@ -70,7 +61,7 @@ class NoteListComponent extends Component {
         return (
             <div>
                  <div className = "row">
-                    <button className="btn btn-primary" onClick={this.addNote}> New Note</button>
+                    <button className="btn btn-primary" onClick={this.props.navigate('/create-note')}> New Note</button>
                     <input placeholder="Search notes" className="search-input" onChange={event => this.findNotesByContent(event.target.value, 0)} />
                     <div className="pagination">
                         <ReactPaginate
@@ -114,7 +105,7 @@ class NoteListComponent extends Component {
                                             <td> {note.id} </td>   
                                             <td> {note.name} </td>   
                                             <td>
-                                                <button onClick={ () => this.editNote(note.id)} className="btn btn-info">Update </button>
+                                                <button onClick={ () => this.props.navigate(`/edit-note/${note.id}`)} className="btn btn-info">Update </button>
                                                 <button style={{marginLeft: "10px"}} onClick={ () => this.deleteNote(note.id)} className="btn btn-danger">Delete </button>
                                             </td>
                                         </tr>
@@ -130,4 +121,4 @@ class NoteListComponent extends Component {
     }
 }
 
-export default NoteListComponent 
+export default withNavigation(NoteListComponent)

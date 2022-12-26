@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ProjectService from '../services/ProjectService';
 import ReactPaginate from "react-paginate";
+import withNavigation from './hocs';
 
 class ProjectListComponent extends Component {
     constructor(props) {
@@ -11,8 +12,6 @@ class ProjectListComponent extends Component {
                 currentPage: 0,
                 totalPages: 0
         }
-        this.addProject = this.addProject.bind(this);
-        this.editProject = this.editProject.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
     }
 
@@ -20,10 +19,6 @@ class ProjectListComponent extends Component {
         ProjectService.deleteProjectById(id).then( res => {
             this.setState({projects: this.state.projects.filter(project=> project.id !== id)});
         });
-    }
-
-    editProject(id) {
-        this.props.history.push(`/edit-project/${id}`);
     }
 
     componentDidMount() {
@@ -36,9 +31,6 @@ class ProjectListComponent extends Component {
         });
     }
 
-    addProject() {
-        this.props.history.push('/create-project');
-    }
 
     handlePageClick = (event) => {
         this.setState({ currentPage: event.selected });
@@ -50,7 +42,7 @@ class ProjectListComponent extends Component {
             <div>
                  <div className = "row">
                      <div>
-                    <button className="btn btn-primary" onClick={this.addProject}> New Project</button>
+                    <button className="btn btn-primary" onClick={() => this.props.navigate('/create-project')}> New Project</button>
                     </div>
                     <div className="pagination">
                         <ReactPaginate
@@ -94,7 +86,7 @@ class ProjectListComponent extends Component {
                                                 <td> {project.id} </td>   
                                                 <td> {project.name} </td>   
                                                 <td>
-                                                    <button onClick={ () => this.editProject(project.id)} className="btn btn-info">Update </button>
+                                                    <button onClick={ () => this.props.navigate(`/edit-project/${project.id}`)} className="btn btn-info">Update </button>
                                                     <button style={{marginLeft: "10px"}} onClick={ () => this.deleteProject(project.id)} className="btn btn-danger">Delete </button>
                                                 </td>
                                             </tr>
@@ -108,4 +100,4 @@ class ProjectListComponent extends Component {
     }
 }
 
-export default ProjectListComponent
+export default withNavigation(ProjectListComponent)
