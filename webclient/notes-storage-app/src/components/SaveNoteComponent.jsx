@@ -1,47 +1,40 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import NoteService from '../services/NoteService';
 import ProjectService from '../services/ProjectService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-class SaveNoteComponent extends Component {
-    constructor(props) {
-        super(props)
+function SaveNoteComponent() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const [name, setName] = useState('');
+    const [content, setContent] = useState('');
+    const [projectId, setProjectId] = useState(null);
+    
+    const navigate = useNavigate();
 
-        this.state = {
-            id: this.props.match ? this.props.match.params.id : null,
-            name: '',
-            content: '',
-            projectId: null
-        }
-        this.chnageNameHandler = this.changeNameHandler.bind(this);
-        this.chnageContentHandler = this.changeContentHandler.bind(this);
-        this.chnageProjectIdHandler = this.changeProjectIdHandler.bind(this);
-    }
-
-    componentDidMount() {
-        if (this.state.id) {
-            NoteService.getNoteById(this.state.id).then((res) => {
+    useEffect(() => {
+        if (id) {
+            NoteService.getNoteById(id).then((res) => {
                 let note = res.data;
-                this.setState({
-                    name: note.name,
-                    content: note.content,
-                    projectId: note.projectId
-                });
+                setName(note.name);
+                setContent(note.content);
+                setProjectId(note.projectId);
             });
         } else {
             NoteService.generateName().then((res) => {
-                this.setState({name: res.data.name});
+                setName(res.data.name);
             });
 
             ProjectService.getDefaultProject().then((res) => {
-                this.setState({projectId: res.data.id});
+                setProjectId(res.data.id);
             })
         }       
-    }
+    }, []);
 
-    saveNote = (p) => {
+    const saveNote = (p) => {
         p.preventDefault();
         let note = {
             id: this.state.id, 
@@ -52,67 +45,63 @@ class SaveNoteComponent extends Component {
 
         if (this.state.id) {
             NoteService.updateNote(note).then(res => {
-                this.props.navigate('/notes');
+                navigate('/notes');
             });
         } else {
             NoteService.createNote(note).then(res => {
-                this.props.navigate('/notes');
+                navigate('/notes');
             });
         }
     }
 
-    changeNameHandler = (event) => {
-        this.setState({name: event.target.value});
+    const changeNameHandler = (event) => {
+        setName(event.target.value);
     }
 
-    changeContentHandler = (event) => {
-        this.setState({content: event.target.value});
+    const changeContentHandler = (event) => {
+        setContent(event.target.value);
     }
 
-    changeProjectIdHandler = (e, data) => {
-        this.setState({projectId: data.value});
+    const changeProjectIdHandler = (e, data) => {
+        setProjectId(data.value);
     }
 
-    resolveTitle() {
-        if (this.state.id) {
+    const resolveTitle = () => {
+        if (id) {
             return <h3 className="text-center">Update Note</h3>
         } else {
             return <h3 className="text-center">Add Note</h3>
         }
     }
 
-    render() {
-        return (
+    return (
             <div>
                 <br></br>
                    <div className = "container">
                         <div className = "row">
                             <div className = "card col-md-12">
-                                {
-                                    this.resolveTitle()
-                                }
+                                {resolveTitle()}
                                 <div className = "card-body">
                                     <form>
-                                        <div class="form-row">
-                                            <div class="col-md-4 mb-3">
+                                        <div className="form-row">
+                                            <div className="col-md-4 mb-3">
                                                 <label> Name: </label>
                                                 <input placeholder="Name" name="name" className="form-control" 
-                                                    value={this.state.name} onChange={this.chnageNameHandler}/>
+                                                    value={name} onChange={changeNameHandler}/>
                                             </div>
-                                            <div class="col-md-4 mb-3">
+                                            <div className="col-md-4 mb-3">
                                                 <label> Project: </label>
-                                                {this.state.projectId && (<ProjectDropdownComponent onChange={this.chnageProjectIdHandler} defaultId={this.state.projectId} />)}
+                                                {projectId && (<ProjectDropdownComponent onChange={changeProjectIdHandler} defaultId={projectId} />)}
                                             </div>
                                         </div>
                                         <div className = "form-group">
                                             <label> Content: </label>
                                             <CKEditor
-                                                editor={ ClassicEditor }
-                                                data={ this.state.content }
+                                                editor={ClassicEditor}
+                                                data={content}
                                                 onReady={ editor => { } }
                                                 onChange={ ( event, editor ) => {
-                                                    const data = editor.getData();
-                                                    this.setState({ content: data});
+                                                    setContent(editor.getData());
                                                 } }
                                                 onBlur={ ( event, editor ) => {
                                                 } }
@@ -120,16 +109,15 @@ class SaveNoteComponent extends Component {
                                                 } }
                                             />
                                         </div>
-                                        <button className="btn btn-success" onClick={this.saveNote}>Save</button>
-                                        <button className="btn btn-danger" onClick={this.props.navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
+                                        <button className="btn btn-success" onClick={() => saveNote()}>Save</button>
+                                        <button className="btn btn-danger" onClick={() => navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                    </div>
             </div>
-        )
-    }
+    );
 }
 
 export default SaveNoteComponent

@@ -1,5 +1,5 @@
 import ProjectService from '../services/ProjectService';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 function SaveProjectComponent() {
@@ -9,14 +9,14 @@ function SaveProjectComponent() {
 
     const navigate = useNavigate();
 
-    useEffect = () => {
+    useEffect(() => {
         if (id) {
             ProjectService.getProjectById(id).then((res) =>{
                 let project = res.data;
                 setName(project.name);
             });
         }        
-    }
+    }, []);
 
     const saveProject = (p) => {
         p.preventDefault();

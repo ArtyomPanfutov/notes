@@ -11,7 +11,7 @@ function NoteListComponent() {
 
     useEffect(() => {
         fetchNotes();
-    });
+    }, []);
 
     const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ function NoteListComponent() {
         }
     }
 
-        return (
+    return (
             <div>
                  <div className = "row">
                     <button className="btn btn-primary" onClick={() => navigate('/create-note')}> New Note</button>
@@ -109,7 +109,7 @@ function NoteListComponent() {
                  </div>
 
             </div>
-        );
+    );
 }
 
 export default NoteListComponent

@@ -12,7 +12,7 @@ function ProjectListComponent() {
 
     useEffect(() => {
         fetchProjects();
-    });
+    }, []);
 
     const deleteProject = (id) => {
         ProjectService.deleteProjectById(id).then( res => {
