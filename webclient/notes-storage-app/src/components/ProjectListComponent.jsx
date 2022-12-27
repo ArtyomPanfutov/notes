@@ -32,11 +32,16 @@ function ProjectListComponent() {
         fetchProjects();
     };
 
+
+    const navigateToEditProject = (id) => {
+        navigate(`/edit-project/${id}`);
+    }
+
     return (
         <div>
             <div className = "row">
                 <div>
-                    <button className="btn btn-primary" onClick={() => navigate('/create-project')}> New Project</button>
+                <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New Project</button>
                 </div>
                 <div className="pagination">
                     <ReactPaginate
@@ -80,8 +85,8 @@ function ProjectListComponent() {
                                         <td> {project.id} </td>   
                                         <td> {project.name} </td>   
                                         <td>
-                                            <button onClick={ () => navigate(`/edit-project/${project.id}`)} className="btn btn-info">Update </button>
-                                            <button style={{marginLeft: "10px"}} onClick={ () => deleteProject(project.id)} className="btn btn-danger">Delete </button>
+                                            <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">Update </button>
+                                            <button style={{marginLeft: "10px"}} onClick={() => deleteProject(project.id)} className="btn btn-danger">Delete </button>
                                         </td>
                                     </tr>
                                 )

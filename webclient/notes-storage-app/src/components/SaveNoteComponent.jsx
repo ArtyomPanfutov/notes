@@ -4,7 +4,6 @@ import ProjectService from '../services/ProjectService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import withNavigation from './hocs';
 
 class SaveNoteComponent extends Component {
     constructor(props) {
@@ -133,4 +132,4 @@ class SaveNoteComponent extends Component {
     }
 }
 
-export default withNavigation(SaveNoteComponent)
+export default SaveNoteComponent

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header';
 import ProjectListComponent from './components/ProjectListComponent';
@@ -31,23 +31,21 @@ const App = () => {
 
   return (
     <>
-      <Router>
         <Header />
         <div className="main-content">
           <Routes>
             <Route element={ <Navigate to="/notes" /> } exact path="/" />
-            <Route element={Callback} exact path="/callback" />
             <Route element={<ProtectedRoute/>}>
-              <Route element={<ProjectListComponent/>} path = "/projects"/>
-              <Route element={<SaveProjectComponent/>} exact path = "/create-project" />
-              <Route element={<SaveProjectComponent/>} exact path = "/edit-project/:id" />
               <Route element={<NoteListComponent/>} path = "/notes" />
-              <Route element={<SaveNoteComponent/>} exact path = "/create-note" />
-              <Route element={<SaveNoteComponent/>} exact path = "/edit-note/:id"/>
+              <Route element={<ProjectListComponent/>} path = "/projects"/>
+              <Route element={<SaveProjectComponent/>} path = "/create-project" />
+              <Route element={<SaveProjectComponent/>} path = "/edit-project/:id" />
+              <Route element={<SaveNoteComponent/>} path = "/create-note" />
+              <Route element={<SaveNoteComponent/>} path = "/edit-note/:id"/>
+              <Route element={<Callback/>} path="/callback" />
             </Route>
           </Routes>
         </div>
-      </Router>
     </>
   );
 };

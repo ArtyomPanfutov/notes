@@ -1,75 +1,68 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import NoteService from '../services/NoteService'
 import ReactPaginate from "react-paginate";
-import withNavigation from './hocs';
+import { useNavigate } from 'react-router-dom';
 
-class NoteListComponent extends Component {
-    constructor(props) {
-        super(props)
+function NoteListComponent() {
+    const [searchContent, setSearchContent] = useState(null);
+    const [notes, setNotes] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
-        this.state = {
-                searchContent: null,
-                notes: [],
-                currentPage: 0,
-                totalPages: 0
-        }
-        this.deleteNote = this.deleteNote.bind(this);
-    }
+    useEffect(() => {
+        fetchNotes();
+    });
 
-    deleteNote(id) {
-        NoteService.deleteNoteById(id).then(res => {
-            this.setState({notes: this.state.notes.filter(note => note.id !== id)});
+    const navigate = useNavigate();
+
+    const fetchNotes = () => {
+        NoteService.getNotes(currentPage).then((res) => {
+            setNotes(res.data.items);
+            setTotalPages(res.data.pages);
         });
     }
 
-    componentDidMount() {
-        this.fetchNotes();
-    }
-
-    fetchNotes() {
-        NoteService.getNotes(this.state.currentPage).then((res) => {
-            this.setState({ notes: res.data.items, totalPages: res.data.pages });
-        });
-    }
-
-    handlePageClick = (event) => {
-        this.setState({ currentPage: event.selected });
-        if (this.state.searchContent) {
-            this.findNotesByContent(this.state.searchContent, this.state.currentPage);
+    const handlePageClick = (event) => {
+        setCurrentPage(event.selected);
+        if (searchContent) {
+            findNotesByContent(searchContent, currentPage);
         } else {
-            this.fetchNotes();
+            fetchNotes();
         }
     };
 
-    findNotesByContent(content, page) {
+    const deleteNote = (id) => {
+        NoteService.deleteNoteById(id).then(res => {
+            setNotes(notes.filter(note => note.id !== id));
+        });
+    }
+
+    const findNotesByContent = (content, page) => {
         const trimmed = content.trim();
         if (trimmed) {
             NoteService.findByContent(trimmed, page).then(res => {
-                this.setState({
-                    notes: res.data.items ? res.data.items : [], 
-                    totalPages: res.data.pages, 
-                    searchContent: trimmed
-                });
+                setNotes(res.data.items ? res.data.items : []);
+                setTotalPages(res.data.pages);
+                setSearchContent(trimmed);
             })
         } else {
-            this.setState({ searchContent: null });
-            this.fetchNotes();
+            setSearchContent(null);
+            fetchNotes();
         }
     }
 
-    render() {
         return (
             <div>
                  <div className = "row">
-                    <button className="btn btn-primary" onClick={this.props.navigate('/create-note')}> New Note</button>
-                    <input placeholder="Search notes" className="search-input" onChange={event => this.findNotesByContent(event.target.value, 0)} />
+                    <button className="btn btn-primary" onClick={() => navigate('/create-note')}> New Note</button>
+                    <input placeholder="Search notes" className="search-input" onChange={event => findNotesByContent(event.target.value, 0)} />
                     <div className="pagination">
                         <ReactPaginate
                             breakLabel="..."
                             nextLabel="Next >"
-                            onPageChange={this.handlePageClick}
+                            onPageChange={handlePageClick}
                             pageRangeDisplayed={5}
-                            pageCount={this.state.totalPages}
+                            pageCount={totalPages}
                             previousLabel="< Previous"
                             renderOnZeroPageCount={null}
                             breakClassName={"page-item"}
@@ -98,15 +91,14 @@ class NoteListComponent extends Component {
                             </thead>
                             <tbody>
                                 {
-                                this.state.notes &&
-                                    this.state.notes.map(
+                                    notes && notes.map(
                                         note => 
                                         <tr key = {note.id}>
                                             <td> {note.id} </td>   
                                             <td> {note.name} </td>   
                                             <td>
-                                                <button onClick={ () => this.props.navigate(`/edit-note/${note.id}`)} className="btn btn-info">Update </button>
-                                                <button style={{marginLeft: "10px"}} onClick={ () => this.deleteNote(note.id)} className="btn btn-danger">Delete </button>
+                                                <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">Update </button>
+                                                <button style={{marginLeft: "10px"}} onClick={ () => deleteNote(note.id)} className="btn btn-danger">Delete </button>
                                             </td>
                                         </tr>
                                     )
@@ -117,8 +109,7 @@ class NoteListComponent extends Component {
                  </div>
 
             </div>
-        )
-    }
+        );
 }
 
-export default withNavigation(NoteListComponent)
+export default NoteListComponent

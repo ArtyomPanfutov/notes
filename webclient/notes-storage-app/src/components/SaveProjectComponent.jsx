@@ -1,84 +1,76 @@
-import React, { Component } from 'react'
 import ProjectService from '../services/ProjectService';
-import withNavigation from './hocs';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
-class SaveProjectComponent extends Component {
-    constructor(props) {
-        super(props)
+function SaveProjectComponent() {
+    const [name, setName] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
+    const id = searchParams.get("id");
 
-        this.state = {
-            id: this.props.match ? this.props.match.params.id : null,
-            name: ''
-        }
-        this.chnageNameHandler = this.changeNameHandler.bind(this);
-    }
+    const navigate = useNavigate();
 
-    componentDidMount() {
-        if (this.state.id) {
-            ProjectService.getProjectById(this.state.id).then((res) =>{
+    useEffect = () => {
+        if (id) {
+            ProjectService.getProjectById(id).then((res) =>{
                 let project = res.data;
-                this.setState({
-                    name: project.name,
-                });
+                setName(project.name);
             });
         }        
     }
 
-    saveProject = (p) => {
+    const saveProject = (p) => {
         p.preventDefault();
-        let project = {id: this.state.id, name: this.state.name};
+        let project = {id: id, name: name};
 
-        if (this.state.id) {
-            ProjectService.updateProject(project).then( res => {
-                this.props.navigate('/projects');
+        if (id) {
+            ProjectService.updateProject(project).then(res => {
+                navigate('/projects');
             });
         } else {
             ProjectService.createProject(project).then(res => {
-                this.props.navigate('/projects');
+                navigate('/projects');
             });
         }
     }
 
-    changeNameHandler= (event) => {
-        this.setState({name: event.target.value});
+    const changeNameHandler= (event) => {
+        setName(event.target.value);
     }
 
-    resolveTitle() {
-        if (this.state.id) {
+    const resolveTitle = () => {
+        if (id) {
             return <h3 className="text-center">Update Project</h3>
         } else {
             return <h3 className="text-center">Add Project</h3>
         }
     }
 
-    render() {
-        return (
-            <div>
-                <br></br>
-                   <div className = "container">
-                        <div className = "row">
-                            <div className = "card col-md-6 offset-md-3 offset-md-3">
-                                {
-                                    this.resolveTitle()
-                                }
-                                <div className = "card-body">
-                                    <form>
-                                        <div className = "form-group">
-                                            <label> Name: </label>
-                                            <input placeholder="Name" name="name" className="form-control" 
-                                                value={this.state.name} onChange={this.chnageNameHandler}/>
-                                        </div>
-                                        <button className="btn btn-success" onClick={this.saveProject}>Save</button>
-                                        <button className="btn btn-danger" onClick={this.props.navigate('/projects')} style={{marginLeft: "10px"}}>Cancel</button>
-                                    </form>
-                                </div>
+    return (
+        <div>
+            <br></br>
+                <div className = "container">
+                    <div className = "row">
+                        <div className = "card col-md-6 offset-md-3 offset-md-3">
+                            {
+                                resolveTitle()
+                            }
+                            <div className = "card-body">
+                                <form>
+                                    <div className = "form-group">
+                                        <label> Name: </label>
+                                        <input placeholder="Name" name="name" className="form-control" 
+                                            value={name} onChange={changeNameHandler}/>
+                                    </div>
+                                    <button className="btn btn-success" onClick={saveProject}>Save</button>
+                                    <button className="btn btn-danger" onClick={() => navigate("/projects")} style={{marginLeft: "10px"}}>Cancel</button>
+                                </form>
                             </div>
                         </div>
+                    </div>
 
-                   </div>
-            </div>
-        )
-    }
+                </div>
+        </div>
+    )
 }
 
-export default withNavigation(SaveProjectComponent)
+export default SaveProjectComponent

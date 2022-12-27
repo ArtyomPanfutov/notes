@@ -5,13 +5,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.scss';
 import App from './App';
 import Auth0ProviderWrapper from './auth/Auth0ProviderWrapper';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-      <Auth0ProviderWrapper>
-        <App />
-      </Auth0ProviderWrapper>
+      <Router>
+        <Auth0ProviderWrapper>
+          <App />
+        </Auth0ProviderWrapper>
+      </Router>
   </React.StrictMode>);
 
   
