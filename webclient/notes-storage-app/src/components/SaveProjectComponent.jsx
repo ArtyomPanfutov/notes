@@ -1,11 +1,12 @@
 import ProjectService from '../services/ProjectService';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 function SaveProjectComponent() {
     const [name, setName] = useState('');
-    const [searchParams, setSearchParams] = useSearchParams();
-    const id = searchParams.get("id");
+
+    const params = useParams();
+    const id = params ? params.id : null;
 
     const navigate = useNavigate();
 
@@ -18,19 +19,15 @@ function SaveProjectComponent() {
         }        
     }, []);
 
-    const saveProject = (p) => {
-        p.preventDefault();
+    const saveProject = () => {
         let project = {id: id, name: name};
 
         if (id) {
-            ProjectService.updateProject(project).then(res => {
-                navigate('/projects');
-            });
+            ProjectService.updateProject(project);
         } else {
-            ProjectService.createProject(project).then(res => {
-                navigate('/projects');
-            });
+            ProjectService.createProject(project);  
         }
+        navigate("/projects");
     }
 
     const changeNameHandler= (event) => {
@@ -61,7 +58,7 @@ function SaveProjectComponent() {
                                         <input placeholder="Name" name="name" className="form-control" 
                                             value={name} onChange={changeNameHandler}/>
                                     </div>
-                                    <button className="btn btn-success" onClick={saveProject}>Save</button>
+                                    <button className="btn btn-success" onClick={() => saveProject()}>Save</button>
                                     <button className="btn btn-danger" onClick={() => navigate("/projects")} style={{marginLeft: "10px"}}>Cancel</button>
                                 </form>
                             </div>

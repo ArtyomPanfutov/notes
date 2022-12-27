@@ -98,7 +98,7 @@ function NoteListComponent() {
                                             <td> {note.name} </td>   
                                             <td>
                                                 <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">Update </button>
-                                                <button style={{marginLeft: "10px"}} onClick={ () => deleteNote(note.id)} className="btn btn-danger">Delete </button>
+                                                <button style={{marginLeft: "10px"}} onClick={() => deleteNote(note.id)} className="btn btn-danger">Delete </button>
                                             </td>
                                         </tr>
                                     )

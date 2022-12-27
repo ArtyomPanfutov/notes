@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import NoteService from '../services/NoteService';
 import ProjectService from '../services/ProjectService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
@@ -7,8 +7,8 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 function SaveNoteComponent() {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const id = searchParams.get("id");
+    const params = useParams();
+    const id = params ? params.id : null;
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
     const [projectId, setProjectId] = useState(null);
@@ -34,32 +34,24 @@ function SaveNoteComponent() {
         }       
     }, []);
 
-    const saveNote = (p) => {
-        p.preventDefault();
+    const saveNote = () => {
         let note = {
-            id: this.state.id, 
-            name: this.state.name,
-            content: this.state.content,
-            projectId: this.state.projectId
+            id: id, 
+            name: name,
+            content: content,
+            projectId: projectId
         };
 
-        if (this.state.id) {
-            NoteService.updateNote(note).then(res => {
-                navigate('/notes');
-            });
+        if (id) {
+            NoteService.updateNote(note);
         } else {
-            NoteService.createNote(note).then(res => {
-                navigate('/notes');
-            });
+            NoteService.createNote(note);
         }
+        navigate('/notes');
     }
 
     const changeNameHandler = (event) => {
         setName(event.target.value);
-    }
-
-    const changeContentHandler = (event) => {
-        setContent(event.target.value);
     }
 
     const changeProjectIdHandler = (e, data) => {

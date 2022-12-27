@@ -27,7 +27,7 @@ class NotesService {
         return httpClient.get(`/api/notes/${id}`)
     }
 
-    deleteNotetById(id) {
+    deleteNoteById(id) {
         return httpClient.delete(`/api/notes/${id}`)
     }
 
