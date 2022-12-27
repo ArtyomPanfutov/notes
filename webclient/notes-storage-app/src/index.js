@@ -9,13 +9,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-      <Router>
-        <Auth0ProviderWrapper>
-          <App />
-        </Auth0ProviderWrapper>
-      </Router>
-  </React.StrictMode>);
+    <Router>
+      <Auth0ProviderWrapper>
+        <App />
+      </Auth0ProviderWrapper>
+    </Router>);
 
   
   // If you want your app to work offline and load faster, you can change
