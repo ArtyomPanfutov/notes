@@ -18,10 +18,10 @@ const Header = () => {
         <div className="links">
           {isAuthenticated && (
           <>
-            <NavLink to="/projects" className="link" activeClassName="active" exact>
+            <NavLink to="/projects" className="link" >
                 Projects
             </NavLink>
-            <NavLink to="/notes" className="link" activeClassName="active" exact>
+            <NavLink to="/notes" className="link" >
               Notes
             </NavLink>
           </>
