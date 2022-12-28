@@ -8,11 +8,13 @@ const Header = () => {
 
   return (
     <header>
-        <div className="auth-div">
-          <AuthenticationButton />
-        </div>
-        <div className="header-text-div">
-          <h1>Note App</h1>
+          <div className="auth-div">
+            <AuthenticationButton />
+          </div>
+        <div className="container">
+          <div className="header-text-div">
+            <h1>Note App</h1>
+          </div>
         </div>
         <hr/>
         <div className="links">

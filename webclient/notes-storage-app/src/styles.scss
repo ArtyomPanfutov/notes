@@ -42,6 +42,19 @@ header {
       border-bottom: 2px solid #fff;
     }
   }
+
+  .container {
+    position: relative; 
+  }
+
+  .auth-div {
+    float: right;
+  }
+
+  .header-text-div {
+    text-align: center;
+  }
+
 }
 
 .main-content {
@@ -75,16 +88,6 @@ header {
 
 .ck-editor__editable_inline {
   min-height: 400px;
-}
-
-.auth-div {
-  float: right;
-}
-
-.header-text-div {
-  margin-left: 150px;
-  margin-right: 0px;
-  text-align: center;
 }
 
 .loader {
