@@ -10,8 +10,12 @@ function NoteList() {
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        fetchNotes();
-    }, []);
+        if (searchContent) {
+            findNotesByContent(searchContent, currentPage);
+        } else {
+            fetchNotes();
+        }
+    }, [currentPage]);
 
     const navigate = useNavigate();
 
@@ -24,11 +28,6 @@ function NoteList() {
 
     const handlePageClick = (event) => {
         setCurrentPage(event.selected);
-        if (searchContent) {
-            findNotesByContent(searchContent, currentPage);
-        } else {
-            fetchNotes();
-        }
     };
 
     const deleteNote = (id) => {

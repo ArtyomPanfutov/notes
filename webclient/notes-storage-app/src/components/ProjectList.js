@@ -12,7 +12,7 @@ function ProjectList() {
 
     useEffect(() => {
         fetchProjects();
-    }, []);
+    }, [currentPage]);
 
     const deleteProject = (id) => {
         ProjectService.deleteProjectById(id).then( res => {
@@ -29,9 +29,7 @@ function ProjectList() {
 
     const handlePageClick = (event) => {
         setCurrentPage(event.selected);
-        fetchProjects();
     };
-
 
     const navigateToEditProject = (id) => {
         navigate(`/edit-project/${id}`);
