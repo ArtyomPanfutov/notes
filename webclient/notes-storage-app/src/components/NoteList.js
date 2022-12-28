@@ -3,7 +3,7 @@ import NoteService from '../services/NoteService'
 import ReactPaginate from "react-paginate";
 import { useNavigate } from 'react-router-dom';
 
-function NoteListComponent() {
+function NoteList() {
     const [searchContent, setSearchContent] = useState(null);
     const [notes, setNotes] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
@@ -112,4 +112,4 @@ function NoteListComponent() {
     );
 }
 
-export default NoteListComponent
+export default NoteList

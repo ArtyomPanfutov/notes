@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate";
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
-function ProjectListComponent() {
+function ProjectList() {
     const [projects, setProjects] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
@@ -98,4 +98,4 @@ function ProjectListComponent() {
     )
 }
 
-export default ProjectListComponent
+export default ProjectList

@@ -2,7 +2,7 @@ import ProjectService from '../services/ProjectService';
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
-function SaveProjectComponent() {
+function SaveProject() {
     const [name, setName] = useState('');
 
     const params = useParams();
@@ -70,4 +70,4 @@ function SaveProjectComponent() {
     )
 }
 
-export default SaveProjectComponent
+export default SaveProject

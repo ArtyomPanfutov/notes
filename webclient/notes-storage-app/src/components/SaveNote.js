@@ -6,7 +6,7 @@ import ProjectDropdownComponent from './ProjectDropdownComponent'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-function SaveNoteComponent() {
+function SaveNote() {
     const params = useParams();
     const id = params ? params.id : null;
     const [name, setName] = useState('');
@@ -112,4 +112,4 @@ function SaveNoteComponent() {
     );
 }
 
-export default SaveNoteComponent
+export default SaveNote
