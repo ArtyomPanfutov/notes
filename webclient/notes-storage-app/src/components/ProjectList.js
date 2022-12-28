@@ -16,7 +16,8 @@ function ProjectList() {
 
     const deleteProject = (id) => {
         ProjectService.deleteProjectById(id).then( res => {
-            setProjects(projects.filter(project=> project.id !== id));
+            // TODO: response handling
+            setProjects(projects.filter(project => project.id !== id));
         });
     }
 
@@ -38,29 +39,31 @@ function ProjectList() {
     return (
         <div>
             <div className = "row">
-                <div>
-                <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New Project</button>
+                <div className = "vertical-element">
+                    <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New Project</button>
                 </div>
-                <div className="pagination">
-                    <ReactPaginate
-                        breakLabel="..."
-                        nextLabel="Next >"
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={5}
-                        pageCount={totalPages}
-                        previousLabel="< Previous"
-                        renderOnZeroPageCount={null}
-                        breakClassName={"page-item"}
-                        breakLinkClassName={"page-link"}
-                        containerClassName={"pagination"}
-                        pageClassName={"page-item"}
-                        pageLinkClassName={"page-link"}
-                        previousClassName={"page-item"}
-                        previousLinkClassName={"page-link"}
-                        nextClassName={"page-item"}
-                        nextLinkClassName={"page-link"}
-                        activeClassName={"active"}
-                    />
+                <div className = "vertical-element">
+                    <div className = "right-aligned">
+                        <ReactPaginate
+                            breakLabel="..."
+                            nextLabel="Next >"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={totalPages}
+                            previousLabel="< Previous"
+                            renderOnZeroPageCount={null}
+                            breakClassName={"page-item"}
+                            breakLinkClassName={"page-link"}
+                            containerClassName={"pagination"}
+                            pageClassName={"page-item"}
+                            pageLinkClassName={"page-link"}
+                            previousClassName={"page-item"}
+                            previousLinkClassName={"page-link"}
+                            nextClassName={"page-item"}
+                            nextLinkClassName={"page-link"}
+                            activeClassName={"active"}
+                        />
+                    </div>
                 </div>
             </div>
             <br></br>

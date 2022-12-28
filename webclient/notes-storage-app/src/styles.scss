@@ -101,6 +101,15 @@ header {
   transform: translateY(-50%);
 }
 
+.vertical-element {
+  float: left; 
+  width: 50%; 
+}
+
+.right-aligned {
+  float: right;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

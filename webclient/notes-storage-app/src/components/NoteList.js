@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import NoteService from '../services/NoteService'
+import React, { useEffect, useState } from 'react';
+import NoteService from '../services/NoteService';
 import ReactPaginate from "react-paginate";
 import { useNavigate } from 'react-router-dom';
 
@@ -53,29 +53,33 @@ function NoteList() {
     return (
             <div>
                  <div className = "row">
-                    <button className="btn btn-primary" onClick={() => navigate('/create-note')}> New Note</button>
-                    <input placeholder="Search notes" className="search-input" onChange={event => findNotesByContent(event.target.value, 0)} />
-                    <div className="pagination">
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel="Next >"
-                            onPageChange={handlePageClick}
-                            pageRangeDisplayed={5}
-                            pageCount={totalPages}
-                            previousLabel="< Previous"
-                            renderOnZeroPageCount={null}
-                            breakClassName={"page-item"}
-                            breakLinkClassName={"page-link"}
-                            containerClassName={"pagination"}
-                            pageClassName={"page-item"}
-                            pageLinkClassName={"page-link"}
-                            previousClassName={"page-item"}
-                            previousLinkClassName={"page-link"}
-                            nextClassName={"page-item"}
-                            nextLinkClassName={"page-link"}
-                            activeClassName={"active"}
-                        />
-                </div>
+                     <div className = "vertical-element">
+                        <button className="btn btn-primary" onClick={() => navigate('/create-note')}> New Note</button>
+                        <input placeholder="Search notes" className="search-input" onChange={event => findNotesByContent(event.target.value, 0)} />
+                    </div>
+                    <div className = "vertical-element">
+                        <div className="right-aligned">
+                            <ReactPaginate
+                                breakLabel="..."
+                                nextLabel="Next >"
+                                onPageChange={handlePageClick}
+                                pageRangeDisplayed={5}
+                                pageCount={totalPages}
+                                previousLabel="< Previous"
+                                renderOnZeroPageCount={null}
+                                breakClassName={"page-item"}
+                                breakLinkClassName={"page-link"}
+                                containerClassName={"pagination"}
+                                pageClassName={"page-item"}
+                                pageLinkClassName={"page-link"}
+                                previousClassName={"page-item"}
+                                previousLinkClassName={"page-link"}
+                                nextClassName={"page-item"}
+                                nextLinkClassName={"page-link"}
+                                activeClassName={"active"}
+                            />
+                        </div>
+                    </div>
                  </div>
                  <br></br>
                  <div className = "row">
