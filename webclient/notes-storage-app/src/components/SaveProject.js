@@ -48,9 +48,9 @@ function SaveProject() {
                 <div className = "container">
                     <div className = "row">
                         <div className = "card col-md-6 offset-md-3 offset-md-3">
-                            {
-                                resolveTitle()
-                            }
+                            <div className = "form-header">
+                                { resolveTitle() }
+                            </div>
                             <div className = "card-body">
                                 <form>
                                     <div className = "form-group">
@@ -58,8 +58,10 @@ function SaveProject() {
                                         <input placeholder="Name" name="name" className="form-control" 
                                             value={name} onChange={changeNameHandler}/>
                                     </div>
-                                    <button className="btn btn-success" onClick={() => saveProject()}>Save</button>
-                                    <button className="btn btn-danger" onClick={() => navigate("/projects")} style={{marginLeft: "10px"}}>Cancel</button>
+                                    <div className = "form-result-buttons">
+                                        <button className="btn btn-success" onClick={() => saveProject()}>Save</button>
+                                        <button className="btn btn-danger" onClick={() => navigate("/projects")} style={{marginLeft: "10px"}}>Cancel</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
