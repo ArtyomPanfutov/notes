@@ -44,6 +44,8 @@ jobs:
           REACT_APP_AUTH0_CALLBACK_URL: ${{ secrets.AUTH0_CALLBACK_URL }}
           REACT_APP_AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           REACT_APP_AUTH0_DOMAIN:  ${{ secrets.AUTH0_DOMAIN }}
+      - name: Print debug 
+        run: cat ./webclient/notes-storage-app/.env
       - name: Build Image
         run: docker build -t artyompanfutov/notes-app:0.1 ./webclient/notes-storage-app
       
