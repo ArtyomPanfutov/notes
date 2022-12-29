@@ -9,7 +9,7 @@ jobs:
         uses: actions/setup-java@v3.9.0
         with:
           java-version: 18
-          distribution: jdk
+          distribution: adopt
       - name: Clean and prepare
         run: mvn clean mn:dockerfile -Dpackaging=docker
       - name: Maven install 
