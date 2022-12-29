@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   build-backend:
     runs-on: ubuntu-latest
-    name: Build backend
+    name: Build Backend Image
     steps:
       - name: Checkout
         uses: actions/checkout@v2.6.0
@@ -14,14 +14,22 @@ jobs:
           distribution: adopt
       - name: Clean and prepare
         run: mvn clean mn:dockerfile -Dpackaging=docker
-      - name: Maven install 
+      - name: Maven install (with docker image build)
         run: mvn install -Dpackaging=jar
   build-nginx:
     runs-on: ubuntu-latest
-    name: Build NGiNX
+    name: Build NGiNX Image
     steps:
       - name: Checkout
         uses: actions/checkout@v2.6.0
       - name: Build Docker Image
         run: docker build -t artyompanfutov/notes-nginx:0.1 ./nginx
+  build-react-app:
+    runs-on: ubuntu-latest
+    name: Build React App Image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.6.0
+      - name: Build Image
+        run: docker build -t artyompanfutov/notes-app:0.1 ./webclient/notes-storage-app
       
