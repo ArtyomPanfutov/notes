@@ -17,8 +17,8 @@ jobs:
       - name: Maven install 
         run: mvn install -Dpackaging=jar
   build-nginx:
-    runs-on: ubuntu-lates
-    name: build NGiNX
+    runs-on: ubuntu-latest
+    name: Build NGiNX
     steps:
       - name: Checkout
         uses: actions/checkout@v2.6.0
