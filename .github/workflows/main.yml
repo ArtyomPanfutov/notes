@@ -1,0 +1,18 @@
+on: [push, pull_request]
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.9.0
+        with:
+          java-version: 18
+          # The path to the `.java-version` file. See examples of supported syntax in README file
+          java-package: jdk
+      - name: Clean and prepare
+        run: mvn clean mn:dockerfile -Dpackaging=docker
+      - name: Maven install 
+        run: mvn install -Dpackaging=jar
+      
