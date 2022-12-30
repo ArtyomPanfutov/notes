@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.panfutov</groupId>
   <artifactId>notes-storage-service</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>${packaging}</packaging>
 
   <parent>
@@ -21,6 +21,8 @@
     <micronaut.runtime>netty</micronaut.runtime>
     <exec.mainClass>com.panfutov.notes.Application</exec.mainClass>
     <hibernate.search.version>5.11.11.Final</hibernate.search.version>
+    <docker.repository>panfutov.com/notes-service</docker.repository>
+    <docker.tag>0.1</docker.tag>
   </properties>
 
   <repositories>
@@ -236,7 +238,7 @@
           </annotationProcessorPaths>
           <compilerArgs>
             <arg>-Amicronaut.processing.group=com.panfutov</arg>
-            <arg>-Amicronaut.processing.module=notes-storage-service</arg>
+            <arg>-Amicronaut.processing.module=notes-service</arg>
           </compilerArgs>
         </configuration>
       </plugin>
@@ -254,8 +256,8 @@
           </execution>
         </executions>
         <configuration>
-          <repository>panfutov.com/notes-service</repository>
-          <tag>${project.version}</tag>
+          <repository>${docker.repository}</repository>
+          <tag>${docker.tag}</tag>
           <buildArgs>
             <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>
           </buildArgs>

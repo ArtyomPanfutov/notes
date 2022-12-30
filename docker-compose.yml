@@ -11,7 +11,7 @@ services:
       - api-server
       - front-app
   api-server:
-    image: panfutov.com/notes-service:0.1-SNAPSHOT
+    image: panfutov.com/notes-service:0.1
     depends_on:
       - db
       - elasticsearch
