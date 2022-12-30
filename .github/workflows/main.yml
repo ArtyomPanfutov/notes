@@ -1,9 +1,18 @@
 on: [push, pull_request]
 
+env:
+  AWS_REGION: us-east-1                  
+  NOTES_APP_ECR_REPOSITORY: 561356720088.dkr.ecr.us-east-1.amazonaws.com/notes-app           
+  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
+  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
+                                               # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: MY_CONTAINER_NAME     
+  
 jobs:
-  build-backend:
+  build-notes-service:
     runs-on: ubuntu-latest
-    name: Build Backend Image
+    name: Build Notes Backend Image
     steps:
       - name: Checkout
         uses: actions/checkout@v2.6.0
@@ -24,12 +33,21 @@ jobs:
         uses: actions/checkout@v2.6.0
       - name: Build Docker Image
         run: docker build -t artyompanfutov/notes-nginx:0.1 ./nginx
-  build-react-app:
+  build-notes-app:
     runs-on: ubuntu-latest
-    name: Build React App Image
+    name: Build Notes App Image
     steps:
       - name: Checkout
         uses: actions/checkout@v2.6.0
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}   
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@util
       - name: Create Env
         run: echo -e "REACT_APP_API_URL=$REACT_APP_API_URL
           \nREACT_APP_AUTH0_AUDIENCE=$REACT_APP_AUTH0_AUDIENCE
@@ -41,7 +59,12 @@ jobs:
           REACT_APP_AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
           REACT_APP_AUTH0_CALLBACK_URL: ${{ secrets.AUTH0_CALLBACK_URL }}
           REACT_APP_AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
-          REACT_APP_AUTH0_DOMAIN:  ${{ secrets.AUTH0_DOMAIN }}
+          REACT_APP_AUTH0_DOMAIN:  ${{ secrets.AUTH0_DOMAIN }}    
       - name: Build Image
-        run: docker build -t artyompanfutov/notes-app:0.1 ./webclient/notes-storage-app
-      
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$NOTES_APP_ECR_REPOSITORY:$IMAGE_TAG ./webclient/notes-storage-app
+          docker push $ECR_REGISTRY/$NOTES_APP_ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$NOTES_APP_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
