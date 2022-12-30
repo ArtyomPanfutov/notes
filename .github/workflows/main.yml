@@ -35,6 +35,9 @@ jobs:
       - name: Clean and prepare
         run: mvn clean mn:dockerfile -Dpackaging=docker
       - name: Maven install (with docker image build)
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         run: mvn install -Dpackaging=jar -Ddocker.repository=$ECR_REGISTRY/$NOTES_SERVICE_ECR_REPOSITORY 
           -Ddocker.tag=$IMAGE_TAG
       - name: Push docker image to ECR
