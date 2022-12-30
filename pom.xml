@@ -19,7 +19,7 @@
     <micronaut.version>3.5.2</micronaut.version>
     <micronaut.data.version>3.4.2</micronaut.data.version>
     <micronaut.runtime>netty</micronaut.runtime>
-    <exec.mainClass>com.luckwheat.notes.Application</exec.mainClass>
+    <exec.mainClass>com.panfutov.notes.Application</exec.mainClass>
     <hibernate.search.version>5.11.11.Final</hibernate.search.version>
   </properties>
 
