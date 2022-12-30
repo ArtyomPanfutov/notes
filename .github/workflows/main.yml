@@ -2,11 +2,11 @@ on: [push, pull_request]
 
 env:
   AWS_REGION: us-east-1                  
-  NOTES_APP_ECR_REPOSITORY: 561356720088.dkr.ecr.us-east-1.amazonaws.com/notes-app           
-  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
+  NOTES_APP_ECR_REPOSITORY: notes-app           
+  ECS_SERVICE: MY_ECS_SERVICE                
+  ECS_CLUSTER: MY_ECS_CLUSTER                 
+  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION 
+                                              
   CONTAINER_NAME: MY_CONTAINER_NAME     
   
 jobs:
