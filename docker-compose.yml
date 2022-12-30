@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   nginx:
-    image: luckwheat.com/notes-nginx:0.1
+    image: panfutov.com/notes-nginx:0.1
     ports:
       - "80:80"
     environment:
@@ -11,7 +11,7 @@ services:
       - api-server
       - front-app
   api-server:
-    image: luckwheat.com/notes-storage-service:0.1-SNAPSHOT
+    image: panfutov.com/notes-storage-service:0.1-SNAPSHOT
     depends_on:
       - db
       - elasticsearch
@@ -29,7 +29,7 @@ services:
       OAUTH_ISSUER_URL: ${OAUTH_ISSUER_URL}
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
   front-app:
-    image: luckwheat.com/notes-app:0.1
+    image: panfutov.com/notes-app:0.1
     ports:
       - "3000:3000"
     environment:

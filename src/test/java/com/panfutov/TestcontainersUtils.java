@@ -1,4 +1,4 @@
-package com.luckwheat;
+package com.panfutov;
 
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;

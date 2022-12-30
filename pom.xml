@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.luckwheat</groupId>
+  <groupId>com.panfutov</groupId>
   <artifactId>notes-storage-service</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>${packaging}</packaging>
@@ -235,7 +235,7 @@
             </path>
           </annotationProcessorPaths>
           <compilerArgs>
-            <arg>-Amicronaut.processing.group=com.luckwheat</arg>
+            <arg>-Amicronaut.processing.group=com.panfutov</arg>
             <arg>-Amicronaut.processing.module=notes-storage-service</arg>
           </compilerArgs>
         </configuration>
@@ -254,7 +254,7 @@
           </execution>
         </executions>
         <configuration>
-          <repository>luckwheat.com/notes-storage-service</repository>
+          <repository>panfutov.com/notes-storage-service</repository>
           <tag>${project.version}</tag>
           <buildArgs>
             <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>

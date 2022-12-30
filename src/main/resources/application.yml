@@ -38,7 +38,7 @@ jpa:
         hbm2ddl:
           auto: none
           show_sql: true
-jpa.default.entity-scan.pakage: com.luckwheat.notes.entity
+jpa.default.entity-scan.pakage: com.panfutov.notes.entity
 hibernate:
   search:
     default:
