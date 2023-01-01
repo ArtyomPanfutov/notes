@@ -45,29 +45,6 @@ jobs:
           mvn install -Dpackaging=jar -Ddocker.repository=$ECR_REGISTRY/$NOTES_SERVICE_ECR_REPOSITORY -Ddocker.tag=$IMAGE_TAG
           docker push $ECR_REGISTRY/$NOTES_SERVICE_ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$NOTES_SERVICE_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-  build-nginx:
-    runs-on: ubuntu-latest
-    name: Build NGiNX Image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.6.0
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@aaf69d68aa3fb14c1d5a6be9ac61fe15b48453a2
-      - name: Build Image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/$NGINX_ECR_REPOSITORY:$IMAGE_TAG ./webclient/notes-storage-app
-          docker push $ECR_REGISTRY/$NGINX_ECR_REPOSITORY:$IMAGE_TAG
-          echo "image=$ECR_REGISTRY/$NGINX_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
   build-notes-app:
     runs-on: ubuntu-latest
     name: Build Notes App Image
