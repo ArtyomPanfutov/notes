@@ -10,12 +10,12 @@ env:
   
   NOTES_SERVICE_ECR_REPOSITORY: notes-service     
   NOTES_SERVICE_ECS_SERVICE: notes-service
-  NOTES_SERVICE_ECS_TASK_DEFINITION: notes-service 
+  NOTES_SERVICE_ECS_TASK_DEFINITION: .github/aws/notes-service-taskdef.json 
   NOTES_SERVICE_CONTAINER_NAME: notes-service   
   
   NOTES_APP_ECR_REPOSITORY: notes-app
   NOTES_APP_ECS_SERVICE: notes-app
-  NOTES_APP_ECS_TASK_DEFINITION: notes-app
+  NOTES_APP_ECS_TASK_DEFINITION: .github/aws/notes-app-taskdef.json
   NOTES_APP_CONTAINER_NAME: notes-app
   
 jobs:
@@ -58,7 +58,7 @@ jobs:
           container-name: ${{ env.NOTES_SERVICE_CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
       - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.NOTES_SERVICE_ECS_SERVICE }}
@@ -108,7 +108,7 @@ jobs:
           container-name: ${{ env.NOTES_APP_CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
       - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.NOTES_APP_ECS_SERVICE }}
