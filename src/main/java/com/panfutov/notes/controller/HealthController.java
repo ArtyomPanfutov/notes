@@ -8,7 +8,7 @@ import io.micronaut.http.annotation.Get;
 public class HealthController {
 
     @Get
-    public HttpResponse<Void> getDefaultProject() {
+    public HttpResponse<Void> health() {
         // TODO
         return HttpResponse.ok();
     }
