@@ -42,6 +42,7 @@ jobs:
       - name: Clean and prepare
         run: mvn clean mn:dockerfile -Dpackaging=docker
       - name: Maven install (with docker image build)
+        id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
@@ -91,6 +92,7 @@ jobs:
           REACT_APP_AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           REACT_APP_AUTH0_DOMAIN:  ${{ secrets.AUTH0_DOMAIN }}    
       - name: Build Image
+        id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
