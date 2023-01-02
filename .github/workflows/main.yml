@@ -21,7 +21,7 @@ env:
 jobs:
   build-notes-service:
     runs-on: ubuntu-latest
-    name: Build Notes Backend Image
+    name: Build and Deploy Notes Backend Image
     steps:
       - name: Checkout
         uses: actions/checkout@v2.6.0
@@ -57,7 +57,7 @@ jobs:
           task-definition: ${{ env.NOTES_SERVICE_ECS_TASK_DEFINITION }}
           container-name: ${{ env.NOTES_SERVICE_CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
-      - name: Deploy Amazon ECS task definition
+      - name: Deploy to AWS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
@@ -66,7 +66,7 @@ jobs:
           wait-for-service-stability: true     
   build-notes-app:
     runs-on: ubuntu-latest
-    name: Build Notes App Image
+    name: Build and Deploy Notes App Image
     steps:
       - name: Checkout
         uses: actions/checkout@v2.6.0
@@ -80,9 +80,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@aaf69d68aa3fb14c1d5a6be9ac61fe15b48453a2
       - name: Create Env
-        run: echo -e "REACT_APP_API_URL=notes-internal-1385588612.us-east-1.elb.amazonaws.com:8080
+        run: echo -e "REACT_APP_API_URL=$REACT_APP_API_URL
           \nREACT_APP_AUTH0_AUDIENCE=$REACT_APP_AUTH0_AUDIENCE
-          \nREACT_APP_AUTH0_CALLBACK_URL=notes-internal-1385588612.us-east-1.elb.amazonaws.com\callback
+          \nREACT_APP_AUTH0_CALLBACK_URL=$REACT_APP_AUTH0_CALLBACK_URL
           \nREACT_APP_AUTH0_CLIENT_ID=$REACT_APP_AUTH0_CLIENT_ID
           \nREACT_APP_AUTH0_DOMAIN=$REACT_APP_AUTH0_DOMAIN" >> ./webclient/notes-storage-app/.env
         env: 
@@ -107,7 +107,7 @@ jobs:
           task-definition: ${{ env.NOTES_APP_ECS_TASK_DEFINITION }}
           container-name: ${{ env.NOTES_APP_CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
-      - name: Deploy Amazon ECS task definition
+      - name: Deploy to AWS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
