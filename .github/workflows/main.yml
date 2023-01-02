@@ -5,14 +5,18 @@ on:
 
 env:
   AWS_REGION: us-east-1                  
+  
+  ECS_CLUSTER: notes                 
+  
+  NOTES_SERVICE_ECR_REPOSITORY: notes-service     
+  NOTES_SERVICE_ECS_SERVICE: notes-service
+  NOTES_SERVICE_ECS_TASK_DEFINITION: notes-service 
+  NOTES_SERVICE_CONTAINER_NAME: notes-service   
+  
   NOTES_APP_ECR_REPOSITORY: notes-app
-  NOTES_SERVICE_ECR_REPOSITORY: notes-service
-  NGINX_ECR_REPOSITORY: notes-nginx
-  ECS_SERVICE: MY_ECS_SERVICE
-  ECS_CLUSTER: MY_ECS_CLUSTER                 
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION 
-                                              
-  CONTAINER_NAME: MY_CONTAINER_NAME     
+  NOTES_APP_ECS_SERVICE: notes-app
+  NOTES_APP_ECS_TASK_DEFINITION: notes-app
+  NOTES_APP_CONTAINER_NAME: notes-app
   
 jobs:
   build-notes-service:
@@ -45,6 +49,20 @@ jobs:
           mvn install -Dpackaging=jar -Ddocker.repository=$ECR_REGISTRY/$NOTES_SERVICE_ECR_REPOSITORY -Ddocker.tag=$IMAGE_TAG
           docker push $ECR_REGISTRY/$NOTES_SERVICE_ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$NOTES_SERVICE_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
+        with:
+          task-definition: ${{ env.NOTES_SERVICE_ECS_TASK_DEFINITION }}
+          container-name: ${{ env.NOTES_SERVICE_CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.NOTES_SERVICE_ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true     
   build-notes-app:
     runs-on: ubuntu-latest
     name: Build Notes App Image
@@ -61,9 +79,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@aaf69d68aa3fb14c1d5a6be9ac61fe15b48453a2
       - name: Create Env
-        run: echo -e "REACT_APP_API_URL=$REACT_APP_API_URL
+        run: echo -e "REACT_APP_API_URL=notes-internal-1385588612.us-east-1.elb.amazonaws.com:8080
           \nREACT_APP_AUTH0_AUDIENCE=$REACT_APP_AUTH0_AUDIENCE
-          \nREACT_APP_AUTH0_CALLBACK_URL=$REACT_APP_AUTH0_CALLBACK_URL
+          \nREACT_APP_AUTH0_CALLBACK_URL=notes-internal-1385588612.us-east-1.elb.amazonaws.com\callback
           \nREACT_APP_AUTH0_CLIENT_ID=$REACT_APP_AUTH0_CLIENT_ID
           \nREACT_APP_AUTH0_DOMAIN=$REACT_APP_AUTH0_DOMAIN" >> ./webclient/notes-storage-app/.env
         env: 
@@ -80,3 +98,17 @@ jobs:
           docker build -t $ECR_REGISTRY/$NOTES_APP_ECR_REPOSITORY:$IMAGE_TAG ./webclient/notes-storage-app
           docker push $ECR_REGISTRY/$NOTES_APP_ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$NOTES_APP_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
+        with:
+          task-definition: ${{ env.NOTES_APP_ECS_TASK_DEFINITION }}
+          container-name: ${{ env.NOTES_APP_CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.NOTES_APP_ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true 
