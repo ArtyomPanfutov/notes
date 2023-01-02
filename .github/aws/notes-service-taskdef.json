@@ -1,0 +1,100 @@
+{
+  "family": "notes-service",
+  "containerDefinitions": [
+    {
+      "name": "notes-service",
+      "image": "561356720088.dkr.ecr.us-east-1.amazonaws.com/notes-service:850537d8a3a74005476c2d25b992155d1a7d135d",
+      "cpu": 0,
+      "links": [],
+      "portMappings": [
+        {
+          "name": "notes-service-8080-tcp",
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "entryPoint": [],
+      "command": [],
+      "environment": [
+        {
+          "name": "DB_DIALECT",
+          "value": "org.hibernate.dialect.PostgreSQLDialect"
+        },
+        {
+          "name": "DB_DRIVER",
+          "value": "org.postgresql.Driver"
+        },
+        {
+          "name": "DB_URL",
+          "value": "jdbc:postgresql://notes-db.c2o3mottnrr2.us-east-1.rds.amazonaws.com:5432/notes"
+        },
+        {
+          "name": "JAVA_TOOL_OPTIONS",
+          "value": "-Xms256m -Xmx512m"
+        },
+        {
+          "name": "ELASTICSEARCH_URL",
+          "value": "http://notes-internal-1385588612.us-east-1.elb.amazonaws.com:9200"
+        }
+      ],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "secrets": [
+        {
+          "name": "DB_USERNAME",
+          "valueFrom": "arn:aws:ssm:us-east-1:561356720088:parameter/NOTES_DB_USER"
+        },
+        {
+          "name": "OAUTH_JWKS_URI",
+          "valueFrom": "arn:aws:ssm:us-east-1:561356720088:parameter/OAUTH_JWKS_URI"
+        },
+        {
+          "name": "OAUTH_ISSUER_URL",
+          "valueFrom": "arn:aws:ssm:us-east-1:561356720088:parameter/OAUTH_ISSUER_URL"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "arn:aws:ssm:us-east-1:561356720088:parameter/NOTES_DB_PASSWORD"
+        }
+      ],
+      "dnsServers": [],
+      "dnsSearchDomains": [],
+      "extraHosts": [],
+      "dockerSecurityOptions": [],
+      "dockerLabels": {},
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/notes_service",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      },
+      "systemControls": []
+    }
+  ],
+  "executionRoleArn": "arn:aws:iam::561356720088:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "tags": [
+    {
+      "key": "ecs:taskDefinition:createdFrom",
+      "value": "ecs-console-v2"
+    }
+  ]
+}
