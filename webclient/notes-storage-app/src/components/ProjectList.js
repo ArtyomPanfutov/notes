@@ -2,11 +2,13 @@ import ProjectService from '../services/ProjectService';
 import ReactPaginate from "react-paginate";
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import Loader from './Loader';
 
 function ProjectList() {
     const [projects, setProjects] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -22,9 +24,11 @@ function ProjectList() {
     }
 
     const fetchProjects = () => {
+        setIsLoading(true);
         ProjectService.getProjectsPage(currentPage).then((res) => {
             setProjects(res.data.items);
             setTotalPages(res.data.pages);
+            setIsLoading(false);
         });
     }
 
@@ -67,6 +71,11 @@ function ProjectList() {
                 </div>
             </div>
             <br></br>
+            {isLoading && 
+                <div className="page-layout">
+                    <Loader />;
+                </div>
+            }
             <div className = "row">
                 <table className = "table table-striped table-bordered">
 

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import NoteService from '../services/NoteService';
 import ReactPaginate from "react-paginate";
 import { useNavigate } from 'react-router-dom';
+import Loader from './Loader';
 
 function NoteList() {
     const [searchContent, setSearchContent] = useState(null);
     const [notes, setNotes] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (searchContent) {
@@ -20,9 +22,11 @@ function NoteList() {
     const navigate = useNavigate();
 
     const fetchNotes = () => {
+        setIsLoading(true);
         NoteService.getNotes(currentPage).then((res) => {
             setNotes(res.data.items);
             setTotalPages(res.data.pages);
+            setIsLoading(false);
         });
     }
 
@@ -82,6 +86,11 @@ function NoteList() {
                     </div>
                  </div>
                  <br></br>
+                 {isLoading && 
+                    <div className="page-layout">
+                        <Loader />;
+                    </div>
+                 }
                  <div className = "row">
                         <table className = "table table-striped table-bordered">
 

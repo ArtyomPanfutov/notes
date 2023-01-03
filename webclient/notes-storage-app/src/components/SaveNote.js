@@ -5,6 +5,7 @@ import ProjectService from '../services/ProjectService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Loader from './Loader';
 
 function SaveNote() {
     const params = useParams();
@@ -12,16 +13,19 @@ function SaveNote() {
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
     const [projectId, setProjectId] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     
     const navigate = useNavigate();
 
     useEffect(() => {
+        setIsLoading(true);
         if (id) {
             NoteService.getNoteById(id).then((res) => {
                 let note = res.data;
                 setName(note.name);
                 setContent(note.content);
                 setProjectId(note.projectId);
+                setIsLoading(false);
             });
         } else {
             NoteService.generateName().then((res) => {
@@ -31,6 +35,7 @@ function SaveNote() {
             ProjectService.getDefaultProject().then((res) => {
                 setProjectId(res.data.id);
             })
+            setIsLoading(false);
         }       
     }, []);
 
@@ -70,6 +75,11 @@ function SaveNote() {
             <div>
                 <br></br>
                    <div className = "container">
+                        {isLoading && 
+                            <div className="page-layout">
+                                <Loader />;
+                            </div>
+                        }
                         <div className = "row">
                             <div className = "card col-md-12">
                                 <div className = "form-header">
