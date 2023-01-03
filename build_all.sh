@@ -4,10 +4,13 @@
 # Note: before building create .env files in the root and in notes-storage-app directories.
 
 echo "Build nginx"
-./nginx/build.sh
+cd ./nginx
+./build.sh
 
 echo "Build notes service"
+cd ..
 ./build_notes_service.sh
 
 echo "Build notes app"
-./webclient/notes-storage-app/build.sh
+cd ./webclient/notes-storage-app/
+./build.sh
