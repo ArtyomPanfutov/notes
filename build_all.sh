@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Build all necessary images for a local run.
-# Note: before building create .env files in the root and in notes-storage-app directories.
+# Builds all necessary images for a local run.
+# Note: before building, create .env files in the root and in notes-storage-app directories.
 
 echo "Build nginx"
 cd ./nginx
