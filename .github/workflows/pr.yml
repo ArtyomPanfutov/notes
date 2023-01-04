@@ -1,0 +1,40 @@
+on: [pull_request]
+
+jobs:
+  build-notes-service:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Notes Backend Service
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.6.0
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.9.0
+        with:
+          java-version: 18
+          distribution: adopt
+      - name: Clean and prepare
+        run: mvn clean mn:dockerfile -Dpackaging=docker
+      - name: Maven install (with docker image build)
+        id: build-image
+        run: |
+          mvn install -Dpackaging=jar
+  build-notes-app:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Notes App
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.6.0
+      - name: Build Image
+        id: build-image
+        run: |
+          docker build -t panfutov.com/notes-app:0.1 ./webclient/notes-storage-app
+  build-nginx:
+    runs-on: ubuntu-latest
+    name: Build and Deploy Notes App
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.6.0
+      - name: Build Image
+        id: build-image
+        run: |
+          docker build -t panfutov.com/notes-nginx:0.1 ./nginx/
