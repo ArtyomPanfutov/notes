@@ -30,7 +30,7 @@ jobs:
           docker build -t panfutov.com/notes-app:0.1 ./webclient/notes-storage-app
   build-nginx:
     runs-on: ubuntu-latest
-    name: Build Notes App
+    name: Build Notes Nginx
     steps:
       - name: Checkout
         uses: actions/checkout@v2.6.0
