@@ -1,7 +1,6 @@
 # Notes Storage Service
 ## Overview
   WIP...
-
 ## Run tests 
 `mvn clean test`
 <br>
