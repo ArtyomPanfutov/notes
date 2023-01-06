@@ -30,12 +30,13 @@ function SaveNote() {
         } else {
             NoteService.generateName().then((res) => {
                 setName(res.data.name);
+            }).then(() => {
+                ProjectService.getDefaultProject().then((res) => {
+                    setProjectId(res.data.id);
+                    setIsLoading(false);
+                });
             });
 
-            ProjectService.getDefaultProject().then((res) => {
-                setProjectId(res.data.id);
-            })
-            setIsLoading(false);
         }       
     }, []);
 
@@ -75,52 +76,52 @@ function SaveNote() {
             <div>
                 <br></br>
                    <div className = "container">
-                        {isLoading && 
-                            <div className="page-layout">
+                        {isLoading 
+                            ? <div className="page-layout">
                                 <Loader />;
-                            </div>
-                        }
-                        <div className = "row">
-                            <div className = "card col-md-12">
-                                <div className = "form-header">
-                                    {resolveTitle()}
+                              </div>
+                            : <div className = "row">
+                                    <div className = "card col-md-12">
+                                        <div className = "form-header">
+                                            {resolveTitle()}
+                                        </div>
+                                        <div className = "card-body">
+                                            <form>
+                                                <div className="form-row">
+                                                    <div className="col-md-4 mb-3">
+                                                        <label> Name: </label>
+                                                        <input placeholder="Name" name="name" className="form-control" 
+                                                            value={name} onChange={changeNameHandler}/>
+                                                    </div>
+                                                    <div className="col-md-4 mb-3">
+                                                        <label> Project: </label>
+                                                        {projectId && (<ProjectDropdownComponent onChange={changeProjectIdHandler} defaultId={projectId} />)}
+                                                    </div>
+                                                </div>
+                                                <div className = "form-group">
+                                                    <label> Content: </label>
+                                                    <CKEditor
+                                                        editor={ClassicEditor}
+                                                        data={content}
+                                                        onReady={ editor => { } }
+                                                        onChange={ ( event, editor ) => {
+                                                            setContent(editor.getData());
+                                                        } }
+                                                        onBlur={ ( event, editor ) => {
+                                                        } }
+                                                        onFocus={ ( event, editor ) => {
+                                                        } }
+                                                    />
+                                                </div>
+                                                <div className = "form-result-buttons">
+                                                    <button className="btn btn-success" onClick={() => saveNote()}>Save</button>
+                                                    <button className="btn btn-danger" onClick={() => navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className = "card-body">
-                                    <form>
-                                        <div className="form-row">
-                                            <div className="col-md-4 mb-3">
-                                                <label> Name: </label>
-                                                <input placeholder="Name" name="name" className="form-control" 
-                                                    value={name} onChange={changeNameHandler}/>
-                                            </div>
-                                            <div className="col-md-4 mb-3">
-                                                <label> Project: </label>
-                                                {projectId && (<ProjectDropdownComponent onChange={changeProjectIdHandler} defaultId={projectId} />)}
-                                            </div>
-                                        </div>
-                                        <div className = "form-group">
-                                            <label> Content: </label>
-                                            <CKEditor
-                                                editor={ClassicEditor}
-                                                data={content}
-                                                onReady={ editor => { } }
-                                                onChange={ ( event, editor ) => {
-                                                    setContent(editor.getData());
-                                                } }
-                                                onBlur={ ( event, editor ) => {
-                                                } }
-                                                onFocus={ ( event, editor ) => {
-                                                } }
-                                            />
-                                        </div>
-                                        <div className = "form-result-buttons">
-                                            <button className="btn btn-success" onClick={() => saveNote()}>Save</button>
-                                            <button className="btn btn-danger" onClick={() => navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                            }
                    </div>
             </div>
     );
