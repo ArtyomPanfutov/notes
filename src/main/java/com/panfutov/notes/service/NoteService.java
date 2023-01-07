@@ -199,7 +199,10 @@ public class NoteService {
     private String extractPreview(String content) {
         if (content != null && !content.isBlank()) {
             String transformedContent = Jsoup.parse(content).text();
-            return transformedContent.substring(0, Math.min(transformedContent.length(), MAX_PREVIEW_LENGTH)) + "...";
+            if (transformedContent.length() <= MAX_PREVIEW_LENGTH) {
+                return transformedContent;
+            }
+            return transformedContent.substring(0, MAX_PREVIEW_LENGTH) + "...";
         }
         return "";
     }
