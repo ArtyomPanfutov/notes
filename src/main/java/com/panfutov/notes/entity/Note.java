@@ -49,6 +49,10 @@ public class Note {
     @Field(name = CONTENT_TRANSFORMED)
     private String content;
 
+    @Column(name = "preview")
+    @NotEmpty(message = "Preview cannot be empty")
+    private String preview;
+
     @Column(name = "created_ts")
     private LocalDateTime createdTimestamp;
 

@@ -17,6 +17,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.search.jpa.Search;
+import org.jsoup.Jsoup;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -168,10 +169,12 @@ public class NoteService {
                 note.getId(),
                 note.getName(),
                 note.getContent(),
+                note.getPreview(),
                 note.getCreatedTimestamp(),
                 note.getUpdatedTimestamp(),
                 note.getProject().getId());
     }
+
 
     private Note convertToEntity(NoteDto noteDto) {
         final var note = new Note();
@@ -179,6 +182,7 @@ public class NoteService {
         note.setId(noteDto.id());
         note.setName(noteDto.name());
         note.setContent(noteDto.content());
+        note.setPreview(extractPreview(noteDto.content()));
         note.setCreatedTimestamp(noteDto.createdTimestamp());
         note.setUpdatedTimestamp(noteDto.updatedTimestamp());
 
@@ -188,4 +192,13 @@ public class NoteService {
 
         return note;
     }
+
+    private String extractPreview(String content) {
+        if (content != null && !content.isBlank()) {
+            String transformedContent = Jsoup.parse(content).text();
+            return transformedContent.substring(0, Math.min(transformedContent.length(), 140)) + "...";
+        }
+        return "";
+    }
+
 }
