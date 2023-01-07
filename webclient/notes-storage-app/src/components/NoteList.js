@@ -98,6 +98,7 @@ function NoteList() {
                                 <tr>
                                     <th> ID </th>
                                     <th> Name</th>
+                                    <th> Preview</th> 
                                     <th> Actions</th>
                                 </tr>
                             </thead>
@@ -108,6 +109,7 @@ function NoteList() {
                                         <tr key = {note.id}>
                                             <td> {note.id} </td>   
                                             <td> {note.name} </td>   
+                                            <td> {note.contentPreview} </td>   
                                             <td>
                                                 <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">Update </button>
                                                 <button style={{marginLeft: "10px"}} onClick={() => deleteNote(note.id)} className="btn btn-danger">Delete </button>

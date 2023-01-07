@@ -30,6 +30,7 @@ class NoteRepositoryTest {
         final var note = new Note();
         note.setName("new note");
         note.setContent("content");
+        note.setPreview("preview");
         note.setCreatedTimestamp(LocalDateTime.now());
         note.setUpdatedTimestamp(LocalDateTime.now());
         note.setProject(createProject());

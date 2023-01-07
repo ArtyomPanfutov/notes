@@ -17,6 +17,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.search.jpa.Search;
+import org.jsoup.Jsoup;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -28,6 +29,8 @@ import java.util.Optional;
 @Singleton
 @Slf4j
 public class NoteService {
+
+    private static final int MAX_PREVIEW_LENGTH = 140;
 
     private final NoteRepository noteRepository;
 
@@ -85,6 +88,7 @@ public class NoteService {
 
             note.setProject(project);
             note.setContent(noteDto.content());
+            note.setPreview(extractPreview(noteDto.content()));
             note.setUpdatedTimestamp(LocalDateTime.now(ZoneId.systemDefault()));
 
             final var updated = noteRepository.save(note);
@@ -168,10 +172,12 @@ public class NoteService {
                 note.getId(),
                 note.getName(),
                 note.getContent(),
+                note.getPreview(),
                 note.getCreatedTimestamp(),
                 note.getUpdatedTimestamp(),
                 note.getProject().getId());
     }
+
 
     private Note convertToEntity(NoteDto noteDto) {
         final var note = new Note();
@@ -179,6 +185,7 @@ public class NoteService {
         note.setId(noteDto.id());
         note.setName(noteDto.name());
         note.setContent(noteDto.content());
+        note.setPreview(extractPreview(noteDto.content()));
         note.setCreatedTimestamp(noteDto.createdTimestamp());
         note.setUpdatedTimestamp(noteDto.updatedTimestamp());
 
@@ -188,4 +195,16 @@ public class NoteService {
 
         return note;
     }
+
+    private String extractPreview(String content) {
+        if (content != null && !content.isBlank()) {
+            String transformedContent = Jsoup.parse(content).text();
+            if (transformedContent.length() <= MAX_PREVIEW_LENGTH) {
+                return transformedContent;
+            }
+            return transformedContent.substring(0, MAX_PREVIEW_LENGTH) + "...";
+        }
+        return "";
+    }
+
 }
