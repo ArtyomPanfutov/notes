@@ -30,6 +30,8 @@ import java.util.Optional;
 @Slf4j
 public class NoteService {
 
+    private static final int MAX_PREVIEW_LENGTH = 140;
+
     private final NoteRepository noteRepository;
 
     private final ProjectRepository projectRepository;
@@ -196,7 +198,7 @@ public class NoteService {
     private String extractPreview(String content) {
         if (content != null && !content.isBlank()) {
             String transformedContent = Jsoup.parse(content).text();
-            return transformedContent.substring(0, Math.min(transformedContent.length(), 140)) + "...";
+            return transformedContent.substring(0, Math.min(transformedContent.length(), MAX_PREVIEW_LENGTH)) + "...";
         }
         return "";
     }
