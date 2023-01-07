@@ -88,6 +88,7 @@ public class NoteService {
 
             note.setProject(project);
             note.setContent(noteDto.content());
+            note.setPreview(extractPreview(noteDto.content()));
             note.setUpdatedTimestamp(LocalDateTime.now(ZoneId.systemDefault()));
 
             final var updated = noteRepository.save(note);
