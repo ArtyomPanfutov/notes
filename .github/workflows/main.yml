@@ -6,7 +6,7 @@ on:
 env:
   AWS_REGION: us-east-1                  
   
-  ECS_CLUSTER: notes                 
+  ECS_CLUSTER: notes-ec2                 
   
   NOTES_SERVICE_ECR_REPOSITORY: notes-service     
   NOTES_SERVICE_ECS_SERVICE: notes-service-ec2
