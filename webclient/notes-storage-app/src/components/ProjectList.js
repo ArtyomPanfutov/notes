@@ -77,7 +77,7 @@ function ProjectList() {
                 </div>
             }
             <div className = "row">
-                <table className = "table table-striped table-bordered">
+                <table className = "table table-striped table-bordered projects-table">
 
                     <thead>
                         <tr>
