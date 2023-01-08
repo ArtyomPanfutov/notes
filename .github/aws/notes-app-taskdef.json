@@ -1,15 +1,15 @@
 {
-  "family": "notes-app",
+  "family": "notes-app-ec2",
   "containerDefinitions": [
     {
-      "name": "notes-app",
-      "image": "561356720088.dkr.ecr.us-east-1.amazonaws.com/notes-app:5656af6bd2c092e27d14dd9f123ecd31c307e5e4",
+      "name": "notes-app-ec2",
+      "image": "561356720088.dkr.ecr.us-east-1.amazonaws.com/notes-app:72b560af026dc46a60408573faf15553f7b10f69",
       "cpu": 0,
       "links": [],
       "portMappings": [
         {
           "containerPort": 3000,
-          "hostPort": 3000,
+          "hostPort": 80,
           "protocol": "tcp"
         }
       ],
@@ -27,26 +27,16 @@
       "dockerSecurityOptions": [],
       "dockerLabels": {},
       "ulimits": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/notes-app",
-          "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "ecs"
-        },
-        "secretOptions": []
-      },
       "systemControls": []
     }
   ],
   "executionRoleArn": "arn:aws:iam::561356720088:role/ecsTaskExecutionRole",
-  "networkMode": "awsvpc",
+  "networkMode": "bridge",
   "requiresCompatibilities": [
-    "FARGATE"
+    "EC2"
   ],
-  "cpu": "256",
-  "memory": "512",
+  "cpu": "128",
+  "memory": "51",
   "runtimePlatform": {
     "cpuArchitecture": "X86_64",
     "operatingSystemFamily": "LINUX"
