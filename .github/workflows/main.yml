@@ -9,14 +9,14 @@ env:
   ECS_CLUSTER: notes                 
   
   NOTES_SERVICE_ECR_REPOSITORY: notes-service     
-  NOTES_SERVICE_ECS_SERVICE: notes-service
+  NOTES_SERVICE_ECS_SERVICE: notes-service-ec2
   NOTES_SERVICE_ECS_TASK_DEFINITION: .github/aws/notes-service-taskdef.json 
-  NOTES_SERVICE_CONTAINER_NAME: notes-service   
+  NOTES_SERVICE_CONTAINER_NAME: notes-service-ec2
   
   NOTES_APP_ECR_REPOSITORY: notes-app
-  NOTES_APP_ECS_SERVICE: notes-app
+  NOTES_APP_ECS_SERVICE: notes-app-ec2
   NOTES_APP_ECS_TASK_DEFINITION: .github/aws/notes-app-taskdef.json
-  NOTES_APP_CONTAINER_NAME: notes-app
+  NOTES_APP_CONTAINER_NAME: notes-app-ec2
   
 jobs:
   build-notes-service:
