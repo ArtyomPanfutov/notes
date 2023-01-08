@@ -92,7 +92,7 @@ function NoteList() {
                     </div>
                  }
                  <div className = "row">
-                        <table className = "table table-striped table-bordered">
+                        <table className = "table table-striped table-bordered notes-table">
 
                             <thead>
                                 <tr>
