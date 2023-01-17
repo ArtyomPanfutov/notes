@@ -10,6 +10,7 @@ function NoteList() {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     useEffect(() => {
         if (searchContent) {
@@ -38,6 +39,7 @@ function NoteList() {
         NoteService.deleteNoteById(id).then(res => {
             setNotes(notes.filter(note => note.id !== id));
         });
+        window.location.reload();
     }
 
     const findNotesByContent = (content, page) => {
@@ -105,16 +107,35 @@ function NoteList() {
                             <tbody>
                                 {
                                     notes && notes.map(
-                                        note => 
+                                        note =>  
+                                        <>
+                                            <div class="modal fade" id={`deleteModal${note.id}`} tabindex="-1" aria-labelledby={`deleteModal${note.id}`} aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="deleteModa">Delete note</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want delete the note?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteNote(note.id)}>Delete</button>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         <tr key = {note.id}>
                                             <td> {note.id} </td>   
                                             <td> {note.name} </td>   
                                             <td> {note.contentPreview} </td>   
                                             <td>
                                                 <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">Update </button>
-                                                <button style={{marginLeft: "10px"}} onClick={() => deleteNote(note.id)} className="btn btn-danger">Delete </button>
+                                                <button style={{marginLeft: "10px"}} data-bs-toggle="modal" data-bs-target={`#deleteModal${note.id}`} className="btn btn-danger">Delete </button>
                                             </td>
                                         </tr>
+                                        </>
                                     )
                                     }
                             </tbody>
