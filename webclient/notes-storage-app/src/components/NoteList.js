@@ -39,6 +39,7 @@ function NoteList() {
         NoteService.deleteNoteById(id).then(res => {
             setNotes(notes.filter(note => note.id !== id));
         });
+        window.location.reload();
     }
 
     const findNotesByContent = (content, page) => {
