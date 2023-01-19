@@ -20,6 +20,7 @@ function ProjectList() {
         ProjectService.deleteProjectById(id).then( res => {
             // TODO: response handling
             setProjects(projects.filter(project => project.id !== id));
+            window.location.reload();
         });
     }
 
@@ -91,14 +92,33 @@ function ProjectList() {
                             projects && 
                                 projects.map(
                                     project => 
-                                    <tr key = {project.id}>
-                                        <td> {project.id} </td>   
-                                        <td> {project.name} </td>   
-                                        <td>
-                                            <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">Update </button>
-                                            <button style={{marginLeft: "10px"}} onClick={() => deleteProject(project.id)} className="btn btn-danger">Delete </button>
-                                        </td>
-                                    </tr>
+                                    <>
+                                        <div class="modal fade" id={`deleteModal${project.id}`} tabindex="-1" aria-labelledby={`deleteModal${project.id}`} aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="deleteModa">Delete project</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete the project "{project.name}"?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteProject(project.id)}>Delete</button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <tr key = {project.id}>
+                                            <td> {project.id} </td>   
+                                            <td> {project.name} </td>   
+                                            <td>
+                                                <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">Update </button>
+                                                <button style={{marginLeft: "10px"}} data-bs-toggle="modal" data-bs-target={`#deleteModal${project.id}`} className="btn btn-danger">Delete </button>
+                                            </td>
+                                        </tr>
+                                    </>
                                 )
                         }
                     </tbody>
