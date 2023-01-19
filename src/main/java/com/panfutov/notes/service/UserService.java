@@ -25,7 +25,7 @@ public class UserService {
     private final TokenExtractor tokenExtractor;
 
     private final Cache<String, UserInfo> cache = CacheBuilder.newBuilder()
-            .expireAfterWrite(Duration.ofHours(1))
+            .expireAfterWrite(Duration.ofDays(30))
             .build();
 
     @Inject
