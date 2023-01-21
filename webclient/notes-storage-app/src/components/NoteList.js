@@ -10,7 +10,6 @@ function NoteList() {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     useEffect(() => {
         if (searchContent) {
@@ -52,6 +51,7 @@ function NoteList() {
             })
         } else {
             setSearchContent(null);
+            setCurrentPage(0);
             fetchNotes();
         }
     }
@@ -69,6 +69,7 @@ function NoteList() {
                                 breakLabel="..."
                                 nextLabel="Next >"
                                 onPageChange={handlePageClick}
+                                forcePage={currentPage}
                                 pageRangeDisplayed={5}
                                 pageCount={totalPages}
                                 previousLabel="< Previous"
