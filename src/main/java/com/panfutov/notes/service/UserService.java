@@ -1,7 +1,8 @@
 package com.panfutov.notes.service;
 
-import com.google.common.cache.Cache;
+import com.auth0.jwt.JWT;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
 import com.panfutov.notes.dto.auth0.UserInfo;
 import com.panfutov.notes.entity.User;
 import com.panfutov.notes.repository.UserRepository;
@@ -11,8 +12,8 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.Duration;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 @Singleton
 @Slf4j
@@ -24,15 +25,16 @@ public class UserService {
 
     private final TokenExtractor tokenExtractor;
 
-    private final Cache<String, UserInfo> cache = CacheBuilder.newBuilder()
-            .expireAfterWrite(Duration.ofDays(30))
-            .build();
+    private final LoadingCache<UserCacheKey, UserInfo> cache;
 
     @Inject
     public UserService(Auth0Service auth0Service, UserRepository userRepository, TokenExtractor tokenExtractor) {
         this.auth0Service = auth0Service;
         this.userRepository = userRepository;
         this.tokenExtractor = tokenExtractor;
+        this.cache = CacheBuilder.newBuilder()
+            .expireAfterWrite(30, TimeUnit.DAYS)
+            .build(new UserCacheLoader(userRepository, auth0Service));
     }
 
     public UserInfo getUserByBearerToken(String bearer) {
@@ -41,7 +43,7 @@ public class UserService {
             throw new IllegalArgumentException("Token cannot be empty or null");
         }
 
-        return fetchUserFromAuth0(token);
+        return fetchUser(token);
     }
 
     public User getUserByUserInfo(UserInfo userInfo) {
@@ -49,25 +51,14 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    private UserInfo fetchUserFromAuth0(String token) {
+    private UserInfo fetchUser(String token) {
+        final var sub = JWT.decode(token).getSubject();
+
         try {
-            return cache.get(token, () -> getUserInfo(token));
+            return cache.get(new UserCacheKey(sub, token));
         } catch (ExecutionException e) {
             log.error("Error occurred while getting user info", e);
             throw new UserInfoCacheException(e);
         }
     }
-
-    private UserInfo getUserInfo(String token) {
-       var userInfo = auth0Service.fetchUserInfo(token);
-
-       if (!userRepository.existsBySub(userInfo.sub())) {
-           var user = new User();
-           user.setSub(userInfo.sub());
-           userRepository.save(user);
-       }
-
-       return userInfo;
-    }
-
 }
