@@ -19,8 +19,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class UserService {
 
-    private final Auth0Service auth0Service;
-
     private final UserRepository userRepository;
 
     private final TokenExtractor tokenExtractor;
@@ -29,16 +27,15 @@ public class UserService {
 
     @Inject
     public UserService(Auth0Service auth0Service, UserRepository userRepository, TokenExtractor tokenExtractor) {
-        this.auth0Service = auth0Service;
         this.userRepository = userRepository;
         this.tokenExtractor = tokenExtractor;
         this.cache = CacheBuilder.newBuilder()
-            .expireAfterWrite(30, TimeUnit.DAYS)
+            .expireAfterWrite(7, TimeUnit.DAYS) // TODO: make adjustable from props
             .build(new UserCacheLoader(userRepository, auth0Service));
     }
 
-    public UserInfo getUserByBearerToken(String bearer) {
-        var token = tokenExtractor.extract(bearer);
+    public UserInfo getUserByAuthorizationHeader(String bearer) {
+        var token = tokenExtractor.extractBearerToken(bearer);
         if (token == null || token.isBlank()) {
             throw new IllegalArgumentException("Token cannot be empty or null");
         }
@@ -52,10 +49,10 @@ public class UserService {
     }
 
     private UserInfo fetchUser(String token) {
-        final var sub = JWT.decode(token).getSubject();
+        final var subject = JWT.decode(token).getSubject();
 
         try {
-            return cache.get(new UserCacheKey(sub, token));
+            return cache.get(new UserCacheKey(subject, token));
         } catch (ExecutionException e) {
             log.error("Error occurred while getting user info", e);
             throw new UserInfoCacheException(e);

@@ -33,7 +33,7 @@ public class ProjectController {
 
     @Post(consumes = MediaType.APPLICATION_JSON)
     public HttpResponse<Void> create(@Body ProjectDto projectDto, @Header("Authorization") String authorization) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         final var result = projectService.create(projectDto, user);
 
         if (result.isSuccess()) {
@@ -60,13 +60,13 @@ public class ProjectController {
     public HttpResponse<ResultPage<ProjectDto>> findAll(@Header("Authorization") String authorization,
                                                         @QueryValue int page,
                                                         @QueryValue int pageSize) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         return HttpResponse.ok(projectService.findAllByUser(user, Pageable.from(page, pageSize)));
     }
 
     @Get
     public HttpResponse<List<ProjectDto>> findAll(@Header("Authorization") String authorization) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         return HttpResponse.ok(projectService.findAllByUser(user));
     }
 
@@ -83,7 +83,7 @@ public class ProjectController {
 
     @Get("/name/{name}")
     public HttpResponse<ProjectDto> findByName(@QueryValue String name, @Header("Authorization") String authorization) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         final var project = projectService.findByNameAndUserInfo(name, user);
 
         if (project.isEmpty()) {
@@ -95,7 +95,7 @@ public class ProjectController {
 
     @Get("/default")
     public HttpResponse<ProjectDto> getDefaultProject(@Header("Authorization") String authorization) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         return HttpResponse.ok(projectService.getDefaultProject(user));
     }
 
