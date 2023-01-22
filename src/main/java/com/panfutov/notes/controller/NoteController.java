@@ -37,7 +37,7 @@ public class NoteController {
 
     @Post(consumes = MediaType.APPLICATION_JSON)
     public HttpResponse<Void> create(@Body NoteDto noteDto, @Header("Authorization") String authorization) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         final var result = noteService.create(noteDto, user);
 
         if (!result.isSuccess()) {
@@ -64,14 +64,14 @@ public class NoteController {
     public HttpResponse<ResultPage<NoteDto>> findAll(@Header("Authorization") String authorization,
                                                      @QueryValue int page,
                                                      @QueryValue int pageSize) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         return HttpResponse.ok(noteService.findAllByUser(user, Pageable.from(page, pageSize)));
     }
 
     @Post("/search")
     public HttpResponse<ResultPage<NoteDto>> search(@Body NoteContentSearchDto contentSearchDto,
                                                     @Header("Authorization") String authorization) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         var result = noteService.search(
                 contentSearchDto.content(),
                 user,
@@ -94,7 +94,7 @@ public class NoteController {
 
     @Get("/name/new/generate")
     public HttpResponse<GeneratedNoteNameDto> generateNoteName(@Header("Authorization") String authorization) {
-        var user = userService.getUserByBearerToken(authorization);
+        var user = userService.getUserByAuthorizationHeader(authorization);
         return HttpResponse.ok(
                 new GeneratedNoteNameDto(noteNameGenerator.generateNoteName(user)));
     }

@@ -29,4 +29,6 @@ public class User {
     @Column(name = "auth0_sub")
     private String sub;
 
+    @Column(name = "email")
+    private String email;
 }
