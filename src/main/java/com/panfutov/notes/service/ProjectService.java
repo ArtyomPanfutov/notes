@@ -8,6 +8,7 @@ import com.panfutov.notes.dto.ResultPage;
 import com.panfutov.notes.dto.auth0.UserInfo;
 import com.panfutov.notes.entity.Project;
 import com.panfutov.notes.entity.User;
+import com.panfutov.notes.repository.NoteRepository;
 import com.panfutov.notes.repository.ProjectRepository;
 import io.micronaut.data.model.Pageable;
 import jakarta.inject.Inject;
@@ -22,11 +23,18 @@ public class ProjectService {
 
     public static final String DEFAULT_PROJECT_NAME = "Personal";
 
-    @Inject
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
+
+    private final UserService userService;
+
+    private final NoteRepository noteRepository;
 
     @Inject
-    private UserService userService;
+    public ProjectService(ProjectRepository projectRepository, UserService userService, NoteRepository noteRepository) {
+        this.projectRepository = projectRepository;
+        this.userService = userService;
+        this.noteRepository = noteRepository;
+    }
 
     @Transactional
     public Result<ProjectDto> create(ProjectDto projectDto, UserInfo userInfo) {
@@ -108,10 +116,14 @@ public class ProjectService {
 
     @Transactional
     public Result<Void> delete(Long id) {
-        final var found = projectRepository.findById(id);
+        final var project = projectRepository.findById(id);
 
-        if (found.isEmpty()) {
-            return Result.error(new Error("Project doesn't exists"));
+        if (project.isEmpty()) {
+            return Result.error(new Error("Project doesn't exist"));
+        }
+
+        if (noteRepository.existsByProject(project.get())) {
+            return Result.error(new Error("The project can't be deleted if there are existing notes with it"));
         }
 
         projectRepository.deleteById(id);
@@ -122,18 +134,21 @@ public class ProjectService {
     @Transactional
     public ProjectDto getDefaultProject(UserInfo userInfo) {
         var user = userService.getUserByUserInfo(userInfo);
-        if (projectRepository.findByNameAndUser(DEFAULT_PROJECT_NAME, user).isEmpty()) {
+        Optional<Project> defaultProject = projectRepository.findByNameAndUser(DEFAULT_PROJECT_NAME, user);
+        if (defaultProject.isEmpty()) {
 
-            var project = new Project();
-            project.setName(DEFAULT_PROJECT_NAME);
-            project.setUser(user);
-
-            projectRepository.save(project);
+            return createDefaultProject(user);
         }
 
-        return projectRepository.findByNameAndUser(DEFAULT_PROJECT_NAME, user)
-                .map(this::convertToDto)
-                .orElseThrow();
+        return convertToDto(defaultProject.get());
+    }
+
+    public ProjectDto createDefaultProject(User user) {
+        var project = new Project();
+        project.setName(DEFAULT_PROJECT_NAME);
+        project.setUser(user);
+
+        return convertToDto(projectRepository.save(project));
     }
 
     private ProjectDto convertToDto(Project project) {
