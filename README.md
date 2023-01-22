@@ -1,4 +1,5 @@
-# Notes Storage Service
+# Notes App 
+The app is available on https://notes.panfutov.com 
 ## Overview
   WIP...
 ## Run tests 
