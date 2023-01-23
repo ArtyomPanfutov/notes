@@ -31,7 +31,6 @@ class NoteRepositoryTest {
         note.setName("new note");
         note.setContent("content");
         note.setPreview("preview");
-        note.setCreatedTimestamp(LocalDateTime.now());
         note.setUpdatedTimestamp(LocalDateTime.now());
         note.setProject(createProject());
         note.setUser(createUser());

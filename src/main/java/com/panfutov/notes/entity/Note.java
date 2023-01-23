@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.apache.lucene.analysis.charfilter.HTMLStripCharFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
@@ -54,9 +56,11 @@ public class Note {
     private String preview;
 
     @Column(name = "created_ts")
+    @CreationTimestamp
     private LocalDateTime createdTimestamp;
 
     @Column(name = "updated_ts")
+    @UpdateTimestamp
     private LocalDateTime updatedTimestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
