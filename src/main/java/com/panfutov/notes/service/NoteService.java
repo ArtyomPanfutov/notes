@@ -60,9 +60,6 @@ public class NoteService {
         log.warn("Validation is not implemented yet!");
 
         final var entity = convertToEntity(noteDto);
-        final var now = LocalDateTime.now(ZoneId.systemDefault());
-        entity.setCreatedTimestamp(now);
-        entity.setUpdatedTimestamp(now);
         entity.setUser(user);
         final var note = noteRepository.save(entity);
 
@@ -186,8 +183,6 @@ public class NoteService {
         note.setName(noteDto.name());
         note.setContent(noteDto.content());
         note.setPreview(extractPreview(noteDto.content()));
-        note.setCreatedTimestamp(noteDto.createdTimestamp());
-        note.setUpdatedTimestamp(noteDto.updatedTimestamp());
 
         final var project = projectRepository.findById(noteDto.projectId()).orElseThrow();
 
