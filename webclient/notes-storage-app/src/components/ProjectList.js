@@ -42,20 +42,19 @@ function ProjectList() {
     }
 
     return (
-        <div>
+        <div className = "container-fluid">
             <div className = "row">
-                <div className = "vertical-element">
+                <div className ="col-12 col-sm-8 col-lg-8 col-xl-8 col-xxl-8">
                     <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New Project</button>
                 </div>
-                <div className = "vertical-element">
-                    <div className = "right-aligned">
+                <div className ="col-12 col-sm-4 col-lg-4 col-xl-4 col-xxl-4">
                         <ReactPaginate
                             breakLabel="..."
-                            nextLabel="Next >"
+                            nextLabel="Next"
                             onPageChange={handlePageClick}
                             pageRangeDisplayed={5}
                             pageCount={totalPages}
-                            previousLabel="< Previous"
+                            previousLabel="Previous"
                             renderOnZeroPageCount={null}
                             breakClassName={"page-item"}
                             breakLinkClassName={"page-link"}
@@ -68,7 +67,6 @@ function ProjectList() {
                             nextLinkClassName={"page-link"}
                             activeClassName={"active"}
                         />
-                    </div>
                 </div>
             </div>
             <br></br>

@@ -98,6 +98,11 @@ header {
   min-height: 400px;
 }
 
+.pagination {
+  display: inline-flex;
+  float: right;
+}
+
 .loader {
   border: 8px solid #f3f3f3; 
   border-top: 8px solid #6c6e6e; 
