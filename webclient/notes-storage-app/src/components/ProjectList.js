@@ -42,31 +42,31 @@ function ProjectList() {
     }
 
     return (
-        <div className = "container-fluid">
+        <div className = "container projects-container">
             <div className = "row">
-                <div className ="col-12 col-sm-8 col-lg-8 col-xl-8 col-xxl-8">
+                <div className ="col-12 col-xs-6 col-sm-6 col-lg-6 col-xl-8 col-xxl-8">
                     <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New Project</button>
                 </div>
-                <div className ="col-12 col-sm-4 col-lg-4 col-xl-4 col-xxl-4">
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel="Next"
-                            onPageChange={handlePageClick}
-                            pageRangeDisplayed={5}
-                            pageCount={totalPages}
-                            previousLabel="Previous"
-                            renderOnZeroPageCount={null}
-                            breakClassName={"page-item"}
-                            breakLinkClassName={"page-link"}
-                            containerClassName={"pagination"}
-                            pageClassName={"page-item"}
-                            pageLinkClassName={"page-link"}
-                            previousClassName={"page-item"}
-                            previousLinkClassName={"page-link"}
-                            nextClassName={"page-item"}
-                            nextLinkClassName={"page-link"}
-                            activeClassName={"active"}
-                        />
+                <div className ="col-12 col-xs-6 col-sm-6 col-lg-6 col-xl-4 col-xxl-4">
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="Next"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={5}
+                        pageCount={totalPages}
+                        previousLabel="Previous"
+                        renderOnZeroPageCount={null}
+                        breakClassName={"page-item"}
+                        breakLinkClassName={"page-link"}
+                        containerClassName={"pagination"}
+                        pageClassName={"page-item"}
+                        pageLinkClassName={"page-link"}
+                        previousClassName={"page-item"}
+                        previousLinkClassName={"page-link"}
+                        nextClassName={"page-item"}
+                        nextLinkClassName={"page-link"}
+                        activeClassName={"active"}
+                    />
                 </div>
             </div>
             <br></br>
@@ -76,7 +76,7 @@ function ProjectList() {
                 </div>
             }
             <div className = "row">
-                <table className = "table table-striped table-bordered projects-table">
+                <table className = "table table-default projects-table">
 
                     <thead>
                         <tr>
@@ -95,7 +95,7 @@ function ProjectList() {
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="deleteModa">Delete project</h1>
+                                                    <h1 class="modal-title fs-5" id="deleteModal">Delete project</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -112,8 +112,14 @@ function ProjectList() {
                                             <td> {project.id} </td>   
                                             <td> {project.name} </td>   
                                             <td>
-                                                <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">Update </button>
-                                                <button style={{marginLeft: "10px"}} data-bs-toggle="modal" data-bs-target={`#deleteModal${project.id}`} className="btn btn-danger">Delete </button>
+                                                <div className = "row">
+                                                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12 col-xxl-6">
+                                                        <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">Update </button>
+                                                    </div>
+                                                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12 col-xxl-6">
+                                                        <button data-bs-toggle="modal" data-bs-target={`#deleteModal${project.id}`} className="btn btn-danger">Delete </button>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </>

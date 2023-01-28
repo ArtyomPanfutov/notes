@@ -156,6 +156,10 @@ header {
   width: 10%;
 }
 
+.projects-container {
+  max-width: 60%;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -163,7 +167,7 @@ header {
 
 @media screen and (max-width: 400px) {
   h1 {
-    font-size: 30px;
+    font-size: 20px;
   }
 
   header {
