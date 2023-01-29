@@ -112,12 +112,18 @@ function ProjectList() {
                                             <td> {project.id} </td>   
                                             <td> {project.name} </td>   
                                             <td>
-                                                <div className = "row">
-                                                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12 col-xxl-6">
-                                                        <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">Update </button>
-                                                    </div>
-                                                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12 col-xxl-6">
-                                                        <button data-bs-toggle="modal" data-bs-target={`#deleteModal${project.id}`} className="btn btn-danger">Delete </button>
+                                                <div className="container">
+                                                    <div className = "row  justify-content-center">
+                                                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
+                                                            <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">
+                                                                <img src="/edit.png" width="20px" />
+                                                            </button>
+                                                        </div>
+                                                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
+                                                            <button data-bs-toggle="modal" data-bs-target={`#deleteModal${project.id}`} className="btn btn-danger">
+                                                                <img src="/delete.png" width="20px" />
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </td>
