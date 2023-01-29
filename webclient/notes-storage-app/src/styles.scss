@@ -91,11 +91,16 @@ header {
   height: 2.5em;
   border: 1px solid #8f8f8f;
   border-radius: 0.375rem;
-  margin-left: 10px;
 }
 
 .ck-editor__editable_inline {
   min-height: 400px;
+}
+
+.pagination {
+  display: inline-flex;
+  float: right;
+  margin-top: 3%;
 }
 
 .loader {
@@ -136,7 +141,7 @@ header {
 }
 
 .notes-table td:nth-child(4) {
-  width: 10%;
+  width: 8%;
 }
 
 .projects-table td:nth-child(1) {
@@ -151,14 +156,29 @@ header {
   width: 10%;
 }
 
+.projects-container {
+  max-width: 60%;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+@media screen and (max-width: 572px) {
 
-@media screen and (max-width: 400px) {
+  .search-input {
+    width: 10rem;
+  }
+
+.notes-table td:nth-child(4) {
+  width: 10%;
+}
+}
+    
+
+@media screen and (max-width: 450px) {
   h1 {
-    font-size: 30px;
+    font-size: 20px;
   }
 
   header {

@@ -57,36 +57,38 @@ function NoteList() {
     }
 
     return (
-            <div>
+            <div className="container">
                  <div className = "row">
-                     <div className = "vertical-element">
+                    <div className ="col-4 col-sm-3 col-lg-2 col-xl-1 col-xxl-1 p-0 m-0">
                         <button className="btn btn-primary" onClick={() => navigate('/create-note')}> New Note</button>
-                        <input placeholder="Search notes" className="search-input" onChange={event => findNotesByContent(event.target.value, 0)} />
                     </div>
-                    <div className = "vertical-element">
-                        <div className="right-aligned">
-                            <ReactPaginate
-                                breakLabel="..."
-                                nextLabel="Next >"
-                                onPageChange={handlePageClick}
-                                forcePage={currentPage}
-                                pageRangeDisplayed={5}
-                                pageCount={totalPages}
-                                previousLabel="< Previous"
-                                renderOnZeroPageCount={null}
-                                breakClassName={"page-item"}
-                                breakLinkClassName={"page-link"}
-                                containerClassName={"pagination"}
-                                pageClassName={"page-item"}
-                                pageLinkClassName={"page-link"}
-                                previousClassName={"page-item"}
-                                previousLinkClassName={"page-link"}
-                                nextClassName={"page-item"}
-                                nextLinkClassName={"page-link"}
-                                activeClassName={"active"}
-                            />
+                    <div className ="col-8 col-sm-9 col-lg-10 col-xl-11 col-xxl-11 p-0 m-0">
+                        <input placeholder="Search notes" className="search-input right-aligned" onChange={event => findNotesByContent(event.target.value, 0)} />
+                    </div>
+                    {totalPages > 1 &&
+                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12 col-xxl-12 p-0 m-0">
+                                <ReactPaginate
+                                    breakLabel="..."
+                                    nextLabel="Next >"
+                                    onPageChange={handlePageClick}
+                                    forcePage={currentPage}
+                                    pageRangeDisplayed={5}
+                                    pageCount={totalPages}
+                                    previousLabel="< Previous"
+                                    renderOnZeroPageCount={() => false}
+                                    breakClassName={"page-item"}
+                                    breakLinkClassName={"page-link"}
+                                    containerClassName={"pagination"}
+                                    pageClassName={"page-item"}
+                                    pageLinkClassName={"page-link"}
+                                    previousClassName={"page-item"}
+                                    previousLinkClassName={"page-link"}
+                                    nextClassName={"page-item"}
+                                    nextLinkClassName={"page-link"}
+                                    activeClassName={"active"}
+                                />
                         </div>
-                    </div>
+                    }
                  </div>
                  <br></br>
                  {isLoading && 
@@ -95,7 +97,7 @@ function NoteList() {
                     </div>
                  }
                  <div className = "row">
-                        <table className = "table table-striped table-bordered notes-table">
+                        <table className = "table table-default notes-table">
 
                             <thead>
                                 <tr>
@@ -110,19 +112,19 @@ function NoteList() {
                                     notes && notes.map(
                                         note =>  
                                         <>
-                                            <div class="modal fade" id={`deleteModal${note.id}`} tabindex="-1" aria-labelledby={`deleteModal${note.id}`} aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="deleteModa">Delete note</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <div className="modal fade" id={`deleteModal${note.id}`} tabIndex="-1" aria-labelledby={`deleteModal${note.id}`} aria-hidden="true">
+                                                <div className="modal-dialog">
+                                                    <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <h1 className="modal-title fs-5" id="deleteModal">Delete note</h1>
+                                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="modal-body">
+                                                    <div className="modal-body">
                                                         Are you sure you want to delete the note "{note.name}"?
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteNote(note.id)}>Delete</button>
+                                                    <div className="modal-footer">
+                                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteNote(note.id)}>Delete</button>
                                                     </div>
                                                     </div>
                                                 </div>
@@ -132,8 +134,20 @@ function NoteList() {
                                             <td> {note.name} </td>   
                                             <td> {note.contentPreview} </td>   
                                             <td>
-                                                <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">Update </button>
-                                                <button style={{marginLeft: "10px"}} data-bs-toggle="modal" data-bs-target={`#deleteModal${note.id}`} className="btn btn-danger">Delete </button>
+                                                <div className="container">
+                                                    <div className = "row  justify-content-center">
+                                                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
+                                                            <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">
+                                                                <img src="/edit.png" width="20px" />
+                                                            </button>
+                                                        </div>
+                                                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
+                                                            <button data-bs-toggle="modal" data-bs-target={`#deleteModal${note.id}`} className="btn btn-danger">
+                                                                <img src="/delete.png" width="20px" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         </>

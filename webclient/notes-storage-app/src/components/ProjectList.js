@@ -42,20 +42,20 @@ function ProjectList() {
     }
 
     return (
-        <div>
+        <div className = "container projects-container">
             <div className = "row">
-                <div className = "vertical-element">
-                    <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New Project</button>
+                <div className ="col-12 col-xs-12 col-sm-12 col-lg-8 col-xl-8 col-xxl-8 p-0 m-0">
+                    <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New project</button>
                 </div>
-                <div className = "vertical-element">
-                    <div className = "right-aligned">
+                {totalPages > 1 && 
+                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-4 col-xl-4 col-xxl-4 p-0 m-0">
                         <ReactPaginate
                             breakLabel="..."
-                            nextLabel="Next >"
+                            nextLabel="Next"
                             onPageChange={handlePageClick}
                             pageRangeDisplayed={5}
                             pageCount={totalPages}
-                            previousLabel="< Previous"
+                            previousLabel="Previous"
                             renderOnZeroPageCount={null}
                             breakClassName={"page-item"}
                             breakLinkClassName={"page-link"}
@@ -69,7 +69,7 @@ function ProjectList() {
                             activeClassName={"active"}
                         />
                     </div>
-                </div>
+                 }
             </div>
             <br></br>
             {isLoading && 
@@ -78,7 +78,7 @@ function ProjectList() {
                 </div>
             }
             <div className = "row">
-                <table className = "table table-striped table-bordered projects-table">
+                <table className = "table table-default projects-table">
 
                     <thead>
                         <tr>
@@ -93,19 +93,19 @@ function ProjectList() {
                                 projects.map(
                                     project => 
                                     <>
-                                        <div class="modal fade" id={`deleteModal${project.id}`} tabindex="-1" aria-labelledby={`deleteModal${project.id}`} aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="deleteModa">Delete project</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <div className="modal fade" id={`deleteModal${project.id}`} tabIndex="-1" aria-labelledby={`deleteModal${project.id}`} aria-hidden="true">
+                                            <div className="modal-dialog">
+                                                <div className="modal-content">
+                                                <div className="modal-header">
+                                                    <h1 className="modal-title fs-5" id="deleteModal">Delete project</h1>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="modal-body">
+                                                <div className="modal-body">
                                                     Are you sure you want to delete the project "{project.name}"?
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteProject(project.id)}>Delete</button>
+                                                <div className="modal-footer">
+                                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteProject(project.id)}>Delete</button>
                                                 </div>
                                                 </div>
                                             </div>
@@ -114,8 +114,20 @@ function ProjectList() {
                                             <td> {project.id} </td>   
                                             <td> {project.name} </td>   
                                             <td>
-                                                <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">Update </button>
-                                                <button style={{marginLeft: "10px"}} data-bs-toggle="modal" data-bs-target={`#deleteModal${project.id}`} className="btn btn-danger">Delete </button>
+                                                <div className="container">
+                                                    <div className = "row  justify-content-center">
+                                                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
+                                                            <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">
+                                                                <img src="/edit.png" width="20px" />
+                                                            </button>
+                                                        </div>
+                                                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
+                                                            <button data-bs-toggle="modal" data-bs-target={`#deleteModal${project.id}`} className="btn btn-danger">
+                                                                <img src="/delete.png" width="20px" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </>
