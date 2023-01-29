@@ -57,36 +57,38 @@ function NoteList() {
     }
 
     return (
-            <div>
+            <div className="container">
                  <div className = "row">
-                     <div className = "vertical-element">
+                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-1 col-xl-1 col-xxl-1 p-0 m-0">
                         <button className="btn btn-primary" onClick={() => navigate('/create-note')}> New Note</button>
-                        <input placeholder="Search notes" className="search-input" onChange={event => findNotesByContent(event.target.value, 0)} />
                     </div>
-                    <div className = "vertical-element">
-                        <div className="right-aligned">
-                            <ReactPaginate
-                                breakLabel="..."
-                                nextLabel="Next >"
-                                onPageChange={handlePageClick}
-                                forcePage={currentPage}
-                                pageRangeDisplayed={5}
-                                pageCount={totalPages}
-                                previousLabel="< Previous"
-                                renderOnZeroPageCount={() => false}
-                                breakClassName={"page-item"}
-                                breakLinkClassName={"page-link"}
-                                containerClassName={"pagination"}
-                                pageClassName={"page-item"}
-                                pageLinkClassName={"page-link"}
-                                previousClassName={"page-item"}
-                                previousLinkClassName={"page-link"}
-                                nextClassName={"page-item"}
-                                nextLinkClassName={"page-link"}
-                                activeClassName={"active"}
-                            />
+                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0 vertical-aligned">
+                            <input placeholder="Search notes" className="search-input" onChange={event => findNotesByContent(event.target.value, 0)} />
+                    </div>
+                    {totalPages > 1 &&
+                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5 p-0 m-0">
+                                <ReactPaginate
+                                    breakLabel="..."
+                                    nextLabel="Next >"
+                                    onPageChange={handlePageClick}
+                                    forcePage={currentPage}
+                                    pageRangeDisplayed={5}
+                                    pageCount={totalPages}
+                                    previousLabel="< Previous"
+                                    renderOnZeroPageCount={() => false}
+                                    breakClassName={"page-item"}
+                                    breakLinkClassName={"page-link"}
+                                    containerClassName={"pagination"}
+                                    pageClassName={"page-item"}
+                                    pageLinkClassName={"page-link"}
+                                    previousClassName={"page-item"}
+                                    previousLinkClassName={"page-link"}
+                                    nextClassName={"page-item"}
+                                    nextLinkClassName={"page-link"}
+                                    activeClassName={"active"}
+                                />
                         </div>
-                    </div>
+                    }
                  </div>
                  <br></br>
                  {isLoading && 
@@ -95,7 +97,7 @@ function NoteList() {
                     </div>
                  }
                  <div className = "row">
-                        <table className = "table table-striped table-bordered notes-table">
+                        <table className = "table table-default notes-table">
 
                             <thead>
                                 <tr>
@@ -132,8 +134,12 @@ function NoteList() {
                                             <td> {note.name} </td>   
                                             <td> {note.contentPreview} </td>   
                                             <td>
-                                                <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">Update </button>
-                                                <button style={{marginLeft: "10px"}} data-bs-toggle="modal" data-bs-target={`#deleteModal${note.id}`} className="btn btn-danger">Delete </button>
+                                                <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">
+                                                    <img src="/edit.png" width="20px" />
+                                                </button>
+                                                <button style={{marginLeft: "10px"}} data-bs-toggle="modal" data-bs-target={`#deleteModal${note.id}`} className="btn btn-danger">
+                                                    <img src="/delete.png" width="20px" />
+                                                </button>
                                             </td>
                                         </tr>
                                         </>

@@ -44,30 +44,32 @@ function ProjectList() {
     return (
         <div className = "container projects-container">
             <div className = "row">
-                <div className ="col-12 col-xs-6 col-sm-6 col-lg-6 col-xl-8 col-xxl-8">
-                    <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New Project</button>
+                <div className ="col-12 col-xs-12 col-sm-12 col-lg-8 col-xl-8 col-xxl-8 p-0 m-0">
+                    <button className="btn btn-primary" onClick={() => navigate("/create-project")}>New project</button>
                 </div>
-                <div className ="col-12 col-xs-6 col-sm-6 col-lg-6 col-xl-4 col-xxl-4">
-                    <ReactPaginate
-                        breakLabel="..."
-                        nextLabel="Next"
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={5}
-                        pageCount={totalPages}
-                        previousLabel="Previous"
-                        renderOnZeroPageCount={null}
-                        breakClassName={"page-item"}
-                        breakLinkClassName={"page-link"}
-                        containerClassName={"pagination"}
-                        pageClassName={"page-item"}
-                        pageLinkClassName={"page-link"}
-                        previousClassName={"page-item"}
-                        previousLinkClassName={"page-link"}
-                        nextClassName={"page-item"}
-                        nextLinkClassName={"page-link"}
-                        activeClassName={"active"}
-                    />
-                </div>
+                {totalPages > 1 && 
+                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-4 col-xl-4 col-xxl-4 p-0 m-0">
+                        <ReactPaginate
+                            breakLabel="..."
+                            nextLabel="Next"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={totalPages}
+                            previousLabel="Previous"
+                            renderOnZeroPageCount={null}
+                            breakClassName={"page-item"}
+                            breakLinkClassName={"page-link"}
+                            containerClassName={"pagination"}
+                            pageClassName={"page-item"}
+                            pageLinkClassName={"page-link"}
+                            previousClassName={"page-item"}
+                            previousLinkClassName={"page-link"}
+                            nextClassName={"page-item"}
+                            nextLinkClassName={"page-link"}
+                            activeClassName={"active"}
+                        />
+                    </div>
+                 }
             </div>
             <br></br>
             {isLoading && 
