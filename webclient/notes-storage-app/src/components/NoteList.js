@@ -59,14 +59,14 @@ function NoteList() {
     return (
             <div className="container">
                  <div className = "row">
-                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-1 col-xl-1 col-xxl-1 p-0 m-0">
+                    <div className ="col-4 col-sm-3 col-lg-2 col-xl-1 col-xxl-1 p-0 m-0">
                         <button className="btn btn-primary" onClick={() => navigate('/create-note')}> New Note</button>
                     </div>
-                    <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0 vertical-aligned">
-                            <input placeholder="Search notes" className="search-input" onChange={event => findNotesByContent(event.target.value, 0)} />
+                    <div className ="col-8 col-sm-9 col-lg-10 col-xl-11 col-xxl-11 p-0 m-0">
+                        <input placeholder="Search notes" className="search-input right-aligned" onChange={event => findNotesByContent(event.target.value, 0)} />
                     </div>
                     {totalPages > 1 &&
-                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-5 col-xl-5 col-xxl-5 p-0 m-0">
+                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-12 col-xl-12 col-xxl-12 p-0 m-0">
                                 <ReactPaginate
                                     breakLabel="..."
                                     nextLabel="Next >"
@@ -117,7 +117,7 @@ function NoteList() {
                                                     <div className="modal-content">
                                                     <div className="modal-header">
                                                         <h1 className="modal-title fs-5" id="deleteModal">Delete note</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div className="modal-body">
                                                         Are you sure you want to delete the note "{note.name}"?
@@ -134,12 +134,20 @@ function NoteList() {
                                             <td> {note.name} </td>   
                                             <td> {note.contentPreview} </td>   
                                             <td>
-                                                <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">
-                                                    <img src="/edit.png" width="20px" />
-                                                </button>
-                                                <button style={{marginLeft: "10px"}} data-bs-toggle="modal" data-bs-target={`#deleteModal${note.id}`} className="btn btn-danger">
-                                                    <img src="/delete.png" width="20px" />
-                                                </button>
+                                                <div className="container">
+                                                    <div className = "row  justify-content-center">
+                                                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
+                                                            <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-info">
+                                                                <img src="/edit.png" width="20px" />
+                                                            </button>
+                                                        </div>
+                                                        <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
+                                                            <button data-bs-toggle="modal" data-bs-target={`#deleteModal${note.id}`} className="btn btn-danger">
+                                                                <img src="/delete.png" width="20px" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         </>

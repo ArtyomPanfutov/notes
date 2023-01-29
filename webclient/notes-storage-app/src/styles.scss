@@ -100,6 +100,7 @@ header {
 .pagination {
   display: inline-flex;
   float: right;
+  margin-top: 3%;
 }
 
 .loader {
@@ -140,7 +141,7 @@ header {
 }
 
 .notes-table td:nth-child(4) {
-  width: 10%;
+  width: 8%;
 }
 
 .projects-table td:nth-child(1) {
@@ -163,14 +164,21 @@ header {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+@media screen and (max-width: 572px) {
+
+  .search-input {
+    width: 10rem;
+  }
+
+.notes-table td:nth-child(4) {
+  width: 10%;
+}
+}
+    
 
 @media screen and (max-width: 450px) {
   h1 {
     font-size: 20px;
-  }
-
-  .search-input {
-    width: 15em;
   }
 
   header {
