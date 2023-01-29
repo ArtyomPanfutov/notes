@@ -91,19 +91,19 @@ function ProjectList() {
                                 projects.map(
                                     project => 
                                     <>
-                                        <div class="modal fade" id={`deleteModal${project.id}`} tabindex="-1" aria-labelledby={`deleteModal${project.id}`} aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="deleteModal">Delete project</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <div className="modal fade" id={`deleteModal${project.id}`} tabIndex="-1" aria-labelledby={`deleteModal${project.id}`} aria-hidden="true">
+                                            <div className="modal-dialog">
+                                                <div className="modal-content">
+                                                <div className="modal-header">
+                                                    <h1 className="modal-title fs-5" id="deleteModal">Delete project</h1>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div class="modal-body">
+                                                <div className="modal-body">
                                                     Are you sure you want to delete the project "{project.name}"?
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteProject(project.id)}>Delete</button>
+                                                <div className="modal-footer">
+                                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteProject(project.id)}>Delete</button>
                                                 </div>
                                                 </div>
                                             </div>

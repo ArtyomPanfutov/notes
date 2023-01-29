@@ -73,7 +73,7 @@ function NoteList() {
                                 pageRangeDisplayed={5}
                                 pageCount={totalPages}
                                 previousLabel="< Previous"
-                                renderOnZeroPageCount={null}
+                                renderOnZeroPageCount={() => false}
                                 breakClassName={"page-item"}
                                 breakLinkClassName={"page-link"}
                                 containerClassName={"pagination"}
@@ -110,19 +110,19 @@ function NoteList() {
                                     notes && notes.map(
                                         note =>  
                                         <>
-                                            <div class="modal fade" id={`deleteModal${note.id}`} tabindex="-1" aria-labelledby={`deleteModal${note.id}`} aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="deleteModa">Delete note</h1>
+                                            <div className="modal fade" id={`deleteModal${note.id}`} tabIndex="-1" aria-labelledby={`deleteModal${note.id}`} aria-hidden="true">
+                                                <div className="modal-dialog">
+                                                    <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <h1 className="modal-title fs-5" id="deleteModal">Delete note</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <div class="modal-body">
+                                                    <div className="modal-body">
                                                         Are you sure you want to delete the note "{note.name}"?
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteNote(note.id)}>Delete</button>
+                                                    <div className="modal-footer">
+                                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteNote(note.id)}>Delete</button>
                                                     </div>
                                                     </div>
                                                 </div>

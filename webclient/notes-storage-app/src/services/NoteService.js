@@ -35,7 +35,7 @@ class NotesService {
         return httpClient.post("/api/notes/search", {
             "content": content,
             "page": page,
-            "pageSize": 2
+            "pageSize": 5
           });
     }
 
