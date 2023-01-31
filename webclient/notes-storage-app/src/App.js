@@ -24,7 +24,7 @@ const App = () => {
   if (isLoading) {
     return (
       <div className="page-layout">
-        <Loader />;
+        <Loader />
       </div>
     );
   }

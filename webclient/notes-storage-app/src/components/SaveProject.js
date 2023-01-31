@@ -59,8 +59,8 @@ function SaveProject() {
                                             value={name} onChange={changeNameHandler}/>
                                     </div>
                                     <div className = "form-result-buttons">
-                                        <button className="btn btn-success" onClick={() => saveProject()}>Save</button>
-                                        <button className="btn btn-danger" onClick={() => navigate("/projects")} style={{marginLeft: "10px"}}>Cancel</button>
+                                        <button className="btn btn-primary" onClick={() => saveProject()}>Save</button>
+                                        <button className="btn btn-secondary" onClick={() => navigate("/projects")} style={{marginLeft: "10px"}}>Cancel</button>
                                     </div>
                                 </form>
                             </div>
