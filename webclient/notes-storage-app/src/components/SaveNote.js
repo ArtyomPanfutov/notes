@@ -78,7 +78,7 @@ function SaveNote() {
                    <div className = "container">
                         {isLoading 
                             ? <div className="page-layout">
-                                <Loader />;
+                                <Loader />
                               </div>
                             : <div className = "row">
                                     <div className = "card col-md-12">
@@ -115,7 +115,7 @@ function SaveNote() {
                                                 </div>
                                                 <div className = "form-result-buttons">
                                                     <button className="btn btn-success" onClick={() => saveNote()}>Save</button>
-                                                    <button className="btn btn-danger" onClick={() => navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
+                                                    <button className="btn btn-secondary" onClick={() => navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
                                                 </div>
                                             </form>
                                         </div>

@@ -74,7 +74,7 @@ function ProjectList() {
             <br></br>
             {isLoading && 
                 <div className="page-layout">
-                    <Loader />;
+                    <Loader />
                 </div>
             }
             <div className = "row">
@@ -117,7 +117,7 @@ function ProjectList() {
                                                 <div className="container">
                                                     <div className = "row  justify-content-center">
                                                         <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
-                                                            <button onClick={() => navigateToEditProject(project.id)} className="btn btn-info">
+                                                            <button onClick={() => navigateToEditProject(project.id)} className="btn btn-edit">
                                                                 <img src="/edit.png" width="20px" />
                                                             </button>
                                                         </div>
