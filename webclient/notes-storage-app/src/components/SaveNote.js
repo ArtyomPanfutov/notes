@@ -6,15 +6,17 @@ import ProjectDropdownComponent from './ProjectDropdownComponent'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Loader from './Loader';
+import { useLocation } from 'react-router-dom';
 
-function SaveNote() {
+function SaveNote(props) {
     const params = useParams();
     const id = params ? params.id : null;
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
     const [projectId, setProjectId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    
+    const { state } = useLocation();
+    // const [notesState, setNotesState] = useState(props.location.state.notesState);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -115,7 +117,13 @@ function SaveNote() {
                                                 </div>
                                                 <div className = "form-result-buttons">
                                                     <button className="btn btn-success" onClick={() => saveNote()}>Save</button>
-                                                    <button className="btn btn-secondary" onClick={() => navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
+                                                    <button className="btn btn-secondary" onClick={() => navigate("/notes", {state: {
+                                                        searchContent: state.notesState.searchContent,
+                                                        notes: state.notesState.notes,
+                                                        currentPage: state.notesState.currentPage,
+                                                        totalPages: state.notesState.totalPages,
+                                                        isLoading: state.notesState.isLoading
+                                                    }} )} style={{marginLeft: "10px"}}>Cancel</button>
                                                 </div>
                                             </form>
                                         </div>
