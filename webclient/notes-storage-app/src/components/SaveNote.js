@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import NoteService from '../services/NoteService';
 import ProjectService from '../services/ProjectService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Loader from './Loader';
-import { useLocation } from 'react-router-dom';
 
-function SaveNote(props) {
+function SaveNote() {
     const params = useParams();
     const id = params ? params.id : null;
     const [name, setName] = useState('');
     const [content, setContent] = useState('');
     const [projectId, setProjectId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const { state } = useLocation();
-    // const [notesState, setNotesState] = useState(props.location.state.notesState);
+    const { state } = useLocation(); // For the note list state
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -74,6 +73,18 @@ function SaveNote(props) {
         }
     }
 
+    const navigateBackToNoteList = () => {
+        navigate("/notes", {
+            state: {
+                searchContent: state.notesState.searchContent,
+                notes: state.notesState.notes,
+                currentPage: state.notesState.currentPage,
+                totalPages: state.notesState.totalPages,
+                isLoading: state.notesState.isLoading
+            }
+        });
+    }
+
     return (
             <div>
                 <br></br>
@@ -117,13 +128,7 @@ function SaveNote(props) {
                                                 </div>
                                                 <div className = "form-result-buttons">
                                                     <button className="btn btn-success" onClick={() => saveNote()}>Save</button>
-                                                    <button className="btn btn-secondary" onClick={() => navigate("/notes", {state: {
-                                                        searchContent: state.notesState.searchContent,
-                                                        notes: state.notesState.notes,
-                                                        currentPage: state.notesState.currentPage,
-                                                        totalPages: state.notesState.totalPages,
-                                                        isLoading: state.notesState.isLoading
-                                                    }} )} style={{marginLeft: "10px"}}>Cancel</button>
+                                                    <button className="btn btn-secondary" onClick={() => navigateBackToNoteList()} style={{marginLeft: "10px"}}>Cancel</button>
                                                 </div>
                                             </form>
                                         </div>
