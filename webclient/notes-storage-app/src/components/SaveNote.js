@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import NoteService from '../services/NoteService';
 import ProjectService from '../services/ProjectService';
 import ProjectDropdownComponent from './ProjectDropdownComponent'
@@ -14,7 +15,7 @@ function SaveNote() {
     const [content, setContent] = useState('');
     const [projectId, setProjectId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    
+    const { state } = useLocation(); // For the note list state
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -72,6 +73,18 @@ function SaveNote() {
         }
     }
 
+    const navigateBackToNoteList = () => {
+        navigate("/notes", {
+            state: {
+                searchContent: state.notesState.searchContent,
+                notes: state.notesState.notes,
+                currentPage: state.notesState.currentPage,
+                totalPages: state.notesState.totalPages,
+                isLoading: state.notesState.isLoading
+            }
+        });
+    }
+
     return (
             <div>
                 <br></br>
@@ -115,7 +128,7 @@ function SaveNote() {
                                                 </div>
                                                 <div className = "form-result-buttons">
                                                     <button className="btn btn-success" onClick={() => saveNote()}>Save</button>
-                                                    <button className="btn btn-secondary" onClick={() => navigate('/notes')} style={{marginLeft: "10px"}}>Cancel</button>
+                                                    <button className="btn btn-secondary" onClick={() => navigateBackToNoteList()} style={{marginLeft: "10px"}}>Cancel</button>
                                                 </div>
                                             </form>
                                         </div>

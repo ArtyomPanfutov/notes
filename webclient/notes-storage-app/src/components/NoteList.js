@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import NoteService from '../services/NoteService';
 import ReactPaginate from "react-paginate";
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Loader from './Loader';
 
 function NoteList() {
-    const [searchContent, setSearchContent] = useState(null);
-    const [notes, setNotes] = useState([]);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    const { state } = useLocation();
+
+    const [searchContent, setSearchContent] = useState(state.searchContent);
+    const [notes, setNotes] = useState(state.searchContent ? state.searchContent : []);
+    const [currentPage, setCurrentPage] = useState(state.currentPage ? state.currentPage : 0);
+    const [totalPages, setTotalPages] = useState(state.totalPages ? state.totalPages : 0);
+    const [isLoading, setIsLoading] = useState(state.isLoading ? state.isLoading : false);
 
     useEffect(() => {
         if (searchContent) {
@@ -54,6 +57,20 @@ function NoteList() {
             setCurrentPage(0);
             fetchNotes();
         }
+    }
+
+    const navigateToSaveNote = (noteId) => {
+        navigate(`/edit-note/${noteId}`, { 
+            state: {
+                notesState: {
+                    searchContent: searchContent,
+                    notes: notes,
+                    currentPage: currentPage,
+                    totalPages: totalPages,
+                    isLoading: isLoading
+                }
+            }
+        })
     }
 
     return (
@@ -137,7 +154,7 @@ function NoteList() {
                                                 <div className="container">
                                                     <div className = "row  justify-content-center">
                                                         <div className ="col-12 col-xs-12 col-sm-12 col-lg-6 col-xl-6 col-xxl-6 p-0 m-0">
-                                                            <button onClick={ () => navigate(`/edit-note/${note.id}`)} className="btn btn-edit">
+                                                            <button onClick={ () => navigateToSaveNote(note.id)} className="btn btn-edit">
                                                                 <img src="/edit.png" width="20px" />
                                                             </button>
                                                         </div>
