@@ -8,11 +8,11 @@ import Loader from './Loader';
 function NoteList() {
     const { state } = useLocation();
 
-    const [searchContent, setSearchContent] = useState(state.searchContent);
-    const [notes, setNotes] = useState(state.searchContent ? state.searchContent : []);
-    const [currentPage, setCurrentPage] = useState(state.currentPage ? state.currentPage : 0);
-    const [totalPages, setTotalPages] = useState(state.totalPages ? state.totalPages : 0);
-    const [isLoading, setIsLoading] = useState(state.isLoading ? state.isLoading : false);
+    const [searchContent, setSearchContent] = useState(state && state.searchContent ? state.searchContent : null); 
+    const [notes, setNotes] = useState(state && state.searchContent ? state.searchContent : []);
+    const [currentPage, setCurrentPage] = useState(state && state.currentPage ? state.currentPage : 0);
+    const [totalPages, setTotalPages] = useState(state && state.totalPages ? state.totalPages : 0);
+    const [isLoading, setIsLoading] = useState(state && state.isLoading ? state.isLoading : false);
 
     useEffect(() => {
         if (searchContent) {
