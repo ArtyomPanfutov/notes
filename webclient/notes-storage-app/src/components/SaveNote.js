@@ -16,6 +16,7 @@ function SaveNote() {
     const [projectId, setProjectId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const { state } = useLocation(); // For the note list state
+    const [editor, setEditor] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -45,7 +46,7 @@ function SaveNote() {
         let note = {
             id: id, 
             name: name,
-            content: content,
+            content: editor.getData(),
             projectId: projectId
         };
 
@@ -116,9 +117,10 @@ function SaveNote() {
                                                     <CKEditor
                                                         editor={ClassicEditor}
                                                         data={content}
-                                                        onReady={ editor => { } }
+                                                        onReady={ editor => { 
+                                                            setEditor(editor);
+                                                        } }
                                                         onChange={ ( event, editor ) => {
-                                                            setContent(editor.getData());
                                                         } }
                                                         onBlur={ ( event, editor ) => {
                                                         } }
