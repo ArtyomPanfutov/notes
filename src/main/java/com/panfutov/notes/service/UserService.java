@@ -43,6 +43,12 @@ public class UserService {
         return fetchUser(token);
     }
 
+    /**
+     * Retrieves user from DB by user info.
+     * @param userInfo user info dto object.
+     * @throws UserNotFoundException if user such user does not exist.
+     * @return User entity instance.
+     */
     public User getUserByUserInfo(UserInfo userInfo) {
         return userRepository.findBySub(userInfo.sub())
                 .orElseThrow(UserNotFoundException::new);
