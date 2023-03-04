@@ -1,7 +1,13 @@
 # Notes App 
-The app is available on https://notes.panfutov.com 
+## Description
+The project provides a service for creating/editing/searching notes. 
+You can use it via a web application. The application is available on https://notes.panfutov.com 
 ## Overview
-  WIP...
+The project consists of the backend service (Java 18, Micronaut) and frontend application (React).
+## Architecture
+...
+## CI
+... 
 ## Run tests 
 `mvn clean test`
 <br>
