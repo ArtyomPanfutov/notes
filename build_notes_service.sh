@@ -4,5 +4,8 @@ if [ -z "${JAVA_HOME}" ]; then
   export JAVA_HOME=$(/usr/libexec/java_home -v18)
   echo "JAVA_HOME ${JAVA_HOME}"
 fi
-mvn clean mn:dockerfile -Dpackaging=docker
-mvn install -Dpackaging=jar
+#mvn clean mn:dockerfile -Dpackaging=docker
+#mvn install -Dpackaging=jar
+# Try build GraalVM image
+./mvnw package -Dpackaging=docker-native -Pgraalvm
+
