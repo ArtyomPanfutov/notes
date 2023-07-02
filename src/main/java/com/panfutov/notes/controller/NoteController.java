@@ -40,7 +40,7 @@ public class NoteController {
         var user = userService.getUserByAuthorizationHeader(authorization);
         final var result = noteService.create(noteDto, user);
 
-        if (!result.isSuccess()) {
+        if (result.isError()) {
             // TODO: Implement error handling
             log.error("Can't create a note {}", result.error());
             return HttpResponse.badRequest();

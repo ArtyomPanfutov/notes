@@ -64,6 +64,8 @@ public class ProjectService {
         }
 
         final var project = projectRepository.findById(projectDto.id());
+        // TODO: validate
+        // Also, validate if a user that is trying to update is the same as in the note's user
         if (project.isPresent()) {
             final var forUpdate = project.get();
 

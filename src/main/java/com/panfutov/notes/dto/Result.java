@@ -8,7 +8,8 @@ import javax.annotation.Nullable;
  */
 public record Result<T> (
     boolean isSuccess,
-    @Nullable T body,
+    @Nullable
+    T body,
     Error error) {
 
     public static<T> Result<T> success(T body) {

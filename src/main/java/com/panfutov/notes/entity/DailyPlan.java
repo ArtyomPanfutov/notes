@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SortNatural;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -14,8 +13,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 @Entity
 @Table(name = "daily_plan")
@@ -52,7 +49,7 @@ public class DailyPlan {
             inverseJoinColumns = @JoinColumn(name = "daily_task_id")
     )
     @OrderBy(value="lower(order) asc")
-    private List<DailyPlan> tags = new ArrayList<>();
+    private List<DailyTask> tasks = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

@@ -9,4 +9,7 @@
     <include file="changelog/03-create-user.xml" relativeToChangelogFile="true"/>
     <include file="changelog/04-add-note-preview.xml" relativeToChangelogFile="true"/>
     <include file="changelog/05-add-email-field.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/06-create-daily-task.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/07-create-daily-plan.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/08-create-daily-plan-task.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -73,6 +73,7 @@ public class NoteService {
         }
 
         // TODO: Validation
+        // Also, validate if a user that trying to update is the same as in the note's user
         log.warn("Validation is not implemented yet!");
 
         final var entity = noteRepository.findById(noteDto.id());

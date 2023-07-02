@@ -25,4 +25,8 @@ public class DailyTask {
     @Column(name = "text")
     private String text;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
+
 }
